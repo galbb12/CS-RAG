@@ -11,7 +11,7 @@ def main():
     response = client.chat.completions.create(
         model="gemini-2.5-flash",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "Respond only in rhymes."},
             {
                 "role": "user",
                 "content": input("Enter prompt: ")
