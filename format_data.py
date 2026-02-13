@@ -204,8 +204,25 @@ def main():
             if kdam["current_lecturers"]:
                 metadata["current_lecturers"] = kdam["current_lecturers"]
 
+        # Build page_content: metadata baked into the text for embedding.
+        # This ensures the embedder "sees" course name, lecturer, etc.
+        header_parts = []
+        if course_name:
+            header_parts.append(f"קורס: {course_name}")
+        if lecturer:
+            header_parts.append(f"מרצה: {lecturer}")
+        if course_type:
+            header_parts.append(f"סוג: {course_type}")
+        if kdam.get("credit_points"):
+            header_parts.append(f"נקודות זכות: {kdam['credit_points']}")
+        if kdam.get("prerequisites"):
+            header_parts.append(f"קדמים: {kdam['prerequisites']}")
+
+        header = " | ".join(header_parts)
+        page_content = f"{header}\n{content}" if header else content
+
         documents.append({
-            "content": content,
+            "page_content": page_content,
             "metadata": metadata,
         })
 
