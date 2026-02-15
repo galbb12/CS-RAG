@@ -1,67 +1,94 @@
-from openai import OpenAI
+import json
+import os
 
-conv = []
+from dotenv import load_dotenv
+from langchain_core.documents import Document
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import ChatOpenAI
 
-def hello_world():
-    print("hello nigga")
-    return "called and printed to the user"
+from metadata_match import MetadataMatch
+from comment_match_prompt import CommentMatchPrompt
+
+load_dotenv()
+
+SYSTEM_PROMPT = """אתה עוזר לסטודנטים בחוג למדעי המחשב באוניברסיטת חיפה.
+אתה עונה על שאלות לגבי קורסים, מרצים, מבחנים ועוד על סמך ביקורות אמיתיות של סטודנטים.
+
+כללים:
+- ענה רק על סמך הביקורות שסופקו לך. אל תמציא מידע.
+- אם אין מספיק מידע בביקורות, אמור זאת בכנות.
+- ציין מגמות חוזרות בביקורות (למשל אם כמה סטודנטים מסכימים על נקודה מסוימת).
+- השתמש בעברית בתשובות שלך.
+- היה תמציתי ועניני.
+"""
 
 
-def handle_tools():
-    tools = conv[-1].tool_calls
-    if tools:
-        for tool in tools:
-            match tool.function.name:
-                case "hello_world":
-                    conv.append({"role": "tool", "tool_call_id": tool.id, "content": hello_world()})
+def format_context(docs: list[Document]) -> str:
+    """Format retrieved documents into a context string for the LLM."""
+    parts = []
+    for i, doc in enumerate(docs, 1):
+        meta = doc.metadata
+        header = f"ביקורת {i}"
+        if meta.get("course_name"):
+            header += f" | קורס: {meta['course_name']}"
+        if meta.get("lecturer"):
+            header += f" | מרצה: {meta['lecturer']}"
+        if meta.get("course_type"):
+            header += f" | סוג: {meta['course_type']}"
+        if meta.get("credit_points"):
+            header += f" | נ\"ז: {meta['credit_points']}"
+        parts.append(f"[{header}]\n{doc.page_content}")
+    return "\n\n".join(parts)
 
-    
 
 def main():
+    # Load documents
+    with open("documents.json", encoding="utf-8") as f:
+        raw_docs = json.load(f)
+    documents = [Document(page_content=d["page_content"], metadata=d["metadata"]) for d in raw_docs]
 
-    client = OpenAI(
-        api_key="<api-key>",
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+    # Init components
+    llm = ChatOpenAI(
+        base_url="http://localhost:11434/v1",
+        model="qwen3:14b",
+    )
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/gemini-embedding-001",
+        google_api_key=os.environ["OPENAI_API_KEY"],
     )
 
-    tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "hello_world",
-                "description": "Call this function when the user asks to say hello world.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {},  # No parameters needed for this simple tool
-                    "required": [],
-                },
-            },
-        }
-    ]
+    metadata_matcher = MetadataMatch(documents, llm)
+    comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
+
+    conversation = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    print("CS-RAG Bot Ready! (type 'exit' to quit)\n")
 
     while True:
+        question = input("שאלה: ").strip()
+        if not question or question == "exit":
+            break
 
-        conv.append([
-                {"role": "system", "content": "You are a helpful assistant."},
-                {
-                    "role": "user",
-                    "content": input("Enter prompt: ")
-                }
-            ])
+        # Step 1: extract metadata filters
+        filters = metadata_matcher.extract_filters(question)
+        metadata_filter = {k: v for k, v in filters.model_dump().items() if k != "query" and v is not None}
 
-        response = client.chat.completions.create(
-            model="gemini-2.5-flash",
-            messages = conv,
-            tools=tools,
-            tool_choice="auto"
-        )
+        # Step 2: semantic search with filters
+        top_docs = comment_matcher.run(filters.query, metadata_filter)
 
-        conv.append(response.choices[0].message)
-        handle_tools()
+        # Step 3: build the user message with context
+        context = format_context(top_docs)
+        user_message = f"ביקורות רלוונטיות:\n{context}\n\nשאלת הסטודנט: {question}"
 
-        content = response.choices[0].message.content
-        if(content):
-            print(f"Model response: {content}")
+        conversation.append({"role": "user", "content": user_message})
+
+        # Step 4: LLM answers with context
+        response = llm.invoke(conversation)
+        answer = response.content
+
+        conversation.append({"role": "assistant", "content": answer})
+
+        print(f"\n{answer}\n")
 
 
 if __name__ == "__main__":
