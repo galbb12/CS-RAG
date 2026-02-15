@@ -211,6 +211,11 @@ def main():
             "metadata": metadata,
         })
 
+    # ---- Write kdams.json (prerequisite tree) ----
+    with open("kdams.json", "w", encoding="utf-8") as f:
+        json.dump(kdams, f, ensure_ascii=False, indent=2)
+    print(f"Wrote {len(kdams)} courses to kdams.json")
+
     # ---- Write output ----
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(documents, f, ensure_ascii=False, indent=2)

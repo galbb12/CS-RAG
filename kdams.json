@@ -1,0 +1,450 @@
+{
+  "מבוא למדעי המחשב": {
+    "course_code": "203.1110",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": null,
+    "current_lecturers": "רועי פורן,עלאא מעלוף",
+    "note": null
+  },
+  "ארגון המחשב ושפות סף": {
+    "course_code": "203.1130",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "מבוא למדעי המחשב",
+    "current_lecturers": "שלי קול",
+    "note": null
+  },
+  "מבוא לחמרה": {
+    "course_code": "203.1210",
+    "credit_points": 5,
+    "semesters_offered": "a",
+    "prerequisites": null,
+    "current_lecturers": "ארז גרליץ",
+    "note": null
+  },
+  "אלגברה לינארית": {
+    "course_code": "203.1810",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": null,
+    "current_lecturers": "רפאל יוסטר-ירון,אלי ברגר",
+    "note": null
+  },
+  "אלגברה ב": {
+    "course_code": "203.1820",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "אלגברה לינארית",
+    "current_lecturers": "יורי רבינוביץ,אסלאם עכריה",
+    "note": null
+  },
+  "חדוא 1": {
+    "course_code": "203.1830",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": null,
+    "current_lecturers": "אסלאם עכריה,אסלאם עכריה",
+    "note": null
+  },
+  "חדוא 2": {
+    "course_code": "203.1840",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "חדוא 1",
+    "current_lecturers": "אסלאם עכריה,עמי ויסלטר",
+    "note": null
+  },
+  "מתמטיקה דיסקרטית": {
+    "course_code": "203.1850",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": null,
+    "current_lecturers": "נגה רון צבי,עמוס קורמן",
+    "note": null
+  },
+  "מערכות הפעלה": {
+    "course_code": "203.2110",
+    "credit_points": 5,
+    "semesters_offered": "b",
+    "prerequisites": "תכנות מונחה עצמים,מבוא לחמרה,מבני נתונים",
+    "current_lecturers": "שלי קול",
+    "note": null
+  },
+  "מבני נתונים": {
+    "course_code": "203.2310",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "מבוא למדעי המחשב,מתמטיקה דיסקרטית",
+    "current_lecturers": "אורן וימן,גיא אבני",
+    "note": null
+  },
+  "תכנון וניתוח אלגוריתמים": {
+    "course_code": "203.2410",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "מבני נתונים",
+    "current_lecturers": "יורי רבינוביץ,אוהד טרבלסי",
+    "note": null
+  },
+  "הסתברות למדעי המחשב": {
+    "course_code": "203.2480",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "אלגברה לינארית,חדוא 2,מבני נתונים",
+    "current_lecturers": "דן רוזנבאום,יורי רבינוביץ",
+    "note": null
+  },
+  "הנדסת תוכנה": {
+    "course_code": "203.3140",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "תכנות מונחה עצמים,מבני נתונים",
+    "current_lecturers": "מלכה-רבקה גרוסמן,מלכה-רבקה גרוסמן",
+    "note": null
+  },
+  "רשתות תקשורת": {
+    "course_code": "203.3210",
+    "credit_points": 5,
+    "semesters_offered": "b",
+    "prerequisites": "הסתברות למדעי המחשב",
+    "current_lecturers": "שיר לנדאו פייביש",
+    "note": null
+  },
+  "מודלים חישוביים": {
+    "course_code": "203.3510",
+    "credit_points": 5,
+    "semesters_offered": "ab",
+    "prerequisites": "תכנון וניתוח אלגוריתמים",
+    "current_lecturers": "רונן שאלתיאל,מיכל דורי",
+    "note": "פטור אנגלית"
+  },
+  "מבוא לבינה מלאכותית": {
+    "course_code": "203.3610",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "חדוא 2,מתמטיקה דיסקרטית,מבני נתונים,תכנון וניתוח אלגוריתמים",
+    "current_lecturers": "שי בושינסקי",
+    "note": null
+  },
+  "מעבדה בבינה מלאכותית": {
+    "course_code": "203.3630",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,מבוא לבינה מלאכותית",
+    "current_lecturers": "שי בושינסקי",
+    "note": null
+  },
+  "עיבוד תמונה": {
+    "course_code": "203.3730",
+    "credit_points": 5,
+    "semesters_offered": "a",
+    "prerequisites": "אלגברה לינארית,אלגברה ב,חדוא 1,חדוא 2,מתמטיקה דיסקרטית,תכנון וניתוח אלגוריתמים",
+    "current_lecturers": "חגית הל-אור",
+    "note": null
+  },
+  "דחיסת תמונה וקול": {
+    "course_code": "203.3880",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "אלגברה לינארית,אלגברה ב,חדוא 1,חדוא 2,מתמטיקה דיסקרטית",
+    "current_lecturers": "נמרוד פלג",
+    "note": null
+  },
+  "מבוא ללמידה ממוכנת": {
+    "course_code": "203.3770",
+    "credit_points": 4,
+    "semesters_offered": "ab",
+    "prerequisites": "אלגברה לינארית,אלגברה ב,חדוא 2,הסתברות למדעי המחשב",
+    "current_lecturers": "סיימון אנדרו קורמן,דן רוזנבאום",
+    "note": null
+  },
+  "תכנות מדעי": {
+    "course_code": "203.3830",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "אלגברה לינארית,חדוא 2,תכנון וניתוח אלגוריתמים",
+    "current_lecturers": "תמר רחל קולודני",
+    "note": null
+  },
+  "ראייה ממוחשבת": {
+    "course_code": "203.3702",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "עיבוד תמונה",
+    "current_lecturers": "סיימון אנדרו קורמן",
+    "note": null
+  },
+  "למידה עמוקה": {
+    "course_code": "203.3834",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "תכנות מונחה עצמים,תכנון וניתוח אלגוריתמים,מבוא ללמידה ממוכנת",
+    "current_lecturers": "עלאא מעלוף",
+    "note": null
+  },
+  "אימות פורמלי": {
+    "course_code": "203.3223",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "מודלים חישוביים",
+    "current_lecturers": "גיא אבני",
+    "note": null
+  },
+  "סמינר יישומי בינה מלאכותית בפיתוח חומרה": {
+    "course_code": "203.3612",
+    "credit_points": 2,
+    "semesters_offered": "a",
+    "prerequisites": "מבוא לחמרה,מבוא ללמידה ממוכנת",
+    "current_lecturers": "אלעד כהן",
+    "note": "סמינר"
+  },
+  "אופטימיזציה ללמידת מכונה": {
+    "course_code": "203.3773",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "אלגברה לינארית,חדוא 1,הסתברות למדעי המחשב",
+    "current_lecturers": "דן פלדמן",
+    "note": null
+  },
+  "תורת המשחקים האלגוריתמית": {
+    "course_code": "203.3380",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "מודלים חישוביים",
+    "current_lecturers": "גיא אבני",
+    "note": null
+  },
+  "קורס מתקדם על מודלים גנרטיביים עמוקים": {
+    "course_code": "203.3832",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "מבוא ללמידה ממוכנת",
+    "current_lecturers": "דן רוזנבאום",
+    "note": null
+  },
+  "TOPICS IN COMPUTER SCIENCE": {
+    "course_code": "203.3162",
+    "credit_points": 2,
+    "semesters_offered": "a",
+    "prerequisites": null,
+    "current_lecturers": "חגית הל-אור",
+    "note": "הקורס באנגלית"
+  },
+  "עקרונות בתכנות מונחה עצמים": {
+    "course_code": "203.1125",
+    "credit_points": 5,
+    "semesters_offered": "bc",
+    "prerequisites": "מבוא למדעי המחשב",
+    "current_lecturers": "שאדי עסאקלה,שאדי עסאקלה",
+    "note": null
+  },
+  "נושאים נבחרים באלגוריתמים": {
+    "course_code": "203.3566",
+    "credit_points": 3,
+    "semesters_offered": "b",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב,מודלים חישוביים",
+    "current_lecturers": "מיכל דורי",
+    "note": null
+  },
+  "אלגוריתמים תת לינאריים": {
+    "course_code": "203.3558",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "עמית לוי",
+    "note": null
+  },
+  "שימוש בשיטות של דאטה סיינס בסייבר": {
+    "course_code": "203.3888",
+    "credit_points": 3,
+    "semesters_offered": "b",
+    "prerequisites": "מבוא למדעי המחשב,הסתברות למדעי המחשב",
+    "current_lecturers": "אורי איתי",
+    "note": null
+  },
+  "PROJECT IN ADVANCED ROBOTICS": {
+    "course_code": "203.3277",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "אלגברה ב,חדוא 2,תכנון וניתוח אלגוריתמים,מודלים חישוביים",
+    "current_lecturers": "דן פלדמן",
+    "note": "מעבדה,הקורס באנגלית"
+  },
+  "ALGORITHMS AND ANIMAL BEHAVIOR": {
+    "course_code": "203.3571",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "מתמטיקה דיסקרטית,תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "עמוס קורמן",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "PROJECT IN COMPUTER VISION": {
+    "course_code": "203.3720",
+    "credit_points": 3,
+    "semesters_offered": "c",
+    "prerequisites": "מבוא למדעי המחשב,עקרונות בתכנות מונחה עצמים,אלגברה לינארית,חדוא 1,חדוא 2,מתמטיקה דיסקרטית,מבני נתונים,תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב,למידה עמוקה",
+    "current_lecturers": "סיימון אנדרו קורמן",
+    "note": "מעבדה,הקורס באנגלית"
+  },
+  "מבוא ללוגיקה": {
+    "course_code": "203.2850",
+    "credit_points": 3,
+    "semesters_offered": "b",
+    "prerequisites": "מתמטיקה דיסקרטית",
+    "current_lecturers": "אנה זמנסקי",
+    "note": null
+  },
+  "גרפיקה ממוחשבת": {
+    "course_code": "203.3710",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "תכנות מונחה עצמים,אלגברה לינארית",
+    "current_lecturers": "רועי פורן",
+    "note": null
+  },
+  "יסודות הקריפטוגרפיה": {
+    "course_code": "203.3447",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "הסתברות למדעי המחשב,מודלים חישוביים",
+    "current_lecturers": "רונן שאלתיאל",
+    "note": null
+  },
+  "תורת האינפורמציה": {
+    "course_code": "203.3370",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "נגה רון צבי",
+    "note": null
+  },
+  "אלגוריתמים מבוזרים": {
+    "course_code": "203.3404",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "מיכל דורי",
+    "note": null
+  },
+  "סדנת תכנות ב C ו ++C": {
+    "course_code": "203.2020",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "מבוא למדעי המחשב,עקרונות בתכנות מונחה עצמים",
+    "current_lecturers": "שלי קול",
+    "note": null
+  },
+  "SEMINAR IN COMPUTER NETWORKS": {
+    "course_code": "203.3117",
+    "credit_points": 2,
+    "semesters_offered": "a",
+    "prerequisites": "רשתות תקשורת",
+    "current_lecturers": "שיר לנדאו פייביש",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "SEMINAR ON FINE-GRAINED COMPLEXITY": {
+    "course_code": "203.3112",
+    "credit_points": 2,
+    "semesters_offered": "b",
+    "prerequisites": "הסתברות למדעי המחשב,מודלים חישוביים",
+    "current_lecturers": "אוהד טרבלסי",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "SEMINAR IN BIOMETRIC IDENTIFCATION METHODS": {
+    "course_code": "203.4486",
+    "credit_points": 2,
+    "semesters_offered": "b",
+    "prerequisites": null,
+    "current_lecturers": "מרגריטה אוסדצי",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "SEMINAR IN ADVANCED TOPICS IN COMPUTER NETWORKS": {
+    "course_code": "203.3118",
+    "credit_points": 2,
+    "semesters_offered": "b",
+    "prerequisites": "ארגון המחשב ושפות סף,מערכות הפעלה,רשתות תקשורת",
+    "current_lecturers": "שיר לנדאו פייביש",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "PROJECT IN MACHINE LEARNING": {
+    "course_code": "203.3771",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "אלגברה לינארית,חדוא 2,הסתברות למדעי המחשב,מבוא ללמידה ממוכנת",
+    "current_lecturers": "מרגריטה אוסדצי",
+    "note": "מעבדה,הקורס באנגלית"
+  },
+  "PROJECT IN INTERDISCIPLINARY APPLIED PROGRAMMING": {
+    "course_code": "203.3297",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": "תכנות מונחה עצמים,תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "רועי פורן",
+    "note": "הקורס באנגלית"
+  },
+  "פיתוח משחקים במנועי משחק": {
+    "course_code": "203.7000",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": null,
+    "current_lecturers": "יקיר ישראל",
+    "note": "(התמחות גיימינג)"
+  },
+  "עקרונות עיצוב משחקים": {
+    "course_code": "203.7001",
+    "credit_points": 3,
+    "semesters_offered": "b",
+    "prerequisites": null,
+    "current_lecturers": "עמית בשארי",
+    "note": "(התמחות גיימינג)"
+  },
+  "עיבוד שפות טבעיות": {
+    "course_code": "203.4670",
+    "credit_points": 4,
+    "semesters_offered": "a",
+    "prerequisites": null,
+    "current_lecturers": "גילי הדס גולדין",
+    "note": "מתוקשב"
+  },
+  "PROJECT IN COMPATIONAL HUMAN BEHAVIOR": {
+    "course_code": "203.3734",
+    "credit_points": 4,
+    "semesters_offered": "b",
+    "prerequisites": "תכנות מונחה עצמים,עיבוד תמונה",
+    "current_lecturers": "חגית הל-אור",
+    "note": "מעבדה,הקורס באנגלית"
+  },
+  "מבני נתונים מתקדמים": {
+    "course_code": "203.8006",
+    "credit_points": 3,
+    "semesters_offered": "c",
+    "prerequisites": "מבוא למדעי המחשב,מתמטיקה דיסקרטית,מבני נתונים,תכנון וניתוח אלגוריתמים",
+    "current_lecturers": "אורן וימן",
+    "note": null
+  },
+  "COMPUTATIONAL GEOMETRY AND ITS APPLICATIONS IN ROBOTICS": {
+    "course_code": "203.3504",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "אלגברה לינארית",
+    "current_lecturers": "דן פלדמן",
+    "note": "סמינר,הקורס באנגלית"
+  },
+  "NAVIGATION MAPPING AND LOCALIZATION ALGORITHMS": {
+    "course_code": "203.3680",
+    "credit_points": 3,
+    "semesters_offered": "a",
+    "prerequisites": "מבוא למדעי המחשב,אלגברה לינארית",
+    "current_lecturers": "גרייס דאניאל",
+    "note": null
+  },
+  "SEMINAR ON ALGORITHMS": {
+    "course_code": "203.3114",
+    "credit_points": 2,
+    "semesters_offered": "c",
+    "prerequisites": "תכנון וניתוח אלגוריתמים,הסתברות למדעי המחשב",
+    "current_lecturers": "אוהד טרבלסי",
+    "note": "סמינר,הקורס באנגלית"
+  }
+}
