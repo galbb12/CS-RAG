@@ -3,42 +3,67 @@ import os
 
 from dotenv import load_dotenv
 from langchain_core.documents import Document
+from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_openai import ChatOpenAI
 
-from metadata_match import MetadataMatch
 from comment_match_prompt import CommentMatchPrompt
+from kdams_tool import KdamsTool
 
 load_dotenv()
 
-SYSTEM_PROMPT = """אתה עוזר לסטודנטים בחוג למדעי המחשב באוניברסיטת חיפה.
+SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
+
+
+def _build_kdams_summary(kdams_path: str = "kdams.json", docs_path: str = "documents.json") -> str:
+    """Build a compact prerequisite summary for injection into the system prompt."""
+    with open(kdams_path, encoding="utf-8") as f:
+        kdams = json.load(f)
+
+    # Extract course_type from documents metadata
+    with open(docs_path, encoding="utf-8") as f:
+        raw_docs = json.load(f)
+    course_types = {}
+    for d in raw_docs:
+        m = d["metadata"]
+        name = m.get("course_name", "")
+        ctype = m.get("course_type", "")
+        if name and ctype and name not in course_types:
+            course_types[name] = ctype
+
+    lines = []
+    for name, info in kdams.items():
+        pts = info.get("credit_points", "?")
+        prereqs = info.get("prerequisites") or "אין"
+        semesters = info.get("semesters_offered", "")
+        sem_str = "+".join(SEMESTER_MAP.get(s, s) for s in semesters) if semesters else "?"
+        ctype = course_types.get(name, "")
+        type_str = f", {ctype}" if ctype else ""
+        line = f"- {name} ({pts} נ\"ז, סמסטר {sem_str}{type_str}) | קדמים: {prereqs}"
+        lines.append(line)
+    return "\n".join(lines)
+
+
+SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדעי המחשב באוניברסיטת חיפה.
 אתה עונה על שאלות לגבי קורסים, מרצים, מבחנים ועוד על סמך ביקורות אמיתיות של סטודנטים.
 
 כללים:
-- ענה רק על סמך הביקורות שסופקו לך. אל תמציא מידע.
-- אם אין מספיק מידע בביקורות, אמור זאת בכנות.
+- ענה רק על סמך מידע שקיבלת מהכלים או מעץ הקדמים למטה. אל תמציא מידע.
+- אם אין מספיק מידע, אמור זאת בכנות.
 - ציין מגמות חוזרות בביקורות (למשל אם כמה סטודנטים מסכימים על נקודה מסוימת).
 - השתמש בעברית בתשובות שלך.
 - היה תמציתי ועניני.
+
+הכלים שלך:
+1. search_course_reviews - חיפוש ביקורות סטודנטים. אתה יכול לסנן לפי שם קורס, מרצה, או סוג קורס.
+2. kdams_tree - חיפוש עץ קדמים של קורס ספציפי (מציג עץ מלא + קורסים שהוא פותח).
+
+תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות - אל תנחש תשובות.
+לגבי שאלות על קדמים, סדר קורסים, או תכנון לימודים - אתה יכול להשתמש בטבלת הקדמים למטה ישירות.
+
+== טבלת קדמים מלאה ==
+{kdams_summary}
 """
-
-
-def format_context(docs: list[Document]) -> str:
-    """Format retrieved documents into a context string for the LLM."""
-    parts = []
-    for i, doc in enumerate(docs, 1):
-        meta = doc.metadata
-        header = f"ביקורת {i}"
-        if meta.get("course_name"):
-            header += f" | קורס: {meta['course_name']}"
-        if meta.get("lecturer"):
-            header += f" | מרצה: {meta['lecturer']}"
-        if meta.get("course_type"):
-            header += f" | סוג: {meta['course_type']}"
-        if meta.get("credit_points"):
-            header += f" | נ\"ז: {meta['credit_points']}"
-        parts.append(f"[{header}]\n{doc.page_content}")
-    return "\n\n".join(parts)
 
 
 def main():
@@ -47,20 +72,30 @@ def main():
         raw_docs = json.load(f)
     documents = [Document(page_content=d["page_content"], metadata=d["metadata"]) for d in raw_docs]
 
-    # Init components
+    # Init LLM + embeddings
     llm = ChatOpenAI(
-        base_url="http://localhost:11434/v1",
-        model="qwen3:14b",
+        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        model="gemini-2.5-flash",
     )
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
         google_api_key=os.environ["OPENAI_API_KEY"],
     )
 
-    metadata_matcher = MetadataMatch(documents, llm)
+    # Build tools
     comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
+    search_tool = comment_matcher.to_langchain_tool()
 
-    conversation = [{"role": "system", "content": SYSTEM_PROMPT}]
+    kdams = KdamsTool()
+    kdams_tool = kdams.to_langchain_tool()
+
+    tools = [search_tool, kdams_tool]
+    tools_by_name = {t.name: t for t in tools}
+    llm_with_tools = llm.bind_tools(tools)
+
+    kdams_summary = _build_kdams_summary()
+    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(kdams_summary=kdams_summary)
+    conversation = [SystemMessage(content=system_prompt)]
 
     print("CS-RAG Bot Ready! (type 'exit' to quit)\n")
 
@@ -69,26 +104,24 @@ def main():
         if not question or question == "exit":
             break
 
-        # Step 1: extract metadata filters
-        filters = metadata_matcher.extract_filters(question)
-        metadata_filter = {k: v for k, v in filters.model_dump().items() if k != "query" and v is not None}
+        conversation.append(HumanMessage(content=question))
 
-        # Step 2: semantic search with filters
-        top_docs = comment_matcher.run(filters.query, metadata_filter)
+        # Let the LLM respond (may call tools)
+        response = llm_with_tools.invoke(conversation)
+        conversation.append(response)
 
-        # Step 3: build the user message with context
-        context = format_context(top_docs)
-        user_message = f"ביקורות רלוונטיות:\n{context}\n\nשאלת הסטודנט: {question}"
+        # Handle tool calls in a loop
+        while response.tool_calls:
+            for tool_call in response.tool_calls:
+                tool_fn = tools_by_name.get(tool_call["name"])
+                if tool_fn:
+                    result = tool_fn.invoke(tool_call["args"])
+                    conversation.append(ToolMessage(content=result, tool_call_id=tool_call["id"]))
 
-        conversation.append({"role": "user", "content": user_message})
+            response = llm_with_tools.invoke(conversation)
+            conversation.append(response)
 
-        # Step 4: LLM answers with context
-        response = llm.invoke(conversation)
-        answer = response.content
-
-        conversation.append({"role": "assistant", "content": answer})
-
-        print(f"\n{answer}\n")
+        print(f"\n{response.content}\n")
 
 
 if __name__ == "__main__":
