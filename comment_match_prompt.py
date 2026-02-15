@@ -72,8 +72,8 @@ if __name__ == "__main__":
 
     # Init components
     llm = ChatOpenAI(
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-        model="gemini-2.5-flash",
+        base_url = "http://localhost:11434/v1",
+        model="qwen3:14b",
     )
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
@@ -88,6 +88,7 @@ if __name__ == "__main__":
         "מה אומרים על אור דונקלמן?",
         "קורסי בחירה קלים",
         "איך המבחן במערכות הפעלה?",
+        "הקורס הכי קל בעולם"
     ]
 
     for question in examples:
