@@ -29,6 +29,52 @@ class KdamsTool:
             "credit_points": info.get("credit_points"),
             "prerequisites": info.get("prerequisites", "").split(",") if info.get("prerequisites") else [],
         }
+    
+    def add_course(self, course_name: str, course_code: str, credit_points: int, prerequisites: Optional[str] = None):
+        """Add a new course to the kdams data."""
+        self.kdams[course_name] = {
+            "course_code": course_code,
+            "credit_points": credit_points,
+            "prerequisites": prerequisites or ""
+        }
+        # Update unlocks map
+        if prerequisites:
+            for prereq in prerequisites.split(","):
+                self.unlocks.setdefault(prereq, []).append(course_name)
+
+    def remove_course(self, course_name: str):
+        """Remove a course from the kdams data."""
+        if course_name in self.kdams:
+            del self.kdams[course_name]
+        # Update unlocks map
+        for prereq, unlocks in self.unlocks.items():
+            if course_name in unlocks:
+                unlocks.remove(course_name)
+                if not unlocks:
+                    del self.unlocks[prereq]
+
+    def update_course(self, course_name: str, course_code: Optional[str] = None, credit_points: Optional[int] = None, prerequisites: Optional[str] = None):
+        """Update details of an existing course."""
+        if course_name not in self.kdams:
+            raise ValueError(f"Course {course_name} does not exist.")
+        if course_code is not None:
+            self.kdams[course_name]["course_code"] = course_code
+        if credit_points is not None:
+            self.kdams[course_name]["credit_points"] = credit_points
+        if prerequisites is not None:
+            # Update unlocks map for old prerequisites
+            old_prereqs = self.kdams[course_name].get("prerequisites", "").split(",") if self.kdams[course_name].get("prerequisites") else []
+            for prereq in old_prereqs:
+                if course_name in self.unlocks.get(prereq, []):
+                    self.unlocks[prereq].remove(course_name)
+                    if not self.unlocks[prereq]:
+                        del self.unlocks[prereq]
+            # Set new prerequisites
+            self.kdams[course_name]["prerequisites"] = prerequisites
+            # Update unlocks map for new prerequisites
+            if prerequisites:
+                for prereq in prerequisites.split(","):
+                    self.unlocks.setdefault(prereq, []).append(course_name)
 
     def get_full_tree(self, course_name: str) -> Optional[dict]:
         """Get the full prerequisite tree (recursive) for a course."""

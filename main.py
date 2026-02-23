@@ -14,7 +14,6 @@ load_dotenv()
 
 SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
 
-
 def _build_kdams_summary(kdams_path: str = "kdams.json", docs_path: str = "documents.json") -> str:
     """Build a compact prerequisite summary for injection into the system prompt."""
     with open(kdams_path, encoding="utf-8") as f:
