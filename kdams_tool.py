@@ -1,15 +1,13 @@
-import json
 from typing import Optional
 
 from langchain_core.tools import tool
 
 
 class KdamsTool:
-    """Tool for querying the prerequisite tree (עץ קדמים)."""
+    """Tool for querying the prerequisite DAG (גרף קדמים)."""
 
-    def __init__(self, kdams_path: str = "kdams.json"):
-        with open(kdams_path, encoding="utf-8") as f:
-            self.kdams = json.load(f)
+    def __init__(self, kdams: dict):
+        self.kdams = kdams
         # Build reverse map: course -> list of courses it unlocks
         self.unlocks = {}
         for name, info in self.kdams.items():

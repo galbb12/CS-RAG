@@ -1,16 +1,15 @@
 """
-Parse the SQL dump and produce a JSON file of documents for LangChain RAG.
+Parse the SQL dump into LangChain Documents and kdams data.
 
-Each document = one comment, with all available metadata attached.
+Can be imported (parse_documents, parse_kdams) or run as a standalone script.
 """
 
-import json
 import re
-from datetime import datetime
+
+from langchain_core.documents import Document
 
 
 SQL_PATH = "u797529344_db_rag_proj(1).sql"
-OUTPUT_PATH = "documents.json"
 
 
 # ---------------------------------------------------------------------------
@@ -129,28 +128,24 @@ def _parse_string(sql: str, pos: int) -> tuple:
 # Main
 # ---------------------------------------------------------------------------
 
-def main():
-    with open(SQL_PATH, encoding="utf-8") as f:
-        sql = f.read()
+TAG_MAP = {
+    "duty": "חובה",
+    "choose": "בחירה",
+    "seminar": "סמינר",
+    "choose,seminar": "בחירה/סמינר",
+}
 
-    # ---- Parse tables ----
-    comments_raw = parse_inserts(sql, "Tcomments")
-    questions_raw = parse_inserts(sql, "Tquestions")
+
+def _read_sql(sql_path: str) -> str:
+    with open(sql_path, encoding="utf-8") as f:
+        return f.read()
+
+
+def parse_kdams(sql_path: str = SQL_PATH) -> dict:
+    """Parse the Tkdams table from the SQL dump. Returns {course_name: {info...}}."""
+    sql = _read_sql(sql_path)
     kdams_raw = parse_inserts(sql, "Tkdams")
 
-    # ---- Build lookup dicts ----
-    # Tquestions: id -> {course, lecture, tag}
-    questions = {}
-    for row in questions_raw:
-        qid, course, lecture, tag, time, rank = row
-        questions[qid] = {
-            "course": course,
-            "lecturer": lecture,
-            "tag": tag,  # duty / choose / seminar
-            "question_rank": rank,
-        }
-
-    # Tkdams: name -> {code, pts, kdams, lecturer, ...}
     kdams = {}
     for row in kdams_raw:
         code, name, ids, pts, note, prereqs, lecturer, link, grades = row
@@ -162,8 +157,39 @@ def main():
             "current_lecturers": lecturer,
             "note": note if note else None,
         }
+    return kdams
 
-    # ---- Build documents ----
+
+def parse_documents(sql_path: str = SQL_PATH) -> list[Document]:
+    """Parse the SQL dump into LangChain Documents (one per student comment)."""
+    sql = _read_sql(sql_path)
+
+    comments_raw = parse_inserts(sql, "Tcomments")
+    questions_raw = parse_inserts(sql, "Tquestions")
+    kdams_raw = parse_inserts(sql, "Tkdams")
+
+    # Tquestions: id -> {course, lecturer, tag}
+    questions = {}
+    for row in questions_raw:
+        qid, course, lecture, tag, time, rank = row
+        questions[qid] = {
+            "course": course,
+            "lecturer": lecture,
+            "tag": tag,
+        }
+
+    # Tkdams: name -> info (for enriching comment metadata)
+    kdams = {}
+    for row in kdams_raw:
+        code, name, ids, pts, note, prereqs, lecturer, link, grades = row
+        kdams[name] = {
+            "course_code": code,
+            "credit_points": pts,
+            "semesters_offered": ids,
+            "prerequisites": prereqs,
+            "current_lecturers": lecturer,
+        }
+
     documents = []
     for row in comments_raw:
         idquestion, ref, name, content, time, rank, seen = row
@@ -173,17 +199,8 @@ def main():
         lecturer = q.get("lecturer", "")
         tag = q.get("tag", "")
 
-        # Try to find matching Tkdams entry for extra metadata
         kdam = kdams.get(course_name, {})
-
-        # Map tag to human-readable course type
-        tag_map = {
-            "duty": "חובה",
-            "choose": "בחירה",
-            "seminar": "סמינר",
-            "choose,seminar": "בחירה/סמינר",
-        }
-        course_type = tag_map.get(tag, tag)
+        course_type = TAG_MAP.get(tag, tag)
 
         metadata = {
             "course_name": course_name,
@@ -194,7 +211,6 @@ def main():
             "rank": rank,
         }
 
-        # Add Tkdams metadata if available
         if kdam:
             metadata["course_code"] = kdam["course_code"]
             metadata["credit_points"] = kdam["credit_points"]
@@ -204,28 +220,13 @@ def main():
             if kdam["current_lecturers"]:
                 metadata["current_lecturers"] = kdam["current_lecturers"]
 
-        # page_content = just the comment. Metadata filtering is handled
-        # separately via self-query (LLM extracts filters from the question).
-        documents.append({
-            "page_content": content,
-            "metadata": metadata,
-        })
+        documents.append(Document(page_content=content, metadata=metadata))
 
-    # ---- Write kdams.json (prerequisite tree) ----
-    with open("kdams.json", "w", encoding="utf-8") as f:
-        json.dump(kdams, f, ensure_ascii=False, indent=2)
-    print(f"Wrote {len(kdams)} courses to kdams.json")
-
-    # ---- Write output ----
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(documents, f, ensure_ascii=False, indent=2)
-
-    print(f"Wrote {len(documents)} documents to {OUTPUT_PATH}")
-
-    # Print a sample
-    print("\n--- Sample document ---")
-    print(json.dumps(documents[0], ensure_ascii=False, indent=2))
+    return documents
 
 
 if __name__ == "__main__":
-    main()
+    docs = parse_documents()
+    kdams = parse_kdams()
+    print(f"Parsed {len(docs)} documents, {len(kdams)} courses")
+    print(f"\n--- Sample document ---\n{docs[0]}")

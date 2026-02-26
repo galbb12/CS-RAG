@@ -1,19 +1,18 @@
-import json
 import os
 
 from dotenv import load_dotenv
-from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_openai import ChatOpenAI
+import json
 
 from comment_match_prompt import CommentMatchPrompt
+from format_data import parse_documents, parse_kdams
 from kdams_tool import KdamsTool
 
 load_dotenv()
 
 SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
-
 
 def _build_kdams_summary(kdams_path: str = "kdams.json", docs_path: str = "documents.json") -> str:
     """Build a compact prerequisite summary for injection into the system prompt."""
@@ -43,7 +42,6 @@ def _build_kdams_summary(kdams_path: str = "kdams.json", docs_path: str = "docum
         lines.append(line)
     return "\n".join(lines)
 
-
 SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדעי המחשב באוניברסיטת חיפה.
 אתה עונה על שאלות לגבי קורסים, מרצים, מבחנים ועוד על סמך ביקורות אמיתיות של סטודנטים.
 
@@ -56,7 +54,7 @@ SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדע
 
 הכלים שלך:
 1. search_course_reviews - חיפוש ביקורות סטודנטים. אתה יכול לסנן לפי שם קורס, מרצה, או סוג קורס.
-2. kdams_tree - חיפוש עץ קדמים של קורס ספציפי (מציג עץ מלא + קורסים שהוא פותח).
+2. kdams_tree - חיפוש גרף קדמים של קורס ספציפי (מציג את גרף הקדמים + גרף הקורסים שהוא פותח).
 
 תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות - אל תנחש תשובות.
 לגבי שאלות על קדמים, סדר קורסים, או תכנון לימודים - אתה יכול להשתמש בטבלת הקדמים למטה ישירות.
@@ -67,31 +65,32 @@ SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדע
 
 
 def main():
-    # Load documents
-    with open("documents.json", encoding="utf-8") as f:
-        raw_docs = json.load(f)
-    documents = [Document(page_content=d["page_content"], metadata=d["metadata"]) for d in raw_docs]
+    # Parse data directly from SQL dump
+    documents = parse_documents()
+    kdams_data = parse_kdams()
 
     # Init LLM + embeddings
     llm = ChatOpenAI(
-        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        api_key=os.environ["LLM_API_KEY"],
+        base_url=os.environ["LLM_BASE_URL"],
         model="gemini-2.5-flash",
     )
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/gemini-embedding-001",
-        google_api_key=os.environ["OPENAI_API_KEY"],
+        google_api_key=os.environ["EMBEDDING_API_KEY"],
     )
 
     # Build tools
-    comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
+    comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)# Init to pre-embed all comments
     search_tool = comment_matcher.to_langchain_tool()
 
-    kdams = KdamsTool()
+    kdams = KdamsTool(kdams_data)
     kdams_tool = kdams.to_langchain_tool()
 
     tools = [search_tool, kdams_tool]
     tools_by_name = {t.name: t for t in tools}
     llm_with_tools = llm.bind_tools(tools)
+
 
     kdams_summary = _build_kdams_summary()
     system_prompt = SYSTEM_PROMPT_TEMPLATE.format(kdams_summary=kdams_summary)
