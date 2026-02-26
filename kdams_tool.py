@@ -30,47 +30,53 @@ class KdamsTool:
             "prerequisites": info.get("prerequisites", "").split(",") if info.get("prerequisites") else [],
         }
 
-    def get_full_tree(self, course_name: str) -> Optional[dict]:
-        """Get the full prerequisite tree (recursive) for a course."""
+    def get_prerequisite_dag(self, course_name: str) -> Optional[dict]:
+        """Get the full prerequisite DAG (recursive) for a course."""
         if course_name not in self.kdams:
             return None
 
-        visited = set()
-        tree = {}
+        dag = {}
 
         def _build(name, depth=0):
-            if name in visited or name not in self.kdams:
+            if name not in self.kdams:
                 return
-            visited.add(name)
+            # Revisit node if reached at a greater depth (longer path)
+            if name in dag and dag[name]["depth"] >= depth:
+                return
             info = self.kdams[name]
             prereqs = info.get("prerequisites", "").split(",") if info.get("prerequisites") else []
-            tree[name] = {"depth": depth, "prerequisites": prereqs}
+            dag[name] = {"depth": depth, "prerequisites": prereqs}
             for p in prereqs:
                 _build(p, depth + 1)
 
         _build(course_name)
-        return tree
+        # Invert depth so prerequisites (foundation) are 0 and the queried course is highest
+        max_depth = max(v["depth"] for v in dag.values()) if dag else 0
+        for v in dag.values():
+            v["depth"] = max_depth - v["depth"]
+        return dag
 
     def get_unlocked_courses(self, course_name: str) -> list[str]:
         """Get courses that this course is a prerequisite for."""
         return self.unlocks.get(course_name, [])
 
-    def format_tree(self, course_name: str) -> str:
-        """Format the full prerequisite tree as a readable string."""
-        tree = self.get_full_tree(course_name)
-        if not tree:
+    def format_prerequisite_dag(self, course_name: str) -> str:
+        """Format the full prerequisite DAG as a readable string."""
+        dag = self.get_prerequisite_dag(course_name)
+        if not dag:
             return f"לא נמצא קורס בשם: {course_name}"
 
         lines = [f"עץ קדמים עבור: {course_name}"]
 
-        # Sort by depth (target course first, deepest prereqs last)
-        for name, info in sorted(tree.items(), key=lambda x: x[1]["depth"]):
-            indent = "  " * info["depth"]
+        max_depth = max(info["depth"] for info in dag.values())
+        # Sort by depth descending (target course first, then prerequisites)
+        for name, info in sorted(dag.items(), key=lambda x: x[1]["depth"], reverse=True):
+            indent = "  " * (max_depth - info["depth"])
             prereqs = info["prerequisites"]
             kdam_info = self.kdams.get(name, {})
             pts = kdam_info.get("credit_points", "?")
-            if info["depth"] == 0:
-                lines.append(f"{indent}📌 {name} ({pts} נ\"ז)")
+            if info["depth"] == max_depth:
+                lines.append(f"{indent}[root] {name} ({pts} נ\"ז)")
             else:
                 lines.append(f"{indent}← {name} ({pts} נ\"ז)")
             if prereqs:
@@ -91,17 +97,17 @@ class KdamsTool:
         course_names = sorted(self.kdams.keys())
 
         @tool
-        def kdams_tree(course_name: str) -> str:
+        def kdams_tree(course_name: str) -> str: # The actual tool: Returns prequisites and courses unlocked for a course
             """חפש עץ קדמים של קורס - מציג את כל קורסי הקדם הנדרשים ואת הקורסים שהקורס פותח.
             Use this tool when the user asks about prerequisites, required courses,
             course order, or what courses a specific course unlocks."""
             # Fuzzy match: find the best matching course name
             if course_name in self.kdams:
-                return self.format_tree(course_name)
+                return self.format_prerequisite_dag(course_name)
             # Try partial match
             matches = [c for c in course_names if course_name in c or c in course_name]
             if len(matches) == 1:
-                return self.format_tree(matches[0])
+                return self.format_prerequisite_dag(matches[0])
             if matches:
                 return f"נמצאו כמה קורסים תואמים: {', '.join(matches)}\nנא לציין את שם הקורס המדויק."
             return f"לא נמצא קורס בשם: {course_name}\nקורסים זמינים: {', '.join(course_names)}"
