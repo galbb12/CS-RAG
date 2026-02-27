@@ -10,7 +10,8 @@ import re
 from langchain_core.documents import Document
 
 
-SQL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "u797529344_db_rag_proj(1).sql")
+_LOCAL_SQL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "u797529344_db_rag_proj(1).sql")
+SQL_PATH = os.environ.get("DB_SQL_PATH", "/etc/secrets/db.sql" if os.path.exists("/etc/secrets/db.sql") else _LOCAL_SQL)
 
 
 # ---------------------------------------------------------------------------
