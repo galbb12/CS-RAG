@@ -4,12 +4,13 @@ Parse the SQL dump into LangChain Documents and kdams data.
 Can be imported (parse_documents, parse_kdams) or run as a standalone script.
 """
 
+import os
 import re
 
 from langchain_core.documents import Document
 
 
-SQL_PATH = "u797529344_db_rag_proj(1).sql"
+SQL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "u797529344_db_rag_proj(1).sql")
 
 
 # ---------------------------------------------------------------------------

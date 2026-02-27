@@ -1,0 +1,212 @@
+"""
+Core RAG engine — extracted from main.py so both the CLI and the
+FastAPI server can share the same pipeline.
+"""
+
+import json
+import os
+from dataclasses import dataclass, field
+
+from dotenv import load_dotenv
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    HumanMessage,
+    SystemMessage,
+    ToolMessage,
+)
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_openai import ChatOpenAI
+
+from comment_match_prompt import CommentMatchPrompt
+from format_data import parse_documents, parse_kdams
+from kdams_tool import KdamsTool
+
+load_dotenv()
+
+SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
+
+
+def _build_kdams_summary(kdams_path: str = None, docs_path: str = None) -> str:
+    """Build a compact prerequisite summary for injection into the system prompt."""
+    _dir = os.path.dirname(os.path.abspath(__file__))
+    if kdams_path is None:
+        kdams_path = os.path.join(_dir, "kdams.json")
+    if docs_path is None:
+        docs_path = os.path.join(_dir, "documents.json")
+
+    with open(kdams_path, encoding="utf-8") as f:
+        kdams = json.load(f)
+
+    with open(docs_path, encoding="utf-8") as f:
+        raw_docs = json.load(f)
+    course_types: dict[str, str] = {}
+    for d in raw_docs:
+        m = d["metadata"]
+        name = m.get("course_name", "")
+        ctype = m.get("course_type", "")
+        if name and ctype and name not in course_types:
+            course_types[name] = ctype
+
+    lines: list[str] = []
+    for name, info in kdams.items():
+        pts = info.get("credit_points", "?")
+        prereqs = info.get("prerequisites") or "אין"
+        semesters = info.get("semesters_offered", "")
+        sem_str = "+".join(SEMESTER_MAP.get(s, s) for s in semesters) if semesters else "?"
+        ctype = course_types.get(name, "")
+        type_str = f", {ctype}" if ctype else ""
+        line = f"- {name} ({pts} נ\"ז, סמסטר {sem_str}{type_str}) | קדמים: {prereqs}"
+        lines.append(line)
+    return "\n".join(lines)
+
+
+SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדעי המחשב באוניברסיטת חיפה.
+אתה עונה על שאלות לגבי קורסים, מרצים, מבחנים ועוד על סמך ביקורות אמיתיות של סטודנטים.
+
+כללים:
+- ענה רק על סמך מידע שקיבלת מהכלים או מעץ הקדמים למטה. אל תמציא מידע.
+- אם אין מספיק מידע, אמור זאת בכנות.
+- ציין מגמות חוזרות בביקורות (למשל אם כמה סטודנטים מסכימים על נקודה מסוימת).
+- השתמש בעברית בתשובות שלך.
+- היה תמציתי ועניני.
+
+הכלים שלך:
+1. search_course_reviews - חיפוש ביקורות סטודנטים. אתה יכול לסנן לפי שם קורס, מרצה, או סוג קורס.
+2. kdams_tree - חיפוש גרף קדמים של קורס ספציפי (מציג את גרף הקדמים + גרף הקורסים שהוא פותח).
+
+תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות - אל תנחש תשובות.
+לגבי שאלות על קדמים, סדר קורסים, או תכנון לימודים - אתה יכול להשתמש בטבלת הקדמים למטה ישירות.
+
+== טבלת קדמים מלאה ==
+{kdams_summary}
+"""
+
+
+@dataclass
+class RAGResult:
+    """Result of a single RAG invocation."""
+
+    content: str
+    tool_outputs: list[dict] = field(default_factory=list)
+    # Each dict: {"tool_name": str, "tool_args": dict, "tool_result": str}
+
+
+class RAGEngine:
+    """Stateless RAG engine. Thread-safe for concurrent read-only queries."""
+
+    def __init__(self):
+        documents = parse_documents()
+        kdams_data = parse_kdams()
+
+        self.llm = ChatOpenAI(
+            api_key=os.environ["LLM_API_KEY"],
+            base_url=os.environ["LLM_BASE_URL"],
+            model="gemini-2.5-flash",
+        )
+        embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/gemini-embedding-001",
+            google_api_key=os.environ["EMBEDDING_API_KEY"],
+        )
+
+        comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
+        self.search_tool = comment_matcher.to_langchain_tool()
+
+        kdams = KdamsTool(kdams_data)
+        self.kdams_tool = kdams.to_langchain_tool()
+
+        self.tools = [self.search_tool, self.kdams_tool]
+        self.tools_by_name = {t.name: t for t in self.tools}
+        self.llm_with_tools = self.llm.bind_tools(self.tools)
+
+        self.system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
+            kdams_summary=_build_kdams_summary()
+        )
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    def _openai_to_langchain(self, messages: list[dict]) -> list[BaseMessage]:
+        """Convert OpenAI-format messages to LangChain messages."""
+        conversation: list[BaseMessage] = [SystemMessage(content=self.system_prompt)]
+        for msg in messages:
+            role = msg.get("role", "")
+            content = msg.get("content", "")
+            if role == "user":
+                conversation.append(HumanMessage(content=content))
+            elif role == "assistant":
+                conversation.append(AIMessage(content=content))
+            # system messages from the client are ignored — we use our own
+        return conversation
+
+    def _run_tool_loop(self, conversation: list[BaseMessage], response):
+        """Execute tool calls until the LLM produces a final text answer.
+
+        Returns (final_response, tool_outputs).
+        """
+        tool_outputs: list[dict] = []
+        while response.tool_calls:
+            for tool_call in response.tool_calls:
+                tool_fn = self.tools_by_name.get(tool_call["name"])
+                if tool_fn:
+                    result = tool_fn.invoke(tool_call["args"])
+                    tool_outputs.append(
+                        {
+                            "tool_name": tool_call["name"],
+                            "tool_args": tool_call["args"],
+                            "tool_result": result,
+                        }
+                    )
+                    conversation.append(
+                        ToolMessage(content=result, tool_call_id=tool_call["id"])
+                    )
+            response = self.llm_with_tools.invoke(conversation)
+            conversation.append(response)
+        return response, tool_outputs
+
+    async def _arun_tool_loop(self, conversation: list[BaseMessage], response):
+        """Async version of _run_tool_loop."""
+        tool_outputs: list[dict] = []
+        while response.tool_calls:
+            for tool_call in response.tool_calls:
+                tool_fn = self.tools_by_name.get(tool_call["name"])
+                if tool_fn:
+                    result = tool_fn.invoke(tool_call["args"])
+                    tool_outputs.append(
+                        {
+                            "tool_name": tool_call["name"],
+                            "tool_args": tool_call["args"],
+                            "tool_result": result,
+                        }
+                    )
+                    conversation.append(
+                        ToolMessage(content=result, tool_call_id=tool_call["id"])
+                    )
+            response = await self.llm_with_tools.ainvoke(conversation)
+            conversation.append(response)
+        return response, tool_outputs
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
+    def query(self, messages: list[dict]) -> RAGResult:
+        """Run a full synchronous RAG query.
+
+        Args:
+            messages: OpenAI-format messages [{"role": "...", "content": "..."}]
+        """
+        conversation = self._openai_to_langchain(messages)
+        response = self.llm_with_tools.invoke(conversation)
+        conversation.append(response)
+        response, tool_outputs = self._run_tool_loop(conversation, response)
+        return RAGResult(content=response.content, tool_outputs=tool_outputs)
+
+    async def aquery(self, messages: list[dict]) -> RAGResult:
+        """Run a full async RAG query (non-blocking for the event loop)."""
+        conversation = self._openai_to_langchain(messages)
+        response = await self.llm_with_tools.ainvoke(conversation)
+        conversation.append(response)
+        response, tool_outputs = await self._arun_tool_loop(conversation, response)
+        return RAGResult(content=response.content, tool_outputs=tool_outputs)

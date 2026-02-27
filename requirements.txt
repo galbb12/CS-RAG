@@ -1,5 +1,10 @@
 openai
 langchain
-langchain[openai]
+langchain-openai
+langchain-google-genai
 langchain-text-splitters
 langchain-community
+python-dotenv
+faiss-cpu
+fastapi
+uvicorn[standard]

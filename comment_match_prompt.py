@@ -1,3 +1,4 @@
+import os
 import time
 from typing import Optional
 
@@ -7,7 +8,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
-FAISS_INDEX_PATH = "faiss_index"
+FAISS_INDEX_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "faiss_index")
 
 
 class CommentMatchPrompt:
