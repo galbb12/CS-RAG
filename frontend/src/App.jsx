@@ -377,10 +377,88 @@ function GraphDiagram({ code }) {
   )
 }
 
+const BUCKET_LABELS = ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '90-100']
+const BAR_COLORS = ['#c62828', '#d84315', '#ef6c00', '#f9a825', '#9e9d24', '#689f38', '#2e7d32', '#00838f', '#1565c0', '#283593']
+
+function HistogramChart({ code }) {
+  let data
+  try { data = JSON.parse(code) } catch { return <pre>{code}</pre> }
+  if (!data.entries || data.entries.length === 0) return null
+
+  return (
+    <div className="histogram-viewer" dir="rtl">
+      <div className="histogram-title">{data.course}</div>
+      {data.entries.map((entry, idx) => {
+        const maxCount = Math.max(...entry.buckets, 1)
+        const BAR_W = 32
+        const BAR_MAX_H = 120
+        const chartW = entry.buckets.length * (BAR_W + 6) + 60
+        const chartH = BAR_MAX_H + 60
+        // Average position as fraction of 0-100 range
+        const avgFrac = Math.min(Math.max(entry.avg / 100, 0), 1)
+        const avgX = 30 + avgFrac * (entry.buckets.length * (BAR_W + 6))
+
+        return (
+          <div key={idx} className="histogram-entry">
+            <div className="histogram-label">{entry.label}</div>
+            <div className="histogram-stats">
+              ממוצע: <strong>{entry.avg}</strong> | נבחנים: <strong>{entry.num}</strong>
+            </div>
+            <svg width={chartW} height={chartH} className="histogram-svg" dir="ltr">
+              {/* Bars */}
+              {entry.buckets.map((count, i) => {
+                const barH = (count / maxCount) * BAR_MAX_H
+                const x = 30 + i * (BAR_W + 6)
+                const y = BAR_MAX_H - barH + 10
+                return (
+                  <g key={i}>
+                    <rect
+                      x={x} y={y}
+                      width={BAR_W} height={barH}
+                      rx={3} ry={3}
+                      fill={BAR_COLORS[i]}
+                      opacity={0.85}
+                    />
+                    {count > 0 && (
+                      <text
+                        x={x + BAR_W / 2} y={y - 4}
+                        textAnchor="middle" fontSize={10} fill="#ccc"
+                      >
+                        {count}
+                      </text>
+                    )}
+                    <text
+                      x={x + BAR_W / 2} y={BAR_MAX_H + 24}
+                      textAnchor="middle" fontSize={9} fill="#888"
+                    >
+                      {BUCKET_LABELS[i]}
+                    </text>
+                  </g>
+                )
+              })}
+              {/* Average line */}
+              <line
+                x1={avgX} y1={5} x2={avgX} y2={BAR_MAX_H + 10}
+                stroke="#fff" strokeWidth={2} strokeDasharray="4,3" opacity={0.7}
+              />
+              <text x={avgX} y={BAR_MAX_H + 45} textAnchor="middle" fontSize={10} fill="#fff">
+                {entry.avg}
+              </text>
+            </svg>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 const mdComponents = {
   code({ children, className }) {
     if (className === 'language-mermaid') {
       return <GraphDiagram code={String(children).trim()} />
+    }
+    if (className === 'language-histogram') {
+      return <HistogramChart code={String(children).trim()} />
     }
     return <code className={className}>{children}</code>
   },
@@ -433,6 +511,21 @@ function SourceCard({ output }) {
         </div>
         <div className="source-card">
           <pre className="source-pre">{tool_result}</pre>
+        </div>
+      </div>
+    )
+  }
+
+  if (tool_name === 'course_grades') {
+    // Strip the histogram code block from the raw text for the source card
+    const textOnly = tool_result.replace(/```histogram[\s\S]*?```/g, '').trim()
+    return (
+      <div className="source-section">
+        <div className="source-section-header">
+          ציונים: {tool_args.course_name}
+        </div>
+        <div className="source-card">
+          <pre className="source-pre">{textOnly}</pre>
         </div>
       </div>
     )
@@ -929,6 +1022,49 @@ const styles = `
     direction: rtl;
     color: var(--text-dim);
     margin: 0;
+  }
+
+  /* Histogram */
+  .histogram-viewer {
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface2);
+    padding: 16px;
+    overflow-x: auto;
+  }
+  .histogram-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .histogram-entry {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .histogram-entry:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .histogram-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .histogram-stats {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+  .histogram-stats strong {
+    color: var(--text);
+  }
+  .histogram-svg {
+    display: block;
   }
 
   /* Scrollbar */

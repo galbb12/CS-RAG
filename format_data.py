@@ -227,8 +227,65 @@ def parse_documents(sql_path: str = SQL_PATH) -> list[Document]:
     return documents
 
 
+SEMESTER_LABEL = {"A": "א׳", "B": "ב׳", "C": "קיץ"}
+MOED_LABEL = {"a": "א", "b": "ב", "c": "קיץ"}
+
+
+def format_hebrew_year(year: str) -> str:
+    """Add gershayim to Hebrew year: תשפד -> תשפ״ד, תשפ -> תש״פ."""
+    if len(year) <= 1:
+        return year
+    return year[:-1] + "״" + year[-1]
+
+
+def parse_grades(sql_path: str = SQL_PATH) -> dict:
+    """Parse Tgrades + TgradesSemesters into a dict keyed by course name.
+
+    Returns: {course_name: [{"lecturer", "year", "semester", "moed", "avg", "num", "buckets": [10 ints], "proj"}]}
+    """
+    sql = _read_sql(sql_path)
+
+    semesters_raw = parse_inserts(sql, "TgradesSemesters")
+    grades_raw = parse_inserts(sql, "Tgrades")
+
+    # Build semester lookup: id -> info
+    semesters = {}
+    for row in semesters_raw:
+        sid, name, lecture, year, semester, proj = row
+        semesters[sid] = {
+            "course": name,
+            "lecturer": lecture,
+            "year": year,
+            "semester": semester,
+            "proj": proj,
+        }
+
+    # Join grades with semesters and group by course
+    result: dict[str, list] = {}
+    for row in grades_raw:
+        idsemester, moed, avg, num, grades_str, proj2 = row
+        sem = semesters.get(idsemester)
+        if not sem:
+            continue
+        buckets = [int(x) for x in grades_str.split(",") if x.strip()] if grades_str else []
+        entry = {
+            "lecturer": sem["lecturer"],
+            "year": sem["year"],
+            "semester": sem["semester"],
+            "moed": moed,
+            "avg": avg,
+            "num": num,
+            "buckets": buckets,
+            "proj": sem["proj"],
+        }
+        result.setdefault(sem["course"], []).append(entry)
+
+    return result
+
+
 if __name__ == "__main__":
     docs = parse_documents()
     kdams = parse_kdams()
-    print(f"Parsed {len(docs)} documents, {len(kdams)} courses")
+    grades = parse_grades()
+    print(f"Parsed {len(docs)} documents, {len(kdams)} courses, {len(grades)} courses with grades")
     print(f"\n--- Sample document ---\n{docs[0]}")

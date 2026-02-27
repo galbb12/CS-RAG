@@ -19,7 +19,8 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_openai import ChatOpenAI
 
 from comment_match_prompt import CommentMatchPrompt
-from format_data import parse_documents, parse_kdams
+from format_data import parse_documents, parse_grades, parse_kdams
+from grades_tool import GradesTool
 from kdams_tool import KdamsTool
 
 load_dotenv()
@@ -56,7 +57,9 @@ def _build_kdams_summary(kdams_path: str = None, docs_path: str = None) -> str:
         sem_str = "+".join(SEMESTER_MAP.get(s, s) for s in semesters) if semesters else "?"
         ctype = course_types.get(name, "")
         type_str = f", {ctype}" if ctype else ""
-        line = f"- {name} ({pts} נ\"ז, סמסטר {sem_str}{type_str}) | קדמים: {prereqs}"
+        note = info.get("note") or ""
+        note_str = f" [{note}]" if note else ""
+        line = f"- {name} ({pts} נ\"ז, סמסטר {sem_str}{type_str}{note_str}) | קדמים: {prereqs}"
         lines.append(line)
     return "\n".join(lines)
 
@@ -74,8 +77,9 @@ SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדע
 הכלים שלך:
 1. search_course_reviews - חיפוש ביקורות סטודנטים. אתה יכול לסנן לפי שם קורס, מרצה, או סוג קורס.
 2. kdams_tree - חיפוש גרף קדמים של קורס ספציפי (מציג את גרף הקדמים + גרף הקורסים שהוא פותח).
+3. course_grades - חיפוש ציונים והתפלגות ציונים של קורס (ממוצע, מספר נבחנים, היסטוגרמה).
 
-תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות - אל תנחש תשובות.
+תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות או ציונים - אל תנחש תשובות.
 לגבי שאלות על קדמים, סדר קורסים, או תכנון לימודים - אתה יכול להשתמש בטבלת הקדמים למטה ישירות.
 
 == תרשימים ==
@@ -100,6 +104,17 @@ flowchart TD
 - ID קצר באנגלית (A, B, C...) והשם בעברית בתוך הסוגריים
 - הוסף תרשים רק כששאלו על קדמים, סדר קורסים, או תכנון לימודים
 - אם המשתמש מבקש תרשים של כל הקורסים - עשה זאת בתרשים אחד, הממשק תומך בגלילה וזום
+
+== ציונים ==
+כשמשתמש שואל על ציונים, ממוצעים או התפלגות ציונים:
+1. השתמש בכלי course_grades כדי לקבל את הנתונים
+2. השתמש בפרמטרים לסינון: lecturer, year (שנה עברית כמו תשפד), semester (A/B/C), moed (a/b/c), last_n (מספר מועדים אחרונים)
+3. ברירת מחדל: השתמש ב-last_n=5 אלא אם המשתמש ביקש אחרת או ביקש את כל הציונים
+4. הכלי מחזיר סיכום טקסטואלי + בלוק histogram שהממשק מרנדר אוטומטית כגרף
+5. העתק את בלוק ה-histogram מתוצאת הכלי כמו שהוא לתשובה שלך
+6. כדי להציג ציונים בנפרד (למשל לפי שנה או סמסטר), קרא לכלי כמה פעמים עם פילטרים שונים. כך תוכל לכתוב טקסט בין הגרפים.
+   דוגמה: קריאה ראשונה עם year=תשפד semester=A, כתיבת ניתוח, קריאה שנייה עם year=תשפד semester=B
+7. הוסף ניתוח קצר של הנתונים בעברית (מגמות, השוואות בין מועדים/שנים)
 
 == טבלת קדמים מלאה ==
 {kdams_summary}
@@ -126,6 +141,7 @@ class RAGEngine:
     def __init__(self):
         documents = parse_documents()
         kdams_data = parse_kdams()
+        grades_data = parse_grades()
 
         self.llm = ChatOpenAI(
             api_key=os.environ["LLM_API_KEY"],
@@ -143,7 +159,10 @@ class RAGEngine:
         kdams = KdamsTool(kdams_data)
         self.kdams_tool = kdams.to_langchain_tool()
 
-        self.tools = [self.search_tool, self.kdams_tool]
+        grades = GradesTool(grades_data)
+        self.grades_tool = grades.to_langchain_tool()
+
+        self.tools = [self.search_tool, self.kdams_tool, self.grades_tool]
         self.tools_by_name = {t.name: t for t in self.tools}
         self.llm_with_tools = self.llm.bind_tools(self.tools)
 
