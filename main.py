@@ -5,7 +5,7 @@ def main():
     engine = RAGEngine()
     messages: list[dict] = []
 
-    print("CS-RAG Bot Ready! (type 'exit' to quit)\n")
+    print("HAIFA-RAG Bot Ready! (type 'exit' to quit)\n")
 
     while True:
         question = input("שאלה: ").strip()

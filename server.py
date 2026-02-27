@@ -33,7 +33,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="CS-RAG API", lifespan=lifespan)
+app = FastAPI(title="HAIFA-RAG API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,7 +42,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MODEL_NAME = "cs-rag"
+MODEL_NAME = "haifa-rag"
 
 # ---------------------------------------------------------------------------
 # Request schema
@@ -85,7 +85,7 @@ async def list_models():
                 "id": MODEL_NAME,
                 "object": "model",
                 "created": int(time.time()),
-                "owned_by": "cs-rag",
+                "owned_by": "haifa-rag",
             }
         ],
     }
@@ -122,6 +122,7 @@ async def chat_completions(request: ChatCompletionRequest):
         ],
         "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
         "tool_outputs": rag_result.tool_outputs,
+        "suggestions": rag_result.suggestions,
     }
 
 
@@ -170,8 +171,8 @@ async def _stream_response(messages: list[dict]):
         }
         yield f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
 
-    # Send tool_outputs as a special final data chunk before [DONE]
-    if rag_result.tool_outputs:
+    # Send tool_outputs + suggestions as a metadata chunk before [DONE]
+    if rag_result.tool_outputs or rag_result.suggestions:
         meta = {
             "id": chat_id,
             "object": "chat.completion.chunk",
@@ -179,6 +180,7 @@ async def _stream_response(messages: list[dict]):
             "model": MODEL_NAME,
             "choices": [{"index": 0, "delta": {}, "finish_reason": None}],
             "tool_outputs": rag_result.tool_outputs,
+            "suggestions": rag_result.suggestions,
         }
         yield f"data: {json.dumps(meta, ensure_ascii=False)}\n\n"
 

@@ -78,9 +78,37 @@ SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדע
 תמיד השתמש בכלי לפני שאתה עונה על שאלות לגבי ביקורות - אל תנחש תשובות.
 לגבי שאלות על קדמים, סדר קורסים, או תכנון לימודים - אתה יכול להשתמש בטבלת הקדמים למטה ישירות.
 
+== תרשימים ==
+כשמשתמש שואל על קדמים או מבקש גרף קורסים:
+1. תמיד השתמש בכלי kdams_tree קודם כדי לקבל את המידע המדויק
+2. בנה את התרשים בפורמט mermaid (הממשק מרנדר אוטומטית כגרף ויזואלי)
+3. אל תציין בטקסט שאתה משתמש ב-Mermaid או בכלי - פשוט הצג את התרשים כחלק טבעי מהתשובה
+
+דוגמה (קורסי בסיס למעלה, קורסים מתקדמים למטה):
+```mermaid
+flowchart TD
+  A["מבוא למדעי המחשב"] --> B["מבני נתונים"]
+  C["מתמטיקה בדידה"] --> D["אלגוריתמים"]
+  B --> D
+```
+
+חוקים:
+- flowchart TD תמיד
+- עטוף שמות בסוגריים מרובעים ומרכאות: ["שם הקורס"]
+- כיוון חצים: מקורס בסיס אל הקורס שדורש אותו. כלומר: קדם --> קורס מתקדם (קורסי יסוד למעלה, מתקדמים למטה)
+- כל קורס פעם אחת בלבד
+- ID קצר באנגלית (A, B, C...) והשם בעברית בתוך הסוגריים
+- הוסף תרשים רק כששאלו על קדמים, סדר קורסים, או תכנון לימודים
+- אם המשתמש מבקש תרשים של כל הקורסים - עשה זאת בתרשים אחד, הממשק תומך בגלילה וזום
+
 == טבלת קדמים מלאה ==
 {kdams_summary}
 """
+
+
+SUGGESTIONS_PROMPT = """בהתבסס על השיחה, הצע 3 שאלות המשך קצרות שהמשתמש עשוי לשאול.
+החזר אך ורק מערך JSON של 3 מחרוזות, ללא טקסט נוסף.
+דוגמה: ["שאלה 1?", "שאלה 2?", "שאלה 3?"]"""
 
 
 @dataclass
@@ -89,7 +117,7 @@ class RAGResult:
 
     content: str
     tool_outputs: list[dict] = field(default_factory=list)
-    # Each dict: {"tool_name": str, "tool_args": dict, "tool_result": str}
+    suggestions: list[str] = field(default_factory=list)
 
 
 class RAGEngine:
@@ -102,7 +130,7 @@ class RAGEngine:
         self.llm = ChatOpenAI(
             api_key=os.environ["LLM_API_KEY"],
             base_url=os.environ["LLM_BASE_URL"],
-            model="gemini-2.5-flash",
+            model=os.environ["LLM_MODEL"],
         )
         embeddings = GoogleGenerativeAIEmbeddings(
             model="models/gemini-embedding-001",
@@ -187,6 +215,15 @@ class RAGEngine:
             conversation.append(response)
         return response, tool_outputs
 
+    def _parse_suggestions(self, text: str) -> list[str]:
+        """Extract a JSON array of strings from the LLM response."""
+        try:
+            start = text.index("[")
+            end = text.index("]", start) + 1
+            return json.loads(text[start:end])
+        except (ValueError, json.JSONDecodeError):
+            return []
+
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
@@ -201,7 +238,18 @@ class RAGEngine:
         response = self.llm_with_tools.invoke(conversation)
         conversation.append(response)
         response, tool_outputs = self._run_tool_loop(conversation, response)
-        return RAGResult(content=response.content, tool_outputs=tool_outputs)
+
+        # Generate follow-up suggestions
+        suggestions_resp = self.llm.invoke(
+            conversation + [HumanMessage(content=SUGGESTIONS_PROMPT)]
+        )
+        suggestions = self._parse_suggestions(suggestions_resp.content)
+
+        return RAGResult(
+            content=response.content,
+            tool_outputs=tool_outputs,
+            suggestions=suggestions,
+        )
 
     async def aquery(self, messages: list[dict]) -> RAGResult:
         """Run a full async RAG query (non-blocking for the event loop)."""
@@ -209,4 +257,15 @@ class RAGEngine:
         response = await self.llm_with_tools.ainvoke(conversation)
         conversation.append(response)
         response, tool_outputs = await self._arun_tool_loop(conversation, response)
-        return RAGResult(content=response.content, tool_outputs=tool_outputs)
+
+        # Generate follow-up suggestions
+        suggestions_resp = await self.llm.ainvoke(
+            conversation + [HumanMessage(content=SUGGESTIONS_PROMPT)]
+        )
+        suggestions = self._parse_suggestions(suggestions_resp.content)
+
+        return RAGResult(
+            content=response.content,
+            tool_outputs=tool_outputs,
+            suggestions=suggestions,
+        )
