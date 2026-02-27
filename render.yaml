@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: haifa-rag
+    runtime: docker
+    plan: starter
+    envVars:
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        sync: false
+      - key: LLM_MODEL
+        sync: false
+      - key: EMBEDDING_API_KEY
+        sync: false

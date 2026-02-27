@@ -5,14 +5,17 @@ Run with:  uvicorn server:app --port 8000
 """
 
 import json
+import os
 import time
 import traceback
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict
 
 from rag_engine import RAGEngine
@@ -199,3 +202,21 @@ async def _stream_response(messages: list[dict]):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+# ---------------------------------------------------------------------------
+# Serve frontend static files (production)
+# ---------------------------------------------------------------------------
+
+DIST_DIR = Path(__file__).parent / "frontend" / "dist"
+
+if DIST_DIR.is_dir():
+    app.mount("/assets", StaticFiles(directory=DIST_DIR / "assets"), name="static")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa(request: Request, full_path: str):
+        """Serve the React SPA for any non-API route."""
+        file_path = DIST_DIR / full_path
+        if file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(DIST_DIR / "index.html")
