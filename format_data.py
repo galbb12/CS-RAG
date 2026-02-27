@@ -196,6 +196,9 @@ def parse_documents(sql_path: str = SQL_PATH) -> list[Document]:
     for row in comments_raw:
         idquestion, ref, name, content, time, rank, seen = row
 
+        if not content or not content.strip():
+            continue
+
         q = questions.get(idquestion, {})
         course_name = q.get("course", "")
         lecturer = q.get("lecturer", "")

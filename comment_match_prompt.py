@@ -47,9 +47,35 @@ class CommentMatchPrompt:
             print(f"Saved FAISS index to {FAISS_INDEX_PATH}")
             return vs
 
+    def _random_docs(self, metadata_filter: dict | None = None, n: int = 10) -> list[Document]:
+        """Return n random documents, one per course first then fill from any."""
+        import random
+        all_docs = list(self.vectorstore.docstore._dict.values())
+        if metadata_filter:
+            clean = {k: v for k, v in metadata_filter.items() if v is not None}
+            all_docs = [d for d in all_docs if all(d.metadata.get(k) == v for k, v in clean.items())]
+        if not all_docs:
+            return []
+        # One per course first
+        by_course: dict[str, list[Document]] = {}
+        for doc in all_docs:
+            by_course.setdefault(doc.metadata.get("course_name", ""), []).append(doc)
+        courses = list(by_course.keys())
+        random.shuffle(courses)
+        result = [random.choice(by_course[c]) for c in courses[:n]]
+        # Fill remaining from the pool
+        if len(result) < n:
+            remaining = [d for d in all_docs if d not in result]
+            result.extend(random.sample(remaining, min(n - len(result), len(remaining))))
+        return result[:n]
+
     def search(self, query: str, metadata_filter: dict) -> list[Document]:
         """Semantic search with metadata filtering."""
         clean_filter = {k: v for k, v in metadata_filter.items() if v is not None}
+
+        if not query or not query.strip():
+            return self._random_docs(clean_filter or None, self.k)
+
         fetch_k = len(self.vectorstore.docstore._dict)
 
         if clean_filter:
