@@ -8,7 +8,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
-FAISS_INDEX_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "faiss_index")
+FAISS_INDEX_PATH = os.environ.get("FAISS_INDEX_PATH", os.path.join(os.path.dirname(os.path.abspath(__file__)), "faiss_index"))
 
 
 class CommentMatchPrompt:
@@ -36,11 +36,21 @@ class CommentMatchPrompt:
             vs = None
             for i in range(0, len(documents), batch_size):
                 batch = documents[i : i + batch_size]
-                print(f"  Embedding batch {i // batch_size + 1} ({len(batch)} docs)...")
-                if vs is None:
-                    vs = FAISS.from_documents(batch, self.embeddings)
-                else:
-                    vs.add_documents(batch)
+                batch_num = i // batch_size + 1
+                print(f"  Embedding batch {batch_num} ({len(batch)} docs)...")
+                while True:
+                    try:
+                        if vs is None:
+                            vs = FAISS.from_documents(batch, self.embeddings)
+                        else:
+                            vs.add_documents(batch)
+                        break
+                    except Exception as e:
+                        if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                            print(f"  Rate limited, waiting 60s...")
+                            time.sleep(60)
+                        else:
+                            raise
                 if i + batch_size < len(documents):
                     time.sleep(61)
             vs.save_local(FAISS_INDEX_PATH)
