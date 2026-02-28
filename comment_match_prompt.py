@@ -2,9 +2,11 @@ import os
 import time
 from typing import Optional
 
+import faiss as faiss_lib
 from langchain_core.documents import Document
 from langchain_core.tools import tool
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.docstore.in_memory import InMemoryDocstore
 from langchain_community.vectorstores import FAISS
 
 
@@ -24,38 +26,64 @@ class CommentMatchPrompt:
         self.all_courses = sorted(set(d.metadata["course_name"] for d in documents if d.metadata.get("course_name")))
         self.all_types = sorted(set(d.metadata["course_type"] for d in documents if d.metadata.get("course_type")))
 
+    def _build_docstore(self, documents: list[Document]) -> tuple[InMemoryDocstore, dict[int, str]]:
+        """Build a docstore + index-to-id mapping from documents."""
+        docstore_dict = {}
+        index_to_id = {}
+        for i, doc in enumerate(documents):
+            doc_id = str(i)
+            docstore_dict[doc_id] = doc
+            index_to_id[i] = doc_id
+        return InMemoryDocstore(docstore_dict), index_to_id
+
     def _load_or_build_index(self, documents: list[Document]) -> FAISS:
-        """Load saved FAISS index, or build + save it from scratch."""
-        try:
-            vs = FAISS.load_local(FAISS_INDEX_PATH, self.embeddings, allow_dangerous_deserialization=True)
-            print(f"Loaded existing FAISS index from {FAISS_INDEX_PATH}")
-            return vs
-        except Exception:
-            print(f"Building FAISS index for {len(documents)} documents...")
-            batch_size = 80
-            vs = None
-            for i in range(0, len(documents), batch_size):
-                batch = documents[i : i + batch_size]
-                batch_num = i // batch_size + 1
-                print(f"  Embedding batch {batch_num} ({len(batch)} docs)...")
-                while True:
-                    try:
-                        if vs is None:
-                            vs = FAISS.from_documents(batch, self.embeddings)
-                        else:
-                            vs.add_documents(batch)
-                        break
-                    except Exception as e:
-                        if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                            print(f"  Rate limited, waiting 60s...")
-                            time.sleep(60)
-                        else:
-                            raise
-                if i + batch_size < len(documents):
-                    time.sleep(61)
-            vs.save_local(FAISS_INDEX_PATH)
-            print(f"Saved FAISS index to {FAISS_INDEX_PATH}")
-            return vs
+        """Load saved FAISS vectors or embed from scratch. Docstore is always rebuilt from SQL."""
+        faiss_file = os.path.join(FAISS_INDEX_PATH, "index.faiss")
+
+        if os.path.exists(faiss_file):
+            print(f"Loaded FAISS vectors from {faiss_file}")
+            index = faiss_lib.read_index(faiss_file)
+            docstore, index_to_id = self._build_docstore(documents)
+            return FAISS(
+                embedding_function=self.embeddings,
+                index=index,
+                docstore=docstore,
+                index_to_docstore_id=index_to_id,
+            )
+
+        print(f"Building FAISS index for {len(documents)} documents...")
+        batch_size = 80
+        vs = None
+        for i in range(0, len(documents), batch_size):
+            batch = documents[i : i + batch_size]
+            batch_num = i // batch_size + 1
+            print(f"  Embedding batch {batch_num} ({len(batch)} docs)...")
+            while True:
+                try:
+                    if vs is None:
+                        vs = FAISS.from_documents(batch, self.embeddings)
+                    else:
+                        vs.add_documents(batch)
+                    break
+                except Exception as e:
+                    if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                        print(f"  Rate limited, waiting 60s...")
+                        time.sleep(60)
+                    else:
+                        raise
+            if i + batch_size < len(documents):
+                time.sleep(61)
+
+        # Save only the FAISS vectors (no raw text)
+        os.makedirs(FAISS_INDEX_PATH, exist_ok=True)
+        faiss_lib.write_index(vs.index, faiss_file)
+        print(f"Saved FAISS vectors to {faiss_file}")
+
+        # Rebuild docstore so IDs are consistent with future loads
+        docstore, index_to_id = self._build_docstore(documents)
+        vs.docstore = docstore
+        vs.index_to_docstore_id = index_to_id
+        return vs
 
     def _random_docs(self, metadata_filter: dict | None = None, n: int = 10) -> list[Document]:
         """Return n random documents, one per course first then fill from any."""
