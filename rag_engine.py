@@ -28,24 +28,15 @@ load_dotenv()
 SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
 
 
-def _build_kdams_summary(kdams_path: str = None, docs_path: str = None) -> str:
+def _build_kdams_summary() -> str:
     """Build a compact prerequisite summary for injection into the system prompt."""
-    _dir = os.path.dirname(os.path.abspath(__file__))
-    if kdams_path is None:
-        kdams_path = os.path.join(_dir, "kdams.json")
-    if docs_path is None:
-        docs_path = os.path.join(_dir, "documents.json")
+    kdams = parse_kdams()
+    docs = parse_documents()
 
-    with open(kdams_path, encoding="utf-8") as f:
-        kdams = json.load(f)
-
-    with open(docs_path, encoding="utf-8") as f:
-        raw_docs = json.load(f)
     course_types: dict[str, str] = {}
-    for d in raw_docs:
-        m = d["metadata"]
-        name = m.get("course_name", "")
-        ctype = m.get("course_type", "")
+    for d in docs:
+        name = d.metadata.get("course_name", "")
+        ctype = d.metadata.get("course_type", "")
         if name and ctype and name not in course_types:
             course_types[name] = ctype
 
