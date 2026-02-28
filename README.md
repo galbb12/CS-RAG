@@ -122,7 +122,6 @@ Results (n=40, judge: Claude Opus 4.6): Faithfulness **8.5**/10, Relevance **9.1
 ├── grades_tool.py           # Grade distribution tool
 ├── format_data.py           # SQL dump parser & data processing
 ├── evaluate.py              # LLM-as-judge evaluation pipeline
-├── documents.json           # Parsed student reviews
 ├── faiss_index/             # Pre-built FAISS vector index
 ├── frontend/                # React chat interface
 ├── Dockerfile               # Multi-stage build (Node + Python)
