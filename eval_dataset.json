@@ -1,0 +1,323 @@
+[
+  {
+    "id": 1,
+    "question": "מה אומרים סטודנטים על מבוא למדעי המחשב?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "מבוא למדעי המחשב"},
+    "category": "reviews"
+  },
+  {
+    "id": 2,
+    "question": "איך המבחן במבני נתונים?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "מבני נתונים"},
+    "category": "reviews"
+  },
+  {
+    "id": 3,
+    "question": "מה חושבים על אורן וימן?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"lecturer": "אורן וימן"},
+    "category": "reviews"
+  },
+  {
+    "id": 4,
+    "question": "איזה קורסי בחירה ממליצים עליהם?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_type": "בחירה"},
+    "category": "reviews"
+  },
+  {
+    "id": 5,
+    "question": "מה הביקורות על דחיסת תמונה וקול עם נמרוד פלג?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "דחיסת תמונה וקול", "lecturer": "נמרוד פלג"},
+    "category": "reviews"
+  },
+  {
+    "id": 6,
+    "question": "האם מערכות הפעלה קורס קשה?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "מערכות הפעלה"},
+    "category": "reviews"
+  },
+  {
+    "id": 7,
+    "question": "מה אומרים על התרגילים בהנדסת תוכנה?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "הנדסת תוכנה"},
+    "category": "reviews"
+  },
+  {
+    "id": 8,
+    "question": "האם שלי קול מרצה טובה?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"lecturer": "שלי קול"},
+    "category": "reviews"
+  },
+  {
+    "id": 9,
+    "question": "מה אומרים על חדוא 1?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "חדוא 1"},
+    "category": "reviews"
+  },
+  {
+    "id": 10,
+    "question": "איזה סמינרים ממליצים עליהם?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_type": "סמינר"},
+    "category": "reviews"
+  },
+  {
+    "id": 11,
+    "question": "מה הקדמים של תכנון וניתוח אלגוריתמים?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "תכנון וניתוח אלגוריתמים"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 12,
+    "question": "מה צריך לפני למידה עמוקה?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "למידה עמוקה"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 13,
+    "question": "מה הקדמים של מערכות הפעלה?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "מערכות הפעלה"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 14,
+    "question": "מה הקורסים שמבני נתונים פותח?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "מבני נתונים"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 15,
+    "question": "מה עץ הקדמים של ראייה ממוחשבת?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "ראייה ממוחשבת"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 16,
+    "question": "מה צריך לפני מודלים חישוביים?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "מודלים חישוביים"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 17,
+    "question": "איזה קורסים אלגברה לינארית פותחת?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "אלגברה לינארית"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 18,
+    "question": "מה הקדמים של יסודות הקריפטוגרפיה?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "יסודות הקריפטוגרפיה"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 19,
+    "question": "מה הקדמים של הסתברות למדעי המחשב?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "הסתברות למדעי המחשב"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 20,
+    "question": "מה צריך לפני רשתות תקשורת?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "רשתות תקשורת"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 21,
+    "question": "מה הממוצע במבוא למדעי המחשב?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "מבוא למדעי המחשב"},
+    "category": "grades"
+  },
+  {
+    "id": 22,
+    "question": "מה הציונים במבני נתונים?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "מבני נתונים"},
+    "category": "grades"
+  },
+  {
+    "id": 23,
+    "question": "מה ההתפלגות ציונים בחדוא 2?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "חדוא 2"},
+    "category": "grades"
+  },
+  {
+    "id": 24,
+    "question": "מה היה הממוצע באלגברה לינארית?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "אלגברה לינארית"},
+    "category": "grades"
+  },
+  {
+    "id": 25,
+    "question": "מה הציונים בתכנון וניתוח אלגוריתמים?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "תכנון וניתוח אלגוריתמים"},
+    "category": "grades"
+  },
+  {
+    "id": 26,
+    "question": "מה הממוצע במתמטיקה דיסקרטית?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "מתמטיקה דיסקרטית"},
+    "category": "grades"
+  },
+  {
+    "id": 27,
+    "question": "מה הציונים בהסתברות למדעי המחשב?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "הסתברות למדעי המחשב"},
+    "category": "grades"
+  },
+  {
+    "id": 28,
+    "question": "מה ההתפלגות ציונים במערכות הפעלה?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "מערכות הפעלה"},
+    "category": "grades"
+  },
+  {
+    "id": 29,
+    "question": "מה הממוצע בהנדסת תוכנה?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "הנדסת תוכנה"},
+    "category": "grades"
+  },
+  {
+    "id": 30,
+    "question": "מה הציונים באלגברה ב?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "אלגברה ב"},
+    "category": "grades"
+  },
+  {
+    "id": 31,
+    "question": "ספר לי על מבוא ללמידה ממוכנת - ביקורות וציונים",
+    "expected_tools": ["search_course_reviews", "course_grades"],
+    "expected_args": {"course_name": "מבוא ללמידה ממוכנת"},
+    "category": "multi-tool"
+  },
+  {
+    "id": 32,
+    "question": "מה הקדמים של למידה עמוקה ומה אומרים סטודנטים על הקורס?",
+    "expected_tools": ["kdams_tree", "search_course_reviews"],
+    "expected_args": {"course_name": "למידה עמוקה"},
+    "category": "multi-tool"
+  },
+  {
+    "id": 33,
+    "question": "מה הממוצע במבני נתונים ומה צריך לפני הקורס?",
+    "expected_tools": ["course_grades", "kdams_tree"],
+    "expected_args": {"course_name": "מבני נתונים"},
+    "category": "multi-tool"
+  },
+  {
+    "id": 34,
+    "question": "תן לי סקירה מלאה על תכנון וניתוח אלגוריתמים - ביקורות, ציונים וקדמים",
+    "expected_tools": ["search_course_reviews", "course_grades", "kdams_tree"],
+    "expected_args": {"course_name": "תכנון וניתוח אלגוריתמים"},
+    "category": "multi-tool"
+  },
+  {
+    "id": 35,
+    "question": "האם עיבוד תמונה שווה? מה הציונים ומה צריך לפני?",
+    "expected_tools": ["search_course_reviews", "course_grades", "kdams_tree"],
+    "expected_args": {"course_name": "עיבוד תמונה"},
+    "category": "multi-tool"
+  },
+  {
+    "id": 36,
+    "question": "מה אומרים על קורס שלא קיים במערכת?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {},
+    "category": "edge-case",
+    "note": "Course does not exist - system should say it has no information"
+  },
+  {
+    "id": 37,
+    "question": "מה הממוצע בפיזיקה קוונטית?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "פיזיקה קוונטית"},
+    "category": "edge-case",
+    "note": "Course does not exist in grades data"
+  },
+  {
+    "id": 38,
+    "question": "מה הקדמים של בישול איטלקי?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "בישול איטלקי"},
+    "category": "edge-case",
+    "note": "Nonsense course - system should say it doesn't exist"
+  },
+  {
+    "id": 39,
+    "question": "What are the prerequisites for data structures?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "מבני נתונים"},
+    "category": "edge-case",
+    "note": "English input - system should still work and respond in Hebrew"
+  },
+  {
+    "id": 40,
+    "question": "",
+    "expected_tool": null,
+    "expected_args": {},
+    "category": "edge-case",
+    "note": "Empty query"
+  },
+  {
+    "id": 41,
+    "question": "היי, מה שלומך?",
+    "expected_tool": null,
+    "expected_args": {},
+    "category": "edge-case",
+    "note": "Greeting - no tool needed, should respond politely"
+  },
+  {
+    "id": 42,
+    "question": "מה אומרים על גרפיקה ממוחשבת עם רועי פורן?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "גרפיקה ממוחשבת", "lecturer": "רועי פורן"},
+    "category": "reviews"
+  },
+  {
+    "id": 43,
+    "question": "מה הממוצע במודלים חישוביים במועד ב?",
+    "expected_tool": "course_grades",
+    "expected_args": {"course_name": "מודלים חישוביים", "moed": "b"},
+    "category": "grades"
+  },
+  {
+    "id": 44,
+    "question": "איזה קורסים הסתברות למדעי המחשב פותחת?",
+    "expected_tool": "kdams_tree",
+    "expected_args": {"course_name": "הסתברות למדעי המחשב"},
+    "category": "prerequisites"
+  },
+  {
+    "id": 45,
+    "question": "מה אומרים על הקורס מבוא לבינה מלאכותית?",
+    "expected_tool": "search_course_reviews",
+    "expected_args": {"course_name": "מבוא לבינה מלאכותית"},
+    "category": "reviews"
+  }
+]

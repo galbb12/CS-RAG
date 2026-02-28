@@ -1,0 +1,1218 @@
+{
+  "summary": {
+    "total_questions": 41,
+    "questions_with_errors": 1,
+    "tool_selection_accuracy": 0.875,
+    "argument_accuracy": 0.868421052631579,
+    "hebrew_response_rate": 1.0,
+    "avg_latency_s": 12.16,
+    "avg_faithfulness": 8.5,
+    "avg_relevance": 9.12,
+    "avg_completeness": 8.15,
+    "category_scores": {
+      "edge-case": {
+        "count": 5,
+        "tool_accuracy": 0.4,
+        "arg_accuracy": 0.33,
+        "avg_latency_s": 3.8,
+        "avg_faithfulness": 9.8,
+        "avg_relevance": 8.8,
+        "avg_completeness": 7.8
+      },
+      "grades": {
+        "count": 7,
+        "tool_accuracy": 1.0,
+        "arg_accuracy": 1.0,
+        "avg_latency_s": 25.72,
+        "avg_faithfulness": 8.0,
+        "avg_relevance": 8.86,
+        "avg_completeness": 8.29
+      },
+      "multi-tool": {
+        "count": 5,
+        "tool_accuracy": 1.0,
+        "arg_accuracy": 1.0,
+        "avg_latency_s": 20.16,
+        "avg_faithfulness": 8.0,
+        "avg_relevance": 9.4,
+        "avg_completeness": 8.4
+      },
+      "prerequisites": {
+        "count": 11,
+        "tool_accuracy": 0.82,
+        "arg_accuracy": 0.82,
+        "avg_latency_s": 6.71,
+        "avg_faithfulness": 9.18,
+        "avg_relevance": 9.82,
+        "avg_completeness": 9.18
+      },
+      "reviews": {
+        "count": 12,
+        "tool_accuracy": 1.0,
+        "arg_accuracy": 0.92,
+        "avg_latency_s": 9.38,
+        "avg_faithfulness": 7.83,
+        "avg_relevance": 8.67,
+        "avg_completeness": 7.17
+      }
+    }
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "מה אומרים סטודנטים על מבוא למדעי המחשב?",
+      "category": "reviews",
+      "answer": "המשוב המצריך את הקורס **מבוא למדעי המחשב** (מרצה: שולי וינטנר) מתמקד בנקודות הבאות:\n\n* **חיוביות**  \n  – הסטודנטים מציינים שהקורס מעניין ואינו דורש ידע קדם בתכנות או במחשבים.  \n  – המרצה שולי וינטנר נחשב “לצא מן הכלל” במובן החיובי – הוא מעביר את החומר בצורה נגישה ומסביר היטב.\n\n* **חסרונות / הערות**  \n  – לא נרשמו תלונות משמעותיות בתגובה זו; הסטודנטים לא ציינו בעיות משמעותיות בתוכן או באופן ההוראה.\n\nבכך, המשנה העיקרית היא שקורס המבוא נחשב למקובל, מעניין ונגיש, והמרצה זוכה לשבחים עבור יכולת ההסבר והגישתו. (הנתונים שנאספו כוללים סקירה אחת בלבד.)",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "מבוא למדעי המחשב"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מבוא למדעי המחשב | מרצה: שולי וינטנר | סוג: חובה | נ\"ז: 5 | תאריך: 2021-02-02]\nשולי מרצה יוצא מן הכלל. הקורס מעניין מאוד ולא מצריך ידע מקדים בתכנות/מחשבים.\n\n[ביקורת 2 | קורס: מבוא ללמידה ממוכנת | מרצה: דן רוזנבאום | סוג: בחירה | נ\"ז: 4 | תאריך: 2025-09-13]\nקורס קליל ונחמד, המרצה מציג את החומר בצורה נוחה ומובנת ,בקורס יש קצת מתמטיקה\n\n[ביקורת 3 | קורס: מבני נתונים | מרצה: אורן וימן | סוג: חובה | נ\"ז: 5 | תאריך: 2020-07-30]\nנהניתי ללמוד עם אורן. מעביר את החומר בצורה נהדרת ומסביר מ..."
+        }
+      ],
+      "latency_s": 6.16,
+      "tool_selection_correct": true,
+      "argument_correct": false,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies the course with lecturer שולי וינטנר, and accurately paraphrases the single review found. The answer says שולי is 'יוצא מן הכלל' in a positive sense, which matches the review. However, the DB also has reviews for שולי on other courses and another מבוא למדעי המחשב entry with סמאח as lecturer, but the system only retrieved one review. Completeness is lower because there exist other reviews about this course with other lecturers that were not captured.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 6
+    },
+    {
+      "id": 2,
+      "question": "איך המבחן במבני נתונים?",
+      "category": "reviews",
+      "answer": "הביקורות של הסטודנטים על מבחני קורס **מבני נתונים** מצביעות על כמה מגמות ברורות:\n\n* **קושי גבוה** – הרוב המכריע של הלומדים מתארים את המבחנים כקשים, במיוחד כאשר המרצה דורש הוכחות מפורטות (ביקורת 1, 2, 3). במקרים של מועד ב’ נרשמת רמת קושי גבוהה במיוחד.\n\n* **הקפדה על הוכחות ועניינים תיאורטיים** – מרצים כמו מורן פלדמן מדגישים צורך בכתיבת הוכחות מדויקת, ולכן מי שמבין את החומר לעומק מצליח יותר.\n\n* **פקטור מצטיין** – למרות הקושי, יש מתן פקטור (קובע) שמקזז חלק מהקושי ומאפשר לרוב הסטודנטים לקבל ציונים “סבירים” (ביקורת 1).\n\n* **הבדלים בין מרצים**  \n  * **מורן פלדמן** – מבחנים קשים, דורשים הוכחות, אך עם פקטור משקיע שמאפשר ציון גבוה אם מוכנים.  \n  * **גיא אבני** – מבחנים נחשבים “הוגנים” יותר, חלק מהסטודנטים מציינים שהמבחנים פחות קשים מאשר של פלדמן, אך מצביעים על צורך בריכוז עקב חוסר סדר בקוונט.  \n  * **אורן וימן** – קורס קשה עם תרגולי בית ועבודה משמעותית, אך מבחנים ניתנים להשגה ומאוד אפשריים אם משקיעים.\n\n* **המלצות כלליות** – מומלץ לעקוב אחרי הסיכומים בזמן השיעורים, להשקיע בתרגילים ובשירותי קבלה, ולהתמקד בכתיבת הוכחות במדויק.  \n\n**סיכום** – מבחני קורס מבני נתונים נחשבים לקשים, במיוחד במרצים שמדגישים הוכחות, אך עם פקטור משקיע והכנה מוקפדת ניתן להגיע לציונים טובים. ההבדל במורכבות נובע ברובו מהמרצה ולכן כדאי לבדוק מראש מי מלמד בתקופה שבה אתם מתכננים ללמוד את הקורס.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "מבחן קושי במבני נתונים",
+            "course_name": "מבני נתונים"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מבני נתונים | מרצה: מורן פלדמן | סוג: חובה | נ\"ז: 5 | תאריך: 2023-09-13]\nחומר לא פשוט ולפעמים קצת קשה להבין את מורן. כדאי להחזיק את הסיכומים פתוחים בזמן ההרצאה כדי לא ללכת לאיבוד. המבחן קשה ומורן דורש הוכחות מפורטות. בדרך כלל יש פקטור מכובד שמפצה על זה, והרוב עוברים עם ציונים סבירים. סה&quot;כ קורס מעניין ומרצה סבבה.\n\n[ביקורת 2 | קורס: מבני נתונים | מרצה: מורן פלדמן | סוג: חובה | נ\"ז: 5 | תאריך: 2023-05-02]\nמורן מרצה ברמה גבוהה מאוד. לפעמים קשה להבין בהרצאה את עומק החומר אך חשו..."
+        }
+      ],
+      "latency_s": 8.45,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer discusses exams in מבני נתונים accurately. Key verified facts: מורן פלדמן teaches the course, reviews mention hard exams with a generous curve/factor. גיא אבני and אורן וימן also teach it - reviews confirm אורן is excellent but demanding. The answer mentions 'גיא אבני exams are fairer' but there's limited evidence in the context. The claim about מורן having a 'פקטור' is verified. Overall mostly accurate with minor embellishments.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 3,
+      "question": "מה חושבים על אורן וימן?",
+      "category": "reviews",
+      "answer": "**אורן וימן – מה אומרים הסטודנטים?**\n\n| נושא | מה שמצוין בביקורות (מגמות חוזרות) |\n|------|-----------------------------------|\n| **העברת החומר** | - מרצה מאוד ידעוני ומסביר בצורה עניינית, חלק מהביקורות קוראות “**מעביר את החומר בצורה נהדרת/מצוין**”. <br> - ב‑“מבני נתונים” וב‑“אלגוריתמים לגרפים” מדגישים שהשיעורים מועילים מאוד ומסודרים. |\n| **קושי הקורס** | - קורסים בהם הוא מרצה (בעיקר *מבני נתונים* ו‑*מבני נתונים מתקדמים*) מתוארים כקשים: תרגילי בית מאתגרים, מבחנים **לא פשוטים** ו‑**המשקיע הרבה זמן**. <br> - למרות הקושי, הסטודנטים שמחבבים את החומר מדווחים על חוויה “מאוד מעניינת” ועם ערך לימודי גבוה. |\n| **הכנות למבחנים** | - מבחנים נחשבים **הוגנים** (צוין שמבנה המבחן שומר על עקביות עם מבחנים קודמים) אך **קשים**. <br> - במקרים מסוימים ה‑“הציון של אורן” נחשב **קצת קפדן**, במיוחד בסמינרים. |\n| **חומרי לימוד ושיעורי בית** | - משבחים את **המשקאות של שיעורי הבית** – “עזרו מאוד להבין את החומר”. <br> - משך זמן משוער של ~ 6 שעות לכל משימה, ולכן מומלץ להקדיש זמן משמעותי. |\n| **אופי אישי והגישה** | - חלק מהביקורות מציינות שהמרצה **יכול להיות קשוח, טיפה מבולגן ולא תמיד נעים**, אך גם **מתחשב** במפגשי קבלה ו‑**זמין לעזור** כשיש צורך. |\n| **המלצות כלליות** | - מומלץ למי שמתעניין בתכנים ו‑מוכן להשקיע – הקורסים “מתאימים למי שאוהב את החומר”. <br> - אינו “קורס של שלוש נקודות קלות”; הוא דורש עבודה רצינית, אבל ההצלחה והציון הגבוה אפשריים למי שמוכן. |\n\n**סיכום קצר**  \nהמרצים **אורן וימן** נחשבים למומחים בתחומם, עם יכולת להסביר את החומר בצורה ברורה ומעמיקה. הקורסים שהם מלמדים נחשבים קשים ומחייבים השקעה משמעותית של זמן, אך מבחינים שהשקעה זו מתוגמלת במבחנים הוגנים ובידע ערכי. התקשורת האישית מעט מגוונת – יש המעריכים את הנגישות והסיוע, ויש שמרגישים שהקפדנות יכולה להיות מעט קשה. באופן כללי, הסטודנטים ממליצים עליהם למי שמעוניין ללמוד חומר מתקדם ולא מחפש קורס קל.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "אורן",
+            "lecturer": "אורן"
+          },
+          "tool_result": "לא נמצאו ביקורות תואמות."
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "וימן",
+            "lecturer": "וימן"
+          },
+          "tool_result": "לא נמצאו ביקורות תואמות."
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "אורן"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מודלים חישוביים | מרצה: רונן | סוג: חובה | נ\"ז: 5 | תאריך: 2022-07-16]\nרונן מעולה וגם אור\n\n[ביקורת 2 | קורס: מבני נתונים מתקדמים | מרצה: אורן וימן | סוג: בחירה | נ\"ז: 3 | תאריך: 2022-02-04]\nאורן מרצה מעולה, הוא מסביר טוב והמבחנים שלו הוגנים, למראת זאת הקורס לא קל וזה חומר ברמה של תואר שני, אני אישית נהניתי מאוד מהמהרצה והחומר,ממליץ על זה למי שאוהב את החומר ומוכן לשבת ולחזור ולהבין את הדברים יותר לעומק לבד כי החומר הוא כזה (מאוד מאוד מעניין אבל קצת קשוח) וחשוב לציין שזה לא \"3 נק..."
+        }
+      ],
+      "latency_s": 14.65,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer discusses אורן וימן but has issues. Reviews confirm he is an excellent lecturer who explains well and courses are hard with demanding homework. However, the answer uses plural 'המרצים אורן וימן' as if there are multiple people - אורן וימן is one person. The context shows 'לא נמצאו ביקורות תואמות' for two of three search attempts, indicating retrieval issues. Some claims like him being 'קשוח, טיפה מבולגן ולא תמיד נעים' seem embellished - reviews say he is nice in office hours. Some details appear fabricated.",
+      "error": null,
+      "judge_faithfulness": 6,
+      "judge_relevance": 7,
+      "judge_completeness": 6
+    },
+    {
+      "id": 4,
+      "question": "איזה קורסי בחירה ממליצים עליהם?",
+      "category": "reviews",
+      "answer": "**קורסי בחירה שמקבלים רוב ההמלצות החיוביות**  \n\n| קורס | מרצה | למה מומלץ |\n|------|------|------------|\n| **מבוא ללמידה ממוכנת** | דן רוזנבאום | קורס “מלמד” ולא קשה, מציג חומר בצורה נוחה עם מעט מתמטיקה. שני קטעי ביקורות מציינים שהקורס “מעולה”, “לא קשה” ו“ממליצה מאוד”. |\n| **מבוא לבינה מלאכותית** | שי בושינסקי | דורש פרויקט (45 % מהציון) אך הסטודנטים שמבצעים אותו ממליצים בחום – “ממליץ מאוד לקחת ולעשות את הפרויקט”. |\n| **הנדסת תוכנה** | מלכי גרוסמן | הקורס היחידי עם מרכיב פרקטי משמעותי בתואר. מרצה “אדיבה”, זמינה לשאלות, והקורס נחשב “מומלץ מאוד”. |\n| **יסודות הקריפטוגרפיה** | רונן | קורס תיאורטי מעניין, מומלץ למי שאוהב נושאים תיאורטיים. הסטודנט מדגיש “קורס מעניין ונחמד, ממליץ בחום”. |\n| **עיבוד תמונה** | חגית הל‑אור | חינוכי ופרקטי – תרגילי הבית ב‑Python, מרצה ומתרגל מעולים. הסטודנטת אומרת “קורס מעניין מאוד, ממליצה מאוד”. |\n\n### מגמות שחוזרות בביקורות\n- **הקורסים עם פרויקט/מרכיב פרקטי** (הנדסת תוכנה, מבוא לבינה מלאכותית, עיבוד תמונה) מקבלים תיאורים חיוביים במיוחד – הסטודנטים מרגישים שהם לוקחים משהו יישומי מהקורס.  \n- **מרצים שמסבירים בצורה נגישה** (דן רוזנבאום, חגית הל‑אור) מוזכרים בתדירות גבוהה בביקורות החיוביות.  \n- קורסים **קשים מאוד** מבחינת עומס (לדוגמה: מבני נתונים מתקדמים, אלגוריתמים הסתברותיים) נחשבים “לא מומלצים” למי שמחפש נקודות קלות.\n\n### סיכום קצר\nאם אתה מחפש קורסי בחירה שיעניינו אותך, יוסיפו ערך מעשי ויהיו יחסית נגישים – מומלץ לשקול את **מבוא ללמידה ממוכנת, מבוא לבינה מלאכותית, הנדסת תוכנה, יסודות הקריפטוגרפיה** או **עיבוד תמונה**. קורסים כמו **מבני נתונים מתקדמים** ו‑**אלגוריתמים הסתברותיים** מצויינים למי שמעוניין באתגר משמעותי, אך אינם הבחירה הטובה ביותר אם המטרה היא לקבל קצב למידה חלק ונקודות בקלות.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "קורס בחירה מומלץ",
+            "course_type": "בחירה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: אלגוריתמים הסתברותיים | מרצה: אילן נוימן | סוג: בחירה | תאריך: 2022-09-04]\nלא מומלץ, רק לאמיצים קורס מעניין אבל לא קל\n\n[ביקורת 2 | קורס: מבוא ללמידה ממוכנת | מרצה: דן רוזנבאום | סוג: בחירה | נ\"ז: 4 | תאריך: 2022-08-03]\nקורס מעולה ולא קשה ממליצה מאוד\n\n[ביקורת 3 | קורס: מבני נתונים מתקדמים | מרצה: אורן וימן | סוג: בחירה | נ\"ז: 3 | תאריך: 2021-09-29]\nקורס מעניין מאוד, אורן מרצה מעולה, אבל זה קורס מאוד קשה ביחס לזה שהוא בחירה של 3 נ\"ז, מי שהתחום מעניין אותו יכול ליהנות מהקורס, אבל ..."
+        }
+      ],
+      "latency_s": 13.83,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer recommends elective courses that are verified in the DB: מבוא ללמידה ממוכנת (confirmed 'choose', 4 credits), מבוא לבינה מלאכותית (confirmed), הנדסת תוכנה (confirmed 'choose', 5 credits), יסודות הקריפטוגרפיה (confirmed 'choose', 4 credits), עיבוד תמונה (confirmed, 5 credits). The answer correctly identifies course types. Minor: the answer says 45% project for בינה מלאכותית which isn't explicitly in the retrieved context. Overall accurate recommendations grounded in actual reviews.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 5,
+      "question": "מה הביקורות על דחיסת תמונה וקול עם נמרוד פלג?",
+      "category": "reviews",
+      "answer": "**ביקורות סטודנטים על הקורס “דחיסת תמונה וקול” (מרצה: נמרוד פלג)**  \n\n| נושא | מה נכתב על‑ידי הסטודנטים |\n|------|--------------------------|\n| **אופי הקורס** | מרבית התגובות מתארות את הקורס כ‑“משעמם” או “מבלבל”, אך עם תוכן עניינים מקיף (קול, תמונה, וידאו). |\n| **רמת חומר** | - רמת הקורס נחשבת **נמוכה‑בינונית**, עם דגש על עקרונות תיאורטיים ולא על מתמטיקה או קוד מורכב. <br>- כמה סטודנטים מציינים שהחומר **קשה להבנה** ללא רקע קודם (בעיקר קורס עיבוד תמונה/מתמטיקה). |\n| **המרצה (נמרוד פלג)** | - **חיובי מאוד**: כמעט כל הביקורות מציינות שהמרצה **נוח, מתחשב, ומסביר** בצורה נעימה. <br>- הוא משקיע במתן מלגות/בונוסים, מתייחס בחיוב לשאלות בבית ובמבחנים, ומספק חומרים (הקלטות, מבחנים קודמים). |\n| **בוחנים ותרגילים** | - **מבחן פתוח** (חומר פתוח) ו‑**ארוך** (2.5‑3 שעות, 15‑21 עמודים). <br>- שאלות **עיליות/תיאורטיות** – ללא צורך בתכנות או MATLAB. <br>- מבחנים קצרים (בוחנים שבועיים) משמשים כמחזור חיזוק. <br>- רבים ממליצים **להתכונן בעזרת מבחנים ישנים** – בתור “שיטה קלה לקבלת ציונים גבוהים”. |\n| **הצלחה וציונים** | - עקב פורמט המבחן (חומר פתוח) ו‑“חזרתיות” של בחינות קודמות, **צפוי ציונים גבוהים** למי שמסתכל על חומרים קודמים ומשקיע לאורך הסמסטר. <br>- עם זאת, במועד ב (קורס שני) הפורמט השתנה והציון ירד, ולכן תלוי במועד. |\n| **המלצות** | - מומלץ **להשתתף בהרצאות** (הקלטות זמינות) ולנצל את הבונוסים. <br>- רצוי **להיות מצויד ברקע בעיבוד תמונה** או במתמטיקה רלוונטית. <br>- הקורס מתאים למי שמחפש **ציון גבוה עם השקעה יחסית מינימלית** (בגלל מבחן פתוח). |\n\n**מגמות חוזרות**  \n1. **מרצה נמרוד פלג – מרצה אהוד, נגיש ומתחשב**.  \n2. **הקורס נחשב משעמם/קשה להבין**, אך אין צורך במתמטיקה מתקדמת.  \n3. **המבחן פתוח והחומר חוזר** – סטודנטים מנצלים זאת כדי להגיע לציון גבוה.  \n4. **רקע בעיבוד תמונה/מתמטיקה** מסייע משמעותית להבנת החומר.  \n\nבקיצור: הקורס **מתאים למי שמחפש ציון גבוה עם מאמץ מתון**, בתנאי שיש לו (או מוכן להשיג) רקע בסיסי בתחום העיבוד. המרצה נחשב ל‑**אחד הטובים והמתחשבים** בחוג.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "דחיסת תמונה וקול",
+            "course_name": "דחיסת תמונה וקול",
+            "lecturer": "נמרוד פלג"
+          },
+          "tool_result": "[ביקורת 1 | קורס: דחיסת תמונה וקול | מרצה: נמרוד פלג | סוג: בחירה | נ\"ז: 3 | תאריך: 2022-02-20]\nאין ספק שהקורס משעמם, אך ממליץ מאוד לקחת אותו, בעיקר אם יש גישה להרצאות מוקלטות. הסיבה היא שאין מתמטיקה אלא רק עקרונות של דחיסה, וכך גם המבחן: אמנם עמוס, 3 שעות של כתיבה, אבל נמרוד בודק את השאלות בצורה כ\"כ נחמדה שהוא נותן את רוב ואף כל הנקודות על נימוק הגיוני בהתאם לעקרונות שנלמדו. בנוסף, שיעורים ממוחזרים ובחנים שבועיים קלים (אין מה להתעמק לא באלה ולא באלה כי יש בערך 15 שנה של מבחנים שאפשר לחרוש לפני ..."
+        }
+      ],
+      "latency_s": 13.83,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer about דחיסת תמונה וקול with נמרוד פלג is highly accurate. Verified: course is 3 credits, elective. Reviews confirm course is 'boring' but recommended, no math, exam is open-book with generous grading, past exams recycled for ~15 years, weekly quizzes, נמרוד is nice and considerate. All key claims verified against actual reviews. Very comprehensive and faithful answer.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 6,
+      "question": "האם מערכות הפעלה קורס קשה?",
+      "category": "reviews",
+      "answer": "הביקורות של הסטודנטים על קורס **מערכות הפעלה** מצביעות על כך שהקורס נחשב למאתגר, אך רוב הקושי נובע מהיקף החומר והאופן שבו הוא נבדק, ולא מהקושי התיאורטי של הנושאים עצמם.\n\n**מגמות חוזרות בביקורות**  \n| מגמה | כמה סטודנטים מציינים |\n|------|-----------------------|\n| **נפח חומר גדול** – הקורס “עמוס מאוד”, יש המון נושאים לזכור. | 6 |\n| **חומר לא קשה ביולוגית**, אבל יש צורך בזיכרון והבנה של פרטים רבים. | 4 |\n| **חסרים דפי עזר במבחנים** והצפייה במענה של המרצה (רחל) חשובה למדי. | 5 |\n| **מבחנים מכשילים** – שאלות עם כמה תשובות נכונות, ניסוח מעורפל, ודרישה ללמידת פרטים שלא תמיד מופיעים בתרגולים. | 5 |\n| **אופי ההרצאות** – מרצה רחל מתוארת כ“לא נחמדה”/“לא מודרנית”, לעיתים משעממת, ותרגולים אינם תואמים במדויק למבחן. | 5 |\n| **שונות במרצים** – ביקורת אחת (2025) מציינת מרצה אחר (שלי קול) שהיא “נחמדה והוגנת”, מה שמצביע שהחווייה יכולה להשתנות לפי המרצה. | 1 |\n\n**סיכום**  \n- הקורס **לא נחשב קשה מבחינת רעיון**, אך **היקף החומר הגדול והאופן שבו המבחנים נערכים** גורמים לתחושת קושי משמעותית.  \n- רבים ממליצים להגיע להרצאות ולבצע את התרגולים, שכן חלק גדול מהקושי נובע בחוסר כיסוי של חומרי הלימוד בתרגולים ובחוסר דף עזר במבחנים.  \n- חוויית הלמידה יכולה להשתפר עם מרצה שונה (לדוגמה, מרצה שלי קול).\n\nאם אתה מתכנן לקחת את הקורס, צפו למאמץ משמעותי בלימוד עצמי, השתתפות פעילה בהרצאות והבנת מבנה המבחנים כדי למזער את הקושי.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "קשה",
+            "course_name": "מערכות הפעלה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מערכות הפעלה | מרצה: רחל | סוג: חובה | נ\"ז: 5 | תאריך: 2023-09-02]\nרחל לא המרצה הכי נחמדה... לא באישיות ולא בבחינה. המבחן עצמו אולי לא ברמה הכי גבוהה בהכרח אבל היא בהחלט בונה שאלות במטרה להכשיל (בין אם על ידי נוסח, אמריקאי שיכלה להיות בו יותר מתשובה אחת נכונה או טעויות במבחן). גם בערעורים אם היא לא מכירה אתכם ואוהבת אתכם מההרצאות, קיים סיכוי שהיא לא תבוא בגישה הנחמדה ביותר... לקורס אין באמת מצגות מכיוון והוא נלקח מתוך הספר לכן חומרי הלימוד העיקריים הם התרגולים שלא באמת מכסים את..."
+        }
+      ],
+      "latency_s": 9.14,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer about מערכות הפעלה difficulty is well-supported. Verified: course is חובה, 5 credits. Reviews confirm lots of material to memorize, רחל's exams have tricky questions, no slides (material from book), practice exercises don't match exam. שלי קול mentioned as alternative lecturer. However, the answer says רחל is 'לא נחמדה' but one review says she IS nice ('רחל מאוד מאוד נחמדה ורוצה לעזור'). Mixed accuracy on this point.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 7,
+      "question": "מה אומרים על התרגילים בהנדסת תוכנה?",
+      "category": "reviews",
+      "answer": "הסטודנטים מתארים את התרגילים בקורס **הנדסת תוכנה** כמרכיב מרכזי ופרקטי של הקורס:\n\n- **מבנה המשימה** – הציון נבנה מ‑3 תרגילי בית שמכינים פרויקט תוכנה שלם.  \n- **טכנולוגיות** – התרגילים מתבצעים ב‑Java וב‑UML, ולכן דורשים יכולת תכנות ו‑מודליזציה.  \n- **הקשר לפרקטיקה** – רבים מציינים שהקורס הוא אחד ה‑“קורסים הפרקטיים” היחידים בתואר, והתרגילים מאפשרים עבודה ממשית על פרויקט שלם.  \n- **התמודדות עם הוראה מרחוק** – במהלך הסמסטרים שהועברו בזום, השתתפות בתרגילי כיתה הייתה קשה יותר, אך המשימות הביתיות נשארו כפי שהן.  \n- **בונוסים והערכת הציון** – המרצה מציעה בונוס של עד 8 נקודות לפרויקט מצוין, אך מתייחדת במדיניות שלא נותנת ציון קצה (לא 100, לא מתחת ל‑70).  \n\n**מגמה חוזרת:** הסטודנטים רואים בתרגילים ערך לימודי גבוה, אם כי דורשים ממוצע גבוה של מאמץ ותכנות, ולעיתים יש קושי במתן משוב בזמן הלמידה מרחוק.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "תרגילים",
+            "course_name": "הנדסת תוכנה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: הנדסת תוכנה | מרצה: מלכי גרוסמן | סוג: בחירה | נ\"ז: 5 | תאריך: 2020-06-02]\nלמלכי חשוב מאוד ההשתתפות של סטודנטים בהרצאות, למרות שהיא לא חובה. \nבסימסטר הזה הקורס הועבר בזום לכן הייתה צריכה להתאים את ההרצאות לכך (פעם הייתה נותנת תרגילי כיתה אבל בזום זה היה יותר בעייתי)\nההרצאות לרוב כבדות ומעייפות, הרבה מהן לא קריטיות מדי כדי להצליח בקורס אבל הן מלמדות לא מעט דברים שיהיו חשובים בכל עבודה שנהיה בתחום התוכנה.\nמלכי הייתה מאוד אדיבה, ענתה על שאלות, והסבירה את הדברים כמה שהיה צריך בשעות..."
+        }
+      ],
+      "latency_s": 7.54,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer about exercises in הנדסת תוכנה is mostly accurate. Reviews confirm 3 homework assignments building a project in Java with UML, one of few practical courses, מלכי is 'אדיבה'. The claim about 'בונוס של עד 8 נקודות' is not found in the retrieved context or DB reviews. The claim about 'not giving 100 or below 70' is also not verifiable. Some details appear fabricated.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 8,
+      "judge_completeness": 7
+    },
+    {
+      "id": 8,
+      "question": "האם שלי קול מרצה טובה?",
+      "category": "reviews",
+      "answer": "המרצה שלי קול נחשבת למרצה **טובה** בעיני הסטודנטים:\n\n* **מקצועיות ויחס הוגן:** שני המבקרים מציינים שמדובר במרצה “נחמדה והוגנת” ו‑“שקופה” מבחינת בחינות.\n* **הקלטות וחומרי לימוד איכותיים:** נוכח בציטוטים שהמרצה דואגת להקלטות איכותיות ומספקת מצגות מודליות שמאפשרות להיכנס לחומר בקלות.\n* **ארגון ועמידה בלוחות זמנים:** כתוב שהיא “מאוד מסודרת” ועונה על כל השאלות במודל.\n* **קושי מסוים בריכוז:** אחד הסטודנטים מציין שקשיי ריכוז בהרצאות, אך מציין שהחומר המוצג מאפשר להגיע לציון טוב.\n\nלסיכום, המרצה משדרת מקצועיות, יחס הוגן ותמיכה חומרית, מה שמוביל לרוב חוויית לימוד חיובית.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "מרצה",
+            "lecturer": "שלי קול"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מערכות הפעלה | מרצה: שלי קול | סוג: חובה | נ\"ז: 5 | תאריך: 2025-07-21]\nמרצה נחמדה והוגנת מאוד לסטודנטים , דואגת להקלטות איכותיות לסטודנטים\n\n[ביקורת 2 | קורס: ארגון המחשב ושפות סף | מרצה: שלי קול | סוג: חובה | נ\"ז: 3 | תאריך: 2025-03-18]\nשלי מאוד מסודרת ועונה על כל השאלות במודל, הקורס קל והמבחן מאוד הוגן. קשה להישאר מרוכז בהרצאות אבל אפשר להשלים הכל מהמצגות שבמודל ולהוציא ציון טוב."
+        }
+      ],
+      "latency_s": 6.78,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer about שלי קול is accurate based on the two reviews found. שלי teaches מערכות הפעלה and ארגון המחשב ושפות סף. Reviews confirm she is 'נחמדה והוגנת', provides quality recordings, is organized and answers questions. Completeness slightly lower because only 2 reviews exist and the answer could have mentioned which courses she teaches.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 9,
+      "judge_completeness": 7
+    },
+    {
+      "id": 9,
+      "question": "מה אומרים על חדוא 1?",
+      "category": "reviews",
+      "answer": "**הביקורות על קורס חדוא 1 (דני קרן)**  \n\n| נושא | מגמה בתגובות |\n|------|--------------|\n| **מרצה** | מרבית הסטודנטים מחבבים מאוד את הד\"ר דני קרן – הוא מתואר כמרצה “מעולה”, “חביב”, “קשוב” ו”הוגן”. |\n| **שיעורי בית / תרגול** | בטון משותף: **אין שיעורי בית**. מרבה נזכר שהיעדר תרגילי בית מקשה על חיזוק ההבנה וההכנה למבחנים. |\n| **קושי הקורס** | כמה סטודנטים מדגישים שהקורס **קשה** מאוד, במיוחד בגלל היעדר תרגול פורמלי (כתיבת הוכחות, משימות). |\n| **מבחנים** | המבחנים נחשבים **קשים**; יש צורך בלימוד אינטנסיבי (חלק מהביקורות ציינו מבחן משוחזר, אך עם שאלה “חובה” וקושי במועד ב׳). |\n| **הערכת נקודות** | חלק מהביקורות מציינות שהמרצה **יכול להיות מחמיר** בנקודות – לעיתים מוריד ניקוד על טעויות חישוב. |\n| **הערכת כללית** | מרצה מוערך מאוד, אך **החיסרון המרכזי** הוא חוסר תרגול מובנה שמקשה על הסטודנטים להבין וליישם את החומר. |\n\nבקיצור, הסטודנטים מרוצים באופן כללי מההוראה של ד\"ר קרן, אך מרגישים שהקורס צריך יותר משימות ותרגול כדי להפחית את הקושי שבו.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "חדוא 1",
+            "course_name": "חדוא 1"
+          },
+          "tool_result": "[ביקורת 1 | קורס: חדוא 1 | מרצה: דני קרן | סוג: חובה | נ\"ז: 5 | תאריך: 2020-01-15]\nשעת קבלה זה עניין בעייתי כי מדובר בראש החוג, אך עדיין משתדל לענות על כל השאלות, מרצה מעולה וחביב מאוד!\nאין תרגילי בית :)\n\n[ביקורת 2 | קורס: חדוא 1 | מרצה: דני קרן | סוג: חובה | נ\"ז: 5 | תאריך: 2023-09-02]\nמרצה מדהים,קשוב והוגן. החיסרון הבולט בקורס איתו אבל זה שאין שיעורי בית - במחשבה ראשונה זה נשמע כמו דבר טוב אבל ללא תרגול של החומר מאוד קשה להבין איך לענות תשובה ולבדוק הבנה. הוא כן נתן לנו לתרגל מדי פעם במהלך השי..."
+        }
+      ],
+      "latency_s": 7.01,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies Danny Keren as the lecturer for Calculus 1 and accurately summarizes the review themes (no homework, excellent/friendly lecturer, hard exams). The claims about strict scoring are supported by the context. Minor issue: the answer focuses exclusively on Danny Keren, but the database shows other lecturers also taught the course. The answer could have mentioned reviews were specifically about Keren's sections.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 10,
+      "question": "איזה סמינרים ממליצים עליהם?",
+      "category": "reviews",
+      "answer": "לצערי, לא מצאתי ביקורות של סטודנטים שממליצים באופן ספציפי על סמינרים מסוימים. מכיוון שאין לנו מידע מנוסה על איזו סמינרים נחשבות למומלצות, אינני יכול להציע סמינרים ספציפיים. אם יש לך קורס מסוים או נושא שמעניין אותך, אפשר לנסות לבדוק ביקורות פרטיות יותר או לשאול מרצים במעגל שלך.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "מומלץ",
+            "course_type": "סמינר"
+          },
+          "tool_result": "לא נמצאו ביקורות תואמות."
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "סמינר",
+            "course_type": "סמינר"
+          },
+          "tool_result": "לא נמצאו ביקורות תואמות."
+        }
+      ],
+      "latency_s": 9.02,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The system failed to retrieve seminar reviews, even though the database contains multiple seminar-type courses and some reviews mentioning seminars. The answer honestly admits it found no reviews, which is faithful to the empty retrieval context. However, the retrieval failure means the answer is incomplete - there ARE seminar reviews in the database that could have been surfaced.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 7,
+      "judge_completeness": 4
+    },
+    {
+      "id": 11,
+      "question": "מה הקדמים של תכנון וניתוח אלגוריתמים?",
+      "category": "prerequisites",
+      "answer": "**קדמי הקורס “תכנון וניתוח אלגוריתמים” (חובה, 5 נ\"ז, סמסטר א׳‑ב׳)**  \n\n- **קדם ישיר:** **מבני נתונים**  \n- **קדם של מבני נתונים:**  \n  - מבוא למדעי המחשב  \n  - מתמטיקה דיסקרטית  \n\nלכן, לפני שנכנסים לתכנון וניתוח אלגוריתמים, יש לעבור לפחות את שלושת הקורסים האלה – מבוא למדעי המחשב, מתמטיקה דיסקרטית ומבני נתונים.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "תכנון וניתוח אלגוריתמים"
+          },
+          "tool_result": "עץ קדמים עבור: תכנון וניתוח אלגוריתמים\n[root] תכנון וניתוח אלגוריתמים (5 נ\"ז)\n   קדמים: מבני נתונים\n  ← מבני נתונים (5 נ\"ז)\n     קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n    ← מבוא למדעי המחשב (5 נ\"ז)\n    ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את תכנון וניתוח אלגוריתמים כקדם:\n  → מודלים חישוביים (5 נ\"ז)\n  → מבוא לבינה מלאכותית (4 נ\"ז)\n  → מעבדה בבינה מלאכותית (4 נ\"ז)\n  → עיבוד תמונה (5 נ\"ז)\n  → תכנות מדעי (4 נ\"ז)\n  → למידה עמוקה (4 נ\"ז)\n  → נושאים נבחרים באלגוריתמים (3 נ\"ז)\n  → אלגוריתמים ת..."
+        }
+      ],
+      "latency_s": 4.45,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer is fully accurate. According to the database, תכנון וניתוח אלגוריתמים has prerequisite מבני נתונים, and מבני נתונים has prerequisites מבוא למדעי המחשב and מתמטיקה דיסקרטית. The answer correctly states the direct prerequisite and the transitive prerequisites. All facts match the database exactly.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 10
+    },
+    {
+      "id": 12,
+      "question": "מה צריך לפני למידה עמוקה?",
+      "category": "prerequisites",
+      "answer": "הקורס **למידה עמוקה** (4 נ\"ז) דורש כקדם מספר קורסים, והקורסים האלו themselves דורשים קורסים קודמים. הנה סיכום מלא של מה שמומלץ ללמוד לפני שמצטרפים ללמידה עמוקה:\n\n| קדם ישיר | קדם עקבי (קורסים שצריך לעשות לפני הקדם הישיר) |\n|-----------|---------------------------------------------------|\n| **תכנות מונחה עצמים** | – אין קדם נוסף (קורס חובה בסיסי) |\n| **תכנון וניתוח אלגוריתמים** | – **מבני נתונים** → <br>  *מבוא למדעי המחשב* <br>  *מתמטיקה דיסקרטית* |\n| **מבוא ללמידה ממוכנת** | – **אלגברה לינארית** <br> – **אלגברה ב** → *אלגברה לינארית* <br> – **חדוא 2** → *חדוא 1* <br> – **הסתברות למדעי המחשב** → *אלגברה לינארית*, *חדוא 2*, *מבני נתונים* (ולפיכך גם *מבוא למדעי המחשב* ו‑*מתמטיקה דיסקרטית*) |\n\n### סדר לימוד מומלץ\n1. **מבוא למדעי המחשב** + **מתמטיקה דיסקרטית**  \n2. **אלגברה לינארית**  \n3. **מבני נתונים** (דורש את שני הקורסים שלמעלה)  \n4. **תכנות מונחה עצמים** (אפשר לקחת במקביל למבני נתונים)  \n5. **אלגברה ב** (דורש אלגברה לינארית)  \n6. **חדוא 1 → חדוא 2** (קודמים זה את זה)  \n7. **הסתברות למדעי המחשב** (דורש אלגברה לינארית, חדוא 2, ומבני נתונים)  \n8. **תכנון וניתוח אלגוריתמים** (דורש מבני נתונים)  \n9. **מבוא ללמידה ממוכנת** (דורש את כל הקורסים משלב 6‑7)  \n10. **למידה עמוקה**  \n\nכך תוודאו שיש לכם את כל הידע הבסיסי (מתמטיקה, תכנות, אלגוריתמים) לפני שמתחילים בקורס המורכב של למידת עומק. אם כבר סיימתם חלק מקורסים אלו, אפשר לדלג עליהם, אך רצוי לפחות הכרתם את החומר.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "למידה עמוקה"
+          },
+          "tool_result": "עץ קדמים עבור: למידה עמוקה\n[root] למידה עמוקה (4 נ\"ז)\n   קדמים: תכנות מונחה עצמים, תכנון וניתוח אלגוריתמים, מבוא ללמידה ממוכנת\n  ← תכנון וניתוח אלגוריתמים (5 נ\"ז)\n     קדמים: מבני נתונים\n  ← מבוא ללמידה ממוכנת (4 נ\"ז)\n     קדמים: אלגברה לינארית, אלגברה ב, חדוא 2, הסתברות למדעי המחשב\n    ← אלגברה ב (5 נ\"ז)\n       קדמים: אלגברה לינארית\n    ← הסתברות למדעי המחשב (5 נ\"ז)\n       קדמים: אלגברה לינארית, חדוא 2, מבני נתונים\n      ← מבני נתונים (5 נ\"ז)\n         קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n ..."
+        }
+      ],
+      "latency_s": 11.13,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies the three direct prerequisites of למידה עמוקה: תכנות מונחה עצמים, תכנון וניתוח אלגוריתמים, and מבוא ללמידה ממוכנת. It also correctly traces the prerequisite tree. However, the answer states 'תכנות מונחה עצמים - אין קדם נוסף' but the database shows it requires מבוא למדעי המחשב as a prerequisite. The omission of this prerequisite is an error.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 9,
+      "judge_completeness": 9
+    },
+    {
+      "id": 13,
+      "question": "מה הקדמים של מערכות הפעלה?",
+      "category": "prerequisites",
+      "answer": "הקורס **מערכות הפעלה** דורש כקדם את הקורסים הבאים:\n\n- תכנות מונחה עצמים  \n- מבוא לחומרה  \n- מבני נתונים (הקורס עצמו כולל קדם של מבוא למדעי המחשב ומתמטיקה דיסקרטית)  \n\nאם אתה עדיין לא סיימת את אחד מהקורסים האלו, יהיה צורך לעבור אותם לפני שניתן להרשם למערכות הפעלה.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "מערכות הפעלה"
+          },
+          "tool_result": "עץ קדמים עבור: מערכות הפעלה\n[root] מערכות הפעלה (5 נ\"ז)\n   קדמים: תכנות מונחה עצמים, מבוא לחמרה, מבני נתונים\n  ← מבוא לחמרה (5 נ\"ז)\n  ← מבני נתונים (5 נ\"ז)\n     קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n    ← מבוא למדעי המחשב (5 נ\"ז)\n    ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את מערכות הפעלה כקדם:\n  → SEMINAR IN ADVANCED TOPICS IN COMPUTER NETWORKS (2 נ\"ז)"
+        }
+      ],
+      "latency_s": 4.99,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly states the three prerequisites for מערכות הפעלה: תכנות מונחה עצמים, מבוא לחמרה, and מבני נתונים. It also correctly mentions that מבני נתונים requires מבוא למדעי המחשב and מתמטיקה דיסקרטית. All facts match the database. The spelling difference between 'חמרה' (DB) and 'חומרה' (answer) is negligible.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 14,
+      "question": "מה הקורסים שמבני נתונים פותח?",
+      "category": "prerequisites",
+      "answer": "הקורסים שבהם **מבני נתונים** נדרש כקורס קדם הם:\n\n- מערכות הפעלה  \n- תכנון וניתוח אלגוריתמים  \n- הסתברות למדעי המחשב  \n- הנדסת תוכנה  \n- מבוא לבינה מלאכותית  \n- PROJECT IN COMPUTER VISION  \n- מבני נתונים מתקדמים  \n\nאלו הקורסים שמפתחים (דורשים) את קורס מבני נתונים כמקדמה.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "מבני נתונים"
+          },
+          "tool_result": "עץ קדמים עבור: מבני נתונים\n[root] מבני נתונים (5 נ\"ז)\n   קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n  ← מבוא למדעי המחשב (5 נ\"ז)\n  ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את מבני נתונים כקדם:\n  → מערכות הפעלה (5 נ\"ז)\n  → תכנון וניתוח אלגוריתמים (5 נ\"ז)\n  → הסתברות למדעי המחשב (5 נ\"ז)\n  → הנדסת תוכנה (5 נ\"ז)\n  → מבוא לבינה מלאכותית (4 נ\"ז)\n  → PROJECT IN COMPUTER VISION (3 נ\"ז)\n  → מבני נתונים מתקדמים (3 נ\"ז)"
+        }
+      ],
+      "latency_s": 8.44,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer lists exactly the 7 courses that require מבני נתונים as a prerequisite, matching the database perfectly: מערכות הפעלה, תכנון וניתוח אלגוריתמים, הסתברות למדעי המחשב, הנדסת תוכנה, מבוא לבינה מלאכותית, PROJECT IN COMPUTER VISION, and מבני נתונים מתקדמים. All verified against the Tkdams table. Fully accurate and complete.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 10
+    },
+    {
+      "id": 15,
+      "question": "מה עץ הקדמים של ראייה ממוחשבת?",
+      "category": "prerequisites",
+      "answer": "הנה עץ הקדמים של הקורס **ראייה ממוחשבת**:\n\n```mermaid\nflowchart TD\n  A[\"מבוא למדעי המחשב\"] --> B[\"מתמטיקה דיסקרטית\"]\n  A --> C[\"אלגברה לינארית\"]\n  A --> D[\"חדוא 1\"]\n  C --> E[\"אלגברה ב\"]\n  D --> F[\"חדוא 2\"]\n  B --> G[\"מבני נתונים\"]\n  G --> H[\"תכנון וניתוח אלגוריתמים\"]\n  E --> I[\"עיבוד תמונה\"]\n  F --> I\n  C --> I\n  D --> I\n  B --> I\n  H --> I\n  I --> J[\"ראייה ממוחשבת\"]\n```",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "ראייה ממוחשבת"
+          },
+          "tool_result": "עץ קדמים עבור: ראייה ממוחשבת\n[root] ראייה ממוחשבת (4 נ\"ז)\n   קדמים: עיבוד תמונה\n  ← עיבוד תמונה (5 נ\"ז)\n     קדמים: אלגברה לינארית, אלגברה ב, חדוא 1, חדוא 2, מתמטיקה דיסקרטית, תכנון וניתוח אלגוריתמים\n    ← אלגברה ב (5 נ\"ז)\n       קדמים: אלגברה לינארית\n    ← חדוא 2 (5 נ\"ז)\n       קדמים: חדוא 1\n    ← תכנון וניתוח אלגוריתמים (5 נ\"ז)\n       קדמים: מבני נתונים\n      ← אלגברה לינארית (5 נ\"ז)\n      ← חדוא 1 (5 נ\"ז)\n      ← מבני נתונים (5 נ\"ז)\n         קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n        ←..."
+        }
+      ],
+      "latency_s": 3.42,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies that ראייה ממוחשבת requires עיבוד תמונה as its direct prerequisite, and that עיבוד תמונה requires 6 courses. However, the Mermaid flowchart has structural inaccuracies: it shows מבוא למדעי המחשב connecting to מתמטיקה דיסקרטית, אלגברה לינארית, and חדוא 1, but in the database these all have NULL prerequisites. The chart incorrectly implies these courses depend on מבוא למדעי המחשב.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 9,
+      "judge_completeness": 7
+    },
+    {
+      "id": 16,
+      "question": "מה צריך לפני מודלים חישוביים?",
+      "category": "prerequisites",
+      "answer": "הקורס **מודלים חישוביים** דורש כקדם חובה את הקורס **תכנון וניתוח אלגוריתמים**.  \n\nמאחר ו‑תכנון וניתוח אלגוריתמים עצמו דורש את הקורס **מבני נתונים**, יש לעבור גם את המסלול הבא לפני שמגיעים למודלים חישוביים:\n\n- **מבני נתונים** → **תכנון וניתוח אלגוריתמים** → **מודלים חישוביים**\n\nוגם, **מבני נתונים** מחייב את הקורסים **מבוא למדעי המחשב** ו‑**מתמטיקה דיסקרטית**. לכן, בפרקטיקה, רצוי לעבור את הקורסים הבאים לפני מודלים חישוביים:\n\n1. מבוא למדעי המחשב  \n2. מתמטיקה דיסקרטית  \n3. מבני נתונים  \n4. תכנון וניתוח אלגוריתמים  \n5. מודלים חישוביים\n\nכך תבטיחו שיש לכם את כל הידע המוקדם הנדרש להצלחה בקורס.",
+      "tool_calls": [],
+      "latency_s": 5.19,
+      "tool_selection_correct": false,
+      "argument_correct": false,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly states that מודלים חישוביים requires תכנון וניתוח אלגוריתמים as its prerequisite. It also correctly traces the full chain: תכנון וניתוח אלגוריתמים requires מבני נתונים, which requires מבוא למדעי המחשב and מתמטיקה דיסקרטית. The 5-step learning order is accurate. However, the context field is empty and tool_calls is empty, suggesting this was answered without any tool calls or retrieved context.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 17,
+      "question": "איזה קורסים אלגברה לינארית פותחת?",
+      "category": "prerequisites",
+      "answer": "אלגברה לינארית משמשת כקדם למספר קורסים מתקדמים בתוכנית.  \n\n```mermaid\nflowchart TD\n  A[\"אלגברה לינארית\"] --> B[\"אלגברה ב\"]\n  A --> C[\"הסתברות למדעי המחשב\"]\n  A --> D[\"עיבוד תמונה\"]\n  A --> E[\"דחיסת תמונה וקול\"]\n  A --> F[\"מבוא ללמידה ממוכנת\"]\n  A --> G[\"תכנות מדעי\"]\n  A --> H[\"אופטימיזציה ללמידת מכונה\"]\n  A --> I[\"PROJECT IN COMPUTER VISION\"]\n  A --> J[\"גרפיקה ממוחשבת\"]\n  A --> K[\"PROJECT IN MACHINE LEARNING\"]\n  A --> L[\"COMPUTATIONAL GEOMETRY AND ITS APPLICATIONS IN ROBOTICS\"]\n  A --> M[\"NAVIGATION MAPPING AND LOCALIZATION ALGORITHMS\"]\n```  \n\n**סיכום**: מעבר מאלגברה לינארית פותחים קורסים בתחומי אלגברה מתקדמת, הסתברות, עיבוד ותכנון תמונה, למידת מכונה, רובוטיקה, גרפיקה ממוחשבת ועוד. אם אתה מתכנן מסלול שנוגע לאחד מהקורסים הללו, אלגברה לינארית היא קדם חובה.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "אלגברה לינארית"
+          },
+          "tool_result": "עץ קדמים עבור: אלגברה לינארית\n[root] אלגברה לינארית (5 נ\"ז)\n\nקורסים שדורשים את אלגברה לינארית כקדם:\n  → אלגברה ב (5 נ\"ז)\n  → הסתברות למדעי המחשב (5 נ\"ז)\n  → עיבוד תמונה (5 נ\"ז)\n  → דחיסת תמונה וקול (3 נ\"ז)\n  → מבוא ללמידה ממוכנת (4 נ\"ז)\n  → תכנות מדעי (4 נ\"ז)\n  → אופטימיזציה ללמידת מכונה (4 נ\"ז)\n  → PROJECT IN COMPUTER VISION (3 נ\"ז)\n  → גרפיקה ממוחשבת (4 נ\"ז)\n  → PROJECT IN MACHINE LEARNING (4 נ\"ז)\n  → COMPUTATIONAL GEOMETRY AND ITS APPLICATIONS IN ROBOTICS (3 נ\"ז)\n  → NAVIGATION MAPPING AND LO..."
+        }
+      ],
+      "latency_s": 6.68,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly lists all 12 courses that have אלגברה לינארית as a prerequisite, exactly matching the SQL database's Tkdams table. The mermaid diagram and summary are accurate. No fabricated or missing courses.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 10
+    },
+    {
+      "id": 18,
+      "question": "מה הקדמים של יסודות הקריפטוגרפיה?",
+      "category": "prerequisites",
+      "answer": "הקורס **יסודות קריפטוגרפיה** דורש שני קורסים קודמים:\n\n- **הסתברות למדעי המחשב**  \n- **מודלים חישוביים**\n\n```mermaid\nflowchart TD\n  A[\"הסתברות למדעי המחשב\"] --> C[\"יסודות קריפטוגרפיה\"]\n  B[\"מודלים חישוביים\"] --> C\n```",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "יסודות הקריפטוגרפיה"
+          },
+          "tool_result": "עץ קדמים עבור: יסודות הקריפטוגרפיה\n[root] יסודות הקריפטוגרפיה (4 נ\"ז)\n   קדמים: הסתברות למדעי המחשב, מודלים חישוביים\n  ← הסתברות למדעי המחשב (5 נ\"ז)\n     קדמים: אלגברה לינארית, חדוא 2, מבני נתונים\n  ← מודלים חישוביים (5 נ\"ז)\n     קדמים: תכנון וניתוח אלגוריתמים\n    ← אלגברה לינארית (5 נ\"ז)\n    ← חדוא 2 (5 נ\"ז)\n       קדמים: חדוא 1\n    ← תכנון וניתוח אלגוריתמים (5 נ\"ז)\n       קדמים: מבני נתונים\n      ← חדוא 1 (5 נ\"ז)\n      ← מבני נתונים (5 נ\"ז)\n         קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n  ..."
+        }
+      ],
+      "latency_s": 5.43,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies the two direct prerequisites (הסתברות למדעי המחשב and מודלים חישוביים), matching the SQL data exactly. The mermaid diagram is accurate. Minor deduction: the context contained the full transitive prerequisite tree but the answer only mentions the direct prerequisites.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 19,
+      "question": "מה הקדמים של הסתברות למדעי המחשב?",
+      "category": "prerequisites",
+      "answer": "קדמי הקורס **הסתברות למדעי המחשב** הם:\n\n- **אלגברה לינארית**\n- **חדו\"א 2** (שדורש כקדם את חדו\"א 1)\n- **מבני נתונים** (דורש כקדם את מבוא למדעי המחשב ואת מתמטיקה דיסקרטית)\n\nבנוסף, קורסים שמבוססים על \"הסתברות למדעי המחשב\" כוללים, בין היתר, רשתות תקשורת, מבוא ללמידה ממוכנת, אופטימיזציה ללמידת מכונה, נושאים נבחרים באלגוריתמים ועוד.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "הסתברות למדעי המחשב"
+          },
+          "tool_result": "עץ קדמים עבור: הסתברות למדעי המחשב\n[root] הסתברות למדעי המחשב (5 נ\"ז)\n   קדמים: אלגברה לינארית, חדוא 2, מבני נתונים\n  ← אלגברה לינארית (5 נ\"ז)\n  ← חדוא 2 (5 נ\"ז)\n     קדמים: חדוא 1\n  ← מבני נתונים (5 נ\"ז)\n     קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n    ← חדוא 1 (5 נ\"ז)\n    ← מבוא למדעי המחשב (5 נ\"ז)\n    ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את הסתברות למדעי המחשב כקדם:\n  → רשתות תקשורת (5 נ\"ז)\n  → מבוא ללמידה ממוכנת (4 נ\"ז)\n  → אופטימיזציה ללמידת מכונה (4 נ\"ז)\n  → נושאים נבחרים באלגוריתמ..."
+        }
+      ],
+      "latency_s": 3.97,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly lists all three direct prerequisites (אלגברה לינארית, חדוא 2, מבני נתונים) matching the SQL exactly. It also accurately mentions the transitive prerequisites and correctly lists downstream courses that depend on הסתברות (רשתות תקשורת, מבוא ללמידה ממוכנת, אופטימיזציה ללמידת מכונה, נושאים נבחרים באלגוריתמים), all verified against the SQL.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 10
+    },
+    {
+      "id": 20,
+      "question": "מה צריך לפני רשתות תקשורת?",
+      "category": "prerequisites",
+      "answer": "כדי להירשם לרשתות תקשורת, עליך תחילה להשלים את הקורס **הסתברות למדעי המחשב**.  \n\nהקורס “הסתברות למדעי המחשב” עצמו דורש את הקורסים הבאים כמקדמים:  \n\n- **אלגברה לינארית**  \n- **חדוא 2**  \n- **מבני נתונים**  \n\nלכן, לפני שנוכל לעבור לרשתות תקשורת, יש לסיים את ההסתברות (ולכן גם את שלושת הקורסים המקדמים שלה).",
+      "tool_calls": [],
+      "latency_s": 7.26,
+      "tool_selection_correct": false,
+      "argument_correct": false,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies הסתברות למדעי המחשב as the sole direct prerequisite for רשתות תקשורת, matching the SQL data. It also accurately describes the transitive prerequisites chain. However, the context is empty and no tool calls were made, meaning the answer was generated entirely from LLM knowledge without retrieval. Despite this, the factual content is fully correct.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 21,
+      "question": "מה הממוצע במבוא למדעי המחשב?",
+      "category": "grades",
+      "answer": "הציון הממוצע הכולל של **קורס מבוא למדעי המחשב** (על‑פי כל המועדים המתועדים במערכת) הוא **≈ 48.0**.\n\n#### ניתוח קצר של הנתונים\n| שנה – מועד | ממוצע | מספר נבחנים |\n|------------|--------|--------------|\n| 2015‑א׳ (מועד א) | 59.1 | 104 |\n| 2015‑א׳ (מועד ב) | 49.7 | 47 |\n| 2016‑א׳ (סופי) | 65.1 | 125 |\n| 2016‑ב׳ (סופי) | 64.2 | 44 |\n| 2017‑א׳ | 38.6 | 91 |\n| 2017‑ב׳ | 50.5 | 101 |\n| 2018‑א׳ | 48.2‑51.5 | 227 |\n| 2018‑ב׳ | 36.9‑41.8 | 181 |\n| 2019‑א׳ | 44.5‑49.8 | 239 |\n| 2019‑ב׳ | 50.9‑56.5 | 126 |\n| 2020‑א׳ | 47.1‑39.2‑36.6 | 205 |\n| 2020‑ב׳ | 42.6‑62.2 | 121 |\n| 2021‑א׳ | 57.6‑40.5‑26.2 | 212 |\n| 2021‑ב׳ | 46.5‑41.3 | 134 |\n| 2022‑א׳ | 40.4‑58.5‑48.2 | 277 |\n| 2022‑ב׳ | 31.8‑39.8‑45.6 | 256 |\n| 2023‑א׳ | 59.9 | 78 |\n\n* **מגמה** – הממוצעים נעים בטווח רחב (בין ≈ 26 במועד הקיץ של תשפ״ב ובין ≈ 65 במועד הסופי של 2016).  \n* **ממוצע גבוה** נרשם בשנת 2016 (קורסים סופיים) ובשנה האקדמית תשפ״ה (מועד א).  \n* **ממוצע נמוך** נצפה בעונת הקיץ של תשפ״ב (26.2) וברוב המועדים של 2017‑2018.\n\nאם יש צורך בנתונים מפורטים יותר (לדוגמה ממוצע של סמסטר מסוים, מרצה ספציפי, או השוואת מועדים), אשמח לחפש ולהציג.",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "מבוא למדעי המחשב"
+          },
+          "tool_result": "ציונים עבור: מבוא למדעי המחשב (31 מועדים)\n\nתשע״ה א׳ מועד א | שולי וינטנר:\n  ממוצע: 59.1, נבחנים: 104\n  התפלגות: 0-9: 10, 10-19: 4, 20-29: 3, 30-39: 10, 40-49: 5, 50-59: 11, 60-69: 19, 70-79: 14, 80-89: 16, 90-100: 12\n\nתשע״ו א׳ מועד ב | שולי וינטנר:\n  ממוצע: 49.7, נבחנים: 47\n  התפלגות: 0-9: 9, 10-19: 1, 20-29: 6, 30-39: 1, 40-49: 2, 50-59: 6, 60-69: 10, 70-79: 4, 80-89: 4, 90-100: 4\n\nתשע״ז א׳ מועד א | שולי וינטנר (סופי):\n  ממוצע: 65.1, נבחנים: 125\n  התפלגות: 0-9: 14, 10-19: 6, 20-29: 5, 30-39: 4,..."
+        }
+      ],
+      "latency_s": 21.16,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer provides grade data largely consistent with the SQL database. Individual averages (59.1, 49.7, 65.1, 64.2, 38.6, etc.) are correct when matched to specific moeds. However: (1) The overall average claim of ~48.0 is not clearly computed, (2) Year labeling in the table is confusing - mixing Gregorian and Hebrew year conventions inconsistently, (3) Some rows show ranges like '48.2-51.5' which conflate multiple moeds without clear explanation, (4) Not all 31 moeds mentioned are shown. The data is real but presentation is confusing.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 24,
+      "question": "מה היה הממוצע באלגברה לינארית?",
+      "category": "grades",
+      "answer": "הציון הממוצע בקורס **אלגברה לינארית** משתנה משמעותית בין מועדים שונים, אך במונחים של **הממוצע הכולל של חמשת המועדים האחרונים (תשפ״ד‑תשפ״ג)** הוא נע סביב **55 – 56**.\n\n**סיכום ממוצעים של חמשת המועדים האחרונים**\n\n| שנה – מועד | מרצה | ממוצע | מספר נבחנים |\n|-----------|------|------|--------------|\n| תשפ״ד א׳ מועד ב | רפאל יוסטר‑ירון | **56.7** | 68 |\n| תשפ״ד א׳ מועד א | רפאל יוסטר‑ירון | **50.6** | 110 |\n| תשפ״ג ב׳ מועד א | עידן אייזנר | **52.8** | 47 |\n| תשפ״ג א׳ מועד ב | אסלאם | **61.1** | 126 |\n| תשפ״ג א׳ מועד א | אסלאם | **50.7** | 103 |\n\nה‑*average* המשוקלל של חמשת המועדים (בהתבסס על מספר הנבחנים) הוא **≈ 55.2**.\n\n**מגמות נצפות**\n\n* **אלפי תלמידים** – במועדים האחרונים מספר הנבחנים נע בין 47 ל‑126.\n* **שיפור קבוע** – במועדים של השנה האחרונה (תשפ״ד) הממוצע עולה קלות לעבר 56, בעוד שבעבר היו תנודות גבוהות יותר (ממוצעים של 70‑76 בתקופות מוקדמות יותר, כגון תש״ז‑תש״ט).\n* **התפלגות** – רוב הסטודנטים מצויים בטווח **50‑80**, עם קבוצה קטנה של מצטיינים (90‑100) וסטודנטים בטווח נמוך (0‑49).\n\n```histogram\n{\"course\": \"אלגברה לינארית\", \"entries\": [{\"label\": \"תשע״ז א׳ מועד ב | גיל ורניק (סופי)\", \"avg\": 76.4, \"num\": 79, \"buckets\": [0, 0, 1, 3, 3, 7, 13, 14, 20, 18]}, {\"label\": \"תשע״ח א׳ מועד א | גיל ורניק\", \"avg\": 64.9, \"num\": 123, \"buckets\": [3, 1, 4, 8, 5, 20, 28, 28, 21, 5]}, {\"label\": \"תשע״ח ב׳ מועד א | ולדימיר\", \"avg\": 59.0, \"num\": 49, \"buckets\": [1, 4, 2, 6, 4, 7, 8, 8, 3, 6]}, {\"label\": \"תשע״ט א׳ מועד א | פרול\", \"avg\": 70.2, \"num\": 94, \"buckets\": [3, 1, 2, 3, 10, 8, 14, 16, 17, 20]}, {\"label\": \"תשע״ט א׳ מועד ב | פרול\", \"avg\": 56.6, \"num\": 34, \"buckets\": [4, 0, 1, 1, 3, 10, 4, 5, 5, 1]}, {\"label\": \"תשע״ט ב׳ מועד א | ולדימיר\", \"avg\": 75.5, \"num\": 75, \"buckets\": [1, 4, 2, 1, 2, 9, 9, 5, 11, 31]}, {\"label\": \"תש״פ א׳ מועד א | פרול\", \"avg\": 71.5, \"num\": 83, \"buckets\": [0, 2, 2, 2, 4, 13, 14, 15, 15, 16]}, {\"label\": \"תש״פ א׳ מועד ב | פרול\", \"avg\": 71, \"num\": 28, \"buckets\": [1, 0, 2, 1, 1, 2, 4, 4, 7, 6]}, {\"label\": \"תש״פ ב׳ מועד א | ולדימיר\", \"avg\": 44.9, \"num\": 35, \"buckets\": [6, 8, 2, 3, 0, 3, 7, 0, 2, 4]}, {\"label\": \"תשפ״א א׳ מועד א | אוריה\", \"avg\": 61.0, \"num\": 73, \"buckets\": [0, 3, 5, 6, 6, 13, 16, 11, 8, 5]}, {\"label\": \"תשפ״א א׳ מועד ב | אוריה\", \"avg\": 62.1, \"num\": 36, \"buckets\": [1, 0, 1, 1, 4, 7, 10, 8, 4, 0]}, {\"label\": \"תשפ״א ב׳ מועד א | פרול\", \"avg\": 70.1, \"num\": 49, \"buckets\": [3, 2, 2, 3, 3, 5, 1, 4, 9, 17]}, {\"label\": \"תשפ״א ב׳ מועד ב | פרול\", \"avg\": 51.2, \"num\": 13, \"buckets\": [1, 0, 1, 2, 3, 3, 0, 1, 1, 1]}, {\"label\": \"תשפ״א ב׳ מועד קיץ | פרול\", \"avg\": 74, \"num\": 1, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0]}, {\"label\": \"תשפ״ב א׳ מועד א | אריאל אמסלם\", \"avg\": 65.2, \"num\": 80, \"buckets\": [0, 0, 0, 2, 12, 18, 21, 11, 12, 4]}, {\"label\": \"תשפ״ב א׳ מועד ב | אריאל אמסלם\", \"avg\": 62.7, \"num\": 58, \"buckets\": [1, 1, 2, 5, 9, 9, 10, 7, 10, 4]}, {\"label\": \"תשפ״ב א׳ מועד קיץ | אריאל אמסלם\", \"avg\": 56.1, \"num\": 15, \"buckets\": [0, 0, 1, 3, 1, 4, 4, 0, 0, 2]}, {\"label\": \"תשפ״ב ב׳ מועד א | אנה מלניקוב\", \"avg\": 42.7, \"num\": 37, \"buckets\": [6, 3, 8, 0, 5, 6, 1, 3, 5, 0]}, {\"label\": \"תשפ״ב ב׳ מועד ב | אנה מלניקוב\", \"avg\": 44.9, \"num\": 37, \"buckets\": [5, 5, 3, 2, 4, 7, 4, 3, 4, 0]}, {\"label\": \"תשפ״ב ב׳ מועד קיץ | אנה מלניקוב\", \"avg\": 67.3, \"num\": 3, \"buckets\": [0, 0, 1, 0, 0, 0, 0, 0, 2, 0]}, {\"label\": \"תשפ״ג א׳ מועד א | אסלאם\", \"avg\": 50.7, \"num\": 103, \"buckets\": [4, 10, 7, 18, 15, 17, 20, 1, 9, 2]}, {\"label\": \"תשפ״ג א׳ מועד ב | אסלאם\", \"avg\": 61.1, \"num\": 126, \"buckets\": [6, 2, 6, 9, 5, 17, 30, 29, 17, 5]}, {\"label\": \"תשפ״ג ב׳ מועד א | עידן אייזנר\", \"avg\": 52.8, \"num\": 47, \"buckets\": [0, 3, 4, 7, 6, 13, 2, 7, 5, 0]}, {\"label\": \"תשפ״ד א׳ מועד א | רפאל יוסטר-ירון\", \"avg\": 50.6, \"num\": 110, \"buckets\": [1, 4, 11, 19, 17, 21, 22, 10, 5, 0]}, {\"label\": \"תשפ״ד א׳ מועד ב | רפאל יוסטר-ירון\", \"avg\": 56.7, \"num\": 68, \"buckets\": [0, 2, 5, 8, 12, 14, 11, 9, 2, 5]}]}\n```",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "אלגברה לינארית"
+          },
+          "tool_result": "ציונים עבור: אלגברה לינארית (25 מועדים)\n\nתשע״ז א׳ מועד ב | גיל ורניק (סופי):\n  ממוצע: 76.4, נבחנים: 79\n  התפלגות: 20-29: 1, 30-39: 3, 40-49: 3, 50-59: 7, 60-69: 13, 70-79: 14, 80-89: 20, 90-100: 18\n\nתשע״ח א׳ מועד א | גיל ורניק:\n  ממוצע: 64.9, נבחנים: 123\n  התפלגות: 0-9: 3, 10-19: 1, 20-29: 4, 30-39: 8, 40-49: 5, 50-59: 20, 60-69: 28, 70-79: 28, 80-89: 21, 90-100: 5\n\nתשע״ח ב׳ מועד א | ולדימיר:\n  ממוצע: 59.0, נבחנים: 49\n  התפלגות: 0-9: 1, 10-19: 4, 20-29: 2, 30-39: 6, 40-49: 4, 50-59: 7, 60-69: 8,..."
+        }
+      ],
+      "latency_s": 45.48,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The last 5 moeds' averages and student counts match the SQL data exactly (56.7/68, 50.6/110, 52.8/47, 61.1/126, 50.7/103). The weighted average claim of ~55.2 is plausible. The histogram data for all 25 moeds is consistent with the SQL. Minor issues: the claim about 'שיפור קבוע' is debatable since data shows fluctuation, and some Hebrew year naming seems confused, but actual numbers are correct.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 9,
+      "judge_completeness": 9
+    },
+    {
+      "id": 27,
+      "question": "מה הציונים בהסתברות למדעי המחשב?",
+      "category": "grades",
+      "answer": "הנה סיכום של התפלגות הציונים בקורס **הסתברות למדעי המחשב** (נתוני המורים, המועדים והקבוצות השונות מהשנים האחרונות).\n\n### ממוצעים כלליים\n| שנה/מועד | ממוצע | מספר נבחנים |\n|---|---|---|\n| תשע״ג (א’ – מועד ב) | 64.4 | 47 |\n| תשע״ד (א’ – מועד א) | 60.7 | 74 |\n| תשע״ה (א’ – מועד א) | 58.7 | 71 |\n| תשע״ו (א’ – מועד א) | 51.8 | 65 |\n| תשע״ח (א’ – מועד א) | 70.9 | 159 |\n| תשפ״א (א’ – מועד ב) | 79.0 | 62 |\n| תשפ״ב (א’ – מועד ב) | 67.1 | 48 |\n| תשפ״ג (א’ – מועד ב) | 59.4 | 65 |\n| תשפ״ד (א’ – מועד ב) | 43.6 | 102 |\n| תשפ״ה (א’ – מועד א) | 53.2 | 105 |\n\n#### מגמות בולטות\n- **עלייה משמעותית בממוצעים** החל משנות **תשפ״א–תשפ״ב**, כאשר הממוצע במועד ב של תשפ״א מגיע ל‑79, גבוה מהשגרה של קודמים.\n- בשנים **קודמות (תשע״ג‑תשע״ו)** המגמה הייתה פחות יציבה, עם ירידות חדות (לדוגמה 51.8 בתשע״ו) והחזרות גבוהות (70.9 בתשע״ח).\n- **מועדי קיץ** נוטים להיות קשים יותר – הממוצעים קבועים סביב 46‑48 (תשע״ג קיץ, תשפ״ב קיץ) וההפצה משקפת ריבוי תלמידים עם ציונים נמוכים.\n- **פיזור הציונים**: בעשור האחרון ההפצה נוטה להתקבץ יותר סביב 70‑89, לצד קבוצה קטנה של 90‑100 (לדוגמה 23 סטודנטים ב‑70‑89 בתשע״ח). המועדים המוקדמים יותר (תשפ״ד) מציגים פיזור רחב יותר של ציונים נמוכים (0‑39).\n\n### התפלגות מפורטת (היסטוגרמה)\n\n```histogram\n{\"course\": \"הסתברות למדעי המחשב\", \"entries\": [{\"label\": \"תשע״ג א׳ מועד ב | רונן\", \"avg\": 64.4, \"num\": 47, \"buckets\": [2, 4, 3, 2, 2, 3, 7, 1, 16, 7]}, {\"label\": \"תשע״ג א׳ מועד קיץ | רונן\", \"avg\": 46.7, \"num\": 6, \"buckets\": [0, 2, 0, 1, 1, 0, 0, 1, 0, 1]}, {\"label\": \"תשע״ד א׳ מועד א | רונן\", \"avg\": 60.7, \"num\": 74, \"buckets\": [0, 1, 6, 12, 4, 13, 10, 11, 8, 9]}, {\"label\": \"תשע״ה א׳ מועד א | רונן\", \"avg\": 58.7, \"num\": 71, \"buckets\": [0, 0, 1, 9, 0, 27, 22, 11, 1, 0]}, {\"label\": \"תשע״ו א׳ מועד א | יורי\", \"avg\": 51.8, \"num\": 65, \"buckets\": [3, 8, 8, 0, 9, 14, 5, 6, 6, 6]}, {\"label\": \"תשע״ז א׳ מועד א | רונן\", \"avg\": 56.7, \"num\": 95, \"buckets\": [0, 0, 3, 18, 22, 10, 16, 14, 9, 3]}, {\"label\": \"תשע״ח א׳ מועד א | רונן\", \"avg\": 70.9, \"num\": 159, \"buckets\": [0, 1, 3, 6, 5, 26, 36, 28, 31, 23]}, {\"label\": \"תשע״ט ב׳ מועד א | יורי\", \"avg\": 49.5, \"num\": 75, \"buckets\": [4, 6, 11, 10, 0, 15, 17, 4, 5, 3]}, {\"label\": \"תש״פ א׳ מועד א | רונן\", \"avg\": 56.3, \"num\": 142, \"buckets\": [3, 3, 24, 9, 14, 31, 18, 10, 13, 17]}, {\"label\": \"תש״פ א׳ מועד ב | רונן\", \"avg\": 66.5, \"num\": 90, \"buckets\": [0, 0, 1, 5, 5, 34, 2, 19, 18, 6]}, {\"label\": \"תשפ״א א׳ מועד א | אילן נוימן\", \"avg\": 73.5, \"num\": 49, \"buckets\": [1, 1, 0, 2, 2, 4, 7, 12, 16, 4]}, {\"label\": \"תשפ״א א׳ מועד ב | אילן נוימן\", \"avg\": 79.0, \"num\": 62, \"buckets\": [2, 0, 1, 1, 0, 2, 6, 17, 22, 11]}, {\"label\": \"תשפ״ב א׳ מועד א | סיימון\", \"avg\": 66.6, \"num\": 43, \"buckets\": [0, 0, 2, 1, 3, 9, 7, 14, 5, 2]}, {\"label\": \"תשפ״ב א׳ מועד ב | סיימון\", \"avg\": 67.1, \"num\": 48, \"buckets\": [0, 2, 0, 1, 4, 9, 10, 12, 6, 4]}, {\"label\": \"תשפ״ב א׳ מועד קיץ | סיימון\", \"avg\": 48.8, \"num\": 17, \"buckets\": [1, 0, 2, 2, 4, 4, 2, 0, 1, 1]}, {\"label\": \"תשפ״ב ב׳ מועד א | יורי\", \"avg\": 68.6, \"num\": 14, \"buckets\": [0, 0, 1, 0, 1, 3, 3, 5, 1, 0]}, {\"label\": \"תשפ״ב ב׳ מועד ב | יורי\", \"avg\": 57.2, \"num\": 10, \"buckets\": [1, 0, 1, 1, 0, 0, 5, 2, 0, 0]}, {\"label\": \"תשפ״ב ב׳ מועד קיץ | יורי\", \"avg\": 72.5, \"num\": 2, \"buckets\": [0, 0, 0, 0, 0, 0, 1, 1, 0, 0]}, {\"label\": \"תשפ״ג א׳ מועד א | דן רוזנבאום\", \"avg\": 54.2, \"num\": 87, \"buckets\": [0, 0, 5, 13, 20, 21, 9, 15, 3, 1]}, {\"label\": \"תשפ״ג א׳ מועד ב | דן רוזנבאום\", \"avg\": 59.4, \"num\": 65, \"buckets\": [0, 1, 3, 3, 5, 23, 18, 5, 6, 1]}, {\"label\": \"תשפ״ג א׳ מועד קיץ | דן רוזנבאום\", \"avg\": 31.8, \"num\": 6, \"buckets\": [0, 1, 2, 2, 0, 1, 0, 0, 0, 0]}, {\"label\": \"תשפ״ד א׳ מועד א | אור מאיר\", \"avg\": 41.4, \"num\": 71, \"buckets\": [1, 8, 15, 14, 10, 13, 3, 4, 2, 1]}, {\"label\": \"תשפ״ד א׳ מועד ב | אור מאיר\", \"avg\": 43.6, \"num\": 102, \"buckets\": [0, 9, 18, 22, 17, 19, 9, 5, 3, 0]}, {\"label\": \"תשפ״ד ב׳ מועד ב | אור מאיר\", \"avg\": 43.6, \"num\": 102, \"buckets\": [0, 9, 18, 22, 17, 19, 9, 5, 3, 0]}, {\"label\": \"תשפ״ה א׳ מועד א | סיימון\", \"avg\": 53.2, \"num\": 105, \"buckets\": [1, 1, 9, 11, 27, 24, 11, 14, 6, 1]}]}\n```",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "הסתברות למדעי המחשב"
+          },
+          "tool_result": "ציונים עבור: הסתברות למדעי המחשב (25 מועדים)\n\nתשע״ג א׳ מועד ב | רונן:\n  ממוצע: 64.4, נבחנים: 47\n  התפלגות: 0-9: 2, 10-19: 4, 20-29: 3, 30-39: 2, 40-49: 2, 50-59: 3, 60-69: 7, 70-79: 1, 80-89: 16, 90-100: 7\n\nתשע״ג א׳ מועד קיץ | רונן:\n  ממוצע: 46.7, נבחנים: 6\n  התפלגות: 10-19: 2, 30-39: 1, 40-49: 1, 70-79: 1, 90-100: 1\n\nתשע״ד א׳ מועד א | רונן:\n  ממוצע: 60.7, נבחנים: 74\n  התפלגות: 10-19: 1, 20-29: 6, 30-39: 12, 40-49: 4, 50-59: 13, 60-69: 10, 70-79: 11, 80-89: 8, 90-100: 9\n\nתשע״ה א׳ מועד א | רונן:\n..."
+        }
+      ],
+      "latency_s": 26.55,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The grade data presented matches the SQL database accurately. Averages are correctly rounded, student counts match, and distributions are correct. The answer covers 25 exam sessions comprehensively with both a summary table and detailed histogram. The analysis of trends is reasonable. Minor issue: the summary table picks specific moeds without always being clear about why those were chosen.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 9,
+      "judge_completeness": 9
+    },
+    {
+      "id": 28,
+      "question": "מה ההתפלגות ציונים במערכות הפעלה?",
+      "category": "grades",
+      "answer": "**התפלגות ציונים במערכות הפעלה (קורס חובה, 5 נ\"ז)**  \n\nהנתונים מכסים את המועדים האחרונים (עד 5 מועדים קודמים) של הקורס משנת תש''פ ועד תש''ה.  \n\n### ממוצעי הקורס לפי מועדים\n| שנה / מועד | ממוצע | מספר נבחנים |\n|-----------|-------|--------------|\n| ת''ד (1994) – מועד א | 59.5 | 49 |\n| ת''ד – מועד ב | 49.3 | 42 |\n| ת''ח (1995) – מועד א | 61.9 | 72 |\n| ת''ח – מועד ב | 55.2 | 60 |\n| ת''ט (1999) – מועד א | 67.3 | 65 |\n| ת''ט – מועד ב | 51.1 | 30 |\n| תש''פ (2000) – מועד א | 61.9 | 43 |\n| תש''פ – מועד ב | 57.2 | 102 |\n| תש''פ – מועד קיץ | 55.3 | 57 |\n| תש''א (2001) – מועד א | 57.5 | 71 |\n| תש''א – מועד ב | 51.5 | 68 |\n| תש''א – מועד קיץ | 40.6 | 21 |\n| תש''ב (2002) – מועד א | 64.1 | 97 |\n| תש''ב – מועד ב | 45.9 | 59 |\n| תש''ב – מועד קיץ | 51.9 | 20 |\n| תש''ג (2003) – מועד א | 62.3 | 112 |\n| תש''ג – מועד ב | 60.7 | 44 |\n| תש''ד (2004) – מועד א | 67.0 | 115 |\n| תש''ה (2005) – מועד א | 64.2 | 80 |\n| תש''ה – מועד ב | 70.8 | 24 |\n| תש''ה – מועד קיץ | 74.6 | 14 |\n\n### מגמות מרכזיות\n- **ממוצעים**: ניכרת עלייה כללית מתחילת הקורס (אמצע שנות ה‑90) עד שיא של כ‑74 במועד הקיץ של תש''ה.  \n- **הפיזור**: בחלק מהמועדים (למשל תש''ד מועד א, תש''ט מועד א, תש''ד מועד א, תש''ה מועד ב) ישנה קבוצה משמעותית של תלמידים שמקבלים 70‑100, מה שמעיד על תשתית מספיקה של תלמידים מצטיינים.  \n- **מועדים קלים/קשים**: מועד הקיץ של תש''א (ממוצע 40.6) הוא הנמוך ביותר, ככל הנראה משקף קושי גבוה של המועד.  \n- **מספר נבחנים**: הקורס נשאר פופולרי לאורך השנים; מספר הנבחנים בטווח של 30‑115 במועדים השונים.\n\n### היסטוגרמת ציונים (מועדים נבחרים)\n```histogram\n{\"course\": \"מערכות הפעלה\", \"entries\": [{\"label\": \"תשע״ד א׳ מועד א | איתן רון\", \"avg\": 59.5, \"num\": 49, \"buckets\": [1, 3, 4, 4, 8, 6, 3, 4, 8, 8]}, {\"label\": \"תשע״ד א׳ מועד ב | איתן רון\", \"avg\": 49.3, \"num\": 42, \"buckets\": [5, 1, 4, 4, 4, 7, 6, 10, 1, 0]}, {\"label\": \"תשע״ח ב׳ מועד א | רחל\", \"avg\": 61.9, \"num\": 72, \"buckets\": [0, 0, 2, 4, 8, 16, 25, 12, 5, 0]}, {\"label\": \"תשע״ח ב׳ מועד ב | רחל\", \"avg\": 55.2, \"num\": 60, \"buckets\": [0, 2, 3, 11, 10, 6, 13, 10, 5, 0]}, {\"label\": \"תשע״ט ב׳ מועד א | רחל\", \"avg\": 67.3, \"num\": 65, \"buckets\": [0, 0, 0, 2, 5, 13, 14, 24, 5, 2]}, {\"label\": \"תשע״ט ב׳ מועד ב | רחל\", \"avg\": 51.1, \"num\": 30, \"buckets\": [3, 0, 3, 4, 3, 5, 5, 5, 1, 1]}, {\"label\": \"תש״פ ב׳ מועד א | רחל\", \"avg\": 61.9, \"num\": 43, \"buckets\": [0, 0, 1, 2, 4, 14, 9, 5, 7, 1]}, {\"label\": \"תש״פ ב׳ מועד ב | רחל\", \"avg\": 57.2, \"num\": 102, \"buckets\": [0, 1, 5, 7, 20, 26, 26, 8, 8, 1]}, {\"label\": \"תש״פ ב׳ מועד קיץ | רחל\", \"avg\": 55.3, \"num\": 57, \"buckets\": [0, 0, 3, 5, 11, 17, 14, 5, 2, 0]}, {\"label\": \"תשפ״א ב׳ מועד א | רחל\", \"avg\": 57.5, \"num\": 71, \"buckets\": [1, 1, 4, 9, 7, 14, 13, 16, 6, 0]}, {\"label\": \"תשפ״א ב׳ מועד ב | רחל\", \"avg\": 51.5, \"num\": 68, \"buckets\": [2, 3, 9, 7, 10, 14, 8, 11, 3, 1]}, {\"label\": \"תשפ״א ב׳ מועד קיץ | רחל\", \"avg\": 40.6, \"num\": 21, \"buckets\": [2, 3, 1, 2, 2, 9, 1, 1, 0, 0]}, {\"label\": \"תשפ״ב ב׳ מועד א | רחל\", \"avg\": 64.1, \"num\": 97, \"buckets\": [0, 0, 3, 3, 12, 23, 24, 17, 13, 2]}, {\"label\": \"תשפ״ב ב׳ מועד ב | רחל\", \"avg\": 45.9, \"num\": 59, \"buckets\": [5, 5, 4, 4, 8, 18, 11, 3, 1, 0]}, {\"label\": \"תשפ״ב ב׳ מועד קיץ | רחל\", \"avg\": 51.9, \"num\": 20, \"buckets\": [1, 2, 1, 1, 4, 1, 5, 5, 0, 0]}, {\"label\": \"תשפ״ג ב׳ מועד א | רחל\", \"avg\": 62.3, \"num\": 112, \"buckets\": [0, 0, 1, 8, 10, 28, 29, 28, 7, 1]}, {\"label\": \"תשפ״ג ב׳ מועד ב | רחל\", \"avg\": 60.7, \"num\": 44, \"buckets\": [0, 1, 3, 4, 4, 8, 6, 10, 7, 1]}, {\"label\": \"תשפ״ד ב׳ מועד א | שלי קול\", \"avg\": 67.0, \"num\": 115, \"buckets\": [0, 0, 1, 4, 11, 22, 27, 27, 22, 1]}, {\"label\": \"תשפ״ה ב׳ מועד א | שלי קול\", \"avg\": 64.2, \"num\": 80, \"buckets\": [0, 1, 2, 6, 8, 16, 17, 14, 11, 5]}, {\"label\": \"תשפ״ה ב׳ מועד ב | רחל\", \"avg\": 70.8, \"num\": 24, \"buckets\": [0, 0, 1, 2, 1, 2, 2, 9, 5, 2]}, {\"label\": \"תשפ״ה ב׳ מועד קיץ | רחל\", \"avg\": 74.6, \"num\": 14, \"buckets\": [0, 0, 0, 0, 1, 3, 0, 4, 3, 3]}]\n```\n\n**סיכום:**  מערכות הפעלה הוא קורס שמוצע פעמים רבות בשנה, עם ממוצעים נעים בין 40 ל‑75. הסטודנטים שמקבלים ציונים גבוהים (70‑100) נמצאים בעיקר במועדים של ת'ש\"ד, ת'ש\"ט, ות'ש\"ד‑ה. המועדים הקיציים (קיץ) נוטים להיות קשים יותר מבחינת ממוצע, אך במקרים של ת'ש\"ה קיץ נראה עלייה משמעותית בממוצעים, מה שמראה שחלק מהקבוצות מקבלות תמריץ גבוה יותר במועדים אלו.",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "מערכות הפעלה"
+          },
+          "tool_result": "ציונים עבור: מערכות הפעלה (21 מועדים)\n\nתשע״ד א׳ מועד א | איתן רון:\n  ממוצע: 59.5, נבחנים: 49\n  התפלגות: 0-9: 1, 10-19: 3, 20-29: 4, 30-39: 4, 40-49: 8, 50-59: 6, 60-69: 3, 70-79: 4, 80-89: 8, 90-100: 8\n\nתשע״ד א׳ מועד ב | איתן רון:\n  ממוצע: 49.3, נבחנים: 42\n  התפלגות: 0-9: 5, 10-19: 1, 20-29: 4, 30-39: 4, 40-49: 4, 50-59: 7, 60-69: 6, 70-79: 10, 80-89: 1\n\nתשע״ח ב׳ מועד א | רחל:\n  ממוצע: 61.9, נבחנים: 72\n  התפלגות: 20-29: 2, 30-39: 4, 40-49: 8, 50-59: 16, 60-69: 25, 70-79: 12, 80-89: 5\n\nתשע״ח ב׳ מ..."
+        }
+      ],
+      "latency_s": 29.78,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The histogram data and underlying numbers match the database accurately. However, the summary table severely garbles the Hebrew year names (e.g., 'תשע\"ד' becomes 'ת\"ד') and maps them to completely wrong Gregorian years (1994, 1995, 1999, etc. when actual years are 2013-2025). This is a significant faithfulness problem in the textual summary, even though the raw histogram data is correct.",
+      "error": null,
+      "judge_faithfulness": 5,
+      "judge_relevance": 7,
+      "judge_completeness": 7
+    },
+    {
+      "id": 29,
+      "question": "מה הממוצע בהנדסת תוכנה?",
+      "category": "grades",
+      "answer": "הממוצע של קורס **הנדסת תוכנה** (מלכי גרוסמן) נע סביב **86 נקודות** כאשר מחשבים את הממוצעים של כל המועדים שזמינים.  \n\n### מגמות עיקריות מהנתונים\n* **שנים מוקדמות** (תשע״ז) – ממוצע נמוך משמעותית, 71.2, עם ריכוז גבוה של ציונים בטווח 60‑79.  \n* **שנים מאוחרות** (תשפ״א‑תשפ״ה) – הממוצעים נעים בין 87 ל‑91. המגמה היא לשיפור משמעותי בציונים, כאשר רוב הסטודנטים מקבלות ציונים בטווח 80‑100.  \n* **שתי המועדות האחרונות** (תשפ״ד‑תשפ״ה) – ממוצע גבוה מאוד, 90‑91, כשמספר גדול של סטודנטים (מעל 50) מקבלות 90+.\n\nזה אומר שהקורס הפך בקצב של השנים האחרונות לקצת יותר “קלה” מבחינת ציונים, או שהקבוצות של הסטודנטים שהשתתפו בשנים אלו הצליחו יותר.\n\n```histogram\n{\"course\": \"הנדסת תוכנה\", \"entries\": [{\"label\": \"תשע״ז א׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 71.2, \"num\": 42, \"buckets\": [0, 1, 0, 0, 4, 2, 8, 16, 8, 3]}, {\"label\": \"תשע״ט ב׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 90.8, \"num\": 69, \"buckets\": [0, 0, 0, 0, 0, 0, 1, 4, 28, 36]}, {\"label\": \"תש״פ א׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 91.9, \"num\": 44, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 1, 20, 23]}, {\"label\": \"תשפ״א ב׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 91.6, \"num\": 56, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 1, 21, 34]}, {\"label\": \"תשפ״ב א׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 75.7, \"num\": 51, \"buckets\": [8, 0, 0, 0, 0, 0, 0, 1, 20, 22]}, {\"label\": \"תשפ״ב ב׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 82.8, \"num\": 72, \"buckets\": [1, 6, 0, 0, 0, 0, 0, 7, 17, 41]}, {\"label\": \"תשפ״ג א׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 75.9, \"num\": 51, \"buckets\": [7, 0, 0, 0, 0, 0, 2, 1, 26, 15]}, {\"label\": \"תשפ״ג ב׳ מועד א | מלכי גרוסמן (פרוייקט)\", \"avg\": 87.0, \"num\": 78, \"buckets\": [3, 0, 0, 0, 0, 0, 0, 1, 28, 46]}, {\"label\": \"תשפ״ד א׳ מועד f | מלכי גרוסמן (פרוייקט)\", \"avg\": 89.7, \"num\": 29, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 1, 12, 16]}, {\"label\": \"תשפ״ד ב׳ מועד f | מלכי גרוסמן (פרוייקט)\", \"avg\": 90.6, \"num\": 53, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 1, 22, 30]}, {\"label\": \"תשפ״ה ב׳ מועד א | מלכי גרוסמן (סופי)\", \"avg\": 90.1, \"num\": 69, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 2, 29, 38]}]}\n```",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "הנדסת תוכנה"
+          },
+          "tool_result": "ציונים עבור: הנדסת תוכנה (12 מועדים)\n\nתשע״ז א׳ מועד א | מלכי גרוסמן (פרוייקט):\n  ממוצע: 71.2, נבחנים: 42\n  התפלגות: 10-19: 1, 40-49: 4, 50-59: 2, 60-69: 8, 70-79: 16, 80-89: 8, 90-100: 3\n\nתשע״ח א׳ מועד א | מלכי גרוסמן (פרוייקט):\n  ממוצע: 91.1, נבחנים: 69\n\nתשע״ט ב׳ מועד א | מלכי גרוסמן (פרוייקט):\n  ממוצע: 90.8, נבחנים: 69\n  התפלגות: 60-69: 1, 70-79: 4, 80-89: 28, 90-100: 36\n\nתש״פ א׳ מועד א | מלכי גרוסמן (פרוייקט):\n  ממוצע: 91.9, נבחנים: 44\n  התפלגות: 70-79: 1, 80-89: 20, 90-100: 23\n\nתשפ״א ב׳ מועד..."
+        }
+      ],
+      "latency_s": 12.52,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The grade data in the histogram matches the SQL database well. The answer correctly identifies the lecturer (מלכי גרוסמן) and that grades are generally high. However, the histogram omits the תשע\"ח semester (ID 123, avg 91.13, 69 students) which was present in the context. The claim of overall average 'around 86' is reasonable. Minor issue: some entries use moed 'f' which is likely a project/final grade.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 7
+    },
+    {
+      "id": 30,
+      "question": "מה הציונים באלגברה ב?",
+      "category": "grades",
+      "answer": "**אלגברה ב – התפלגות ציונים (30 מועדים)**  \n\nהנתונים מראים שינוי משמעותי בממוצעים ובאיכות הציונים לאורך השנים:\n\n- **ממוצעים**: נע בין 25.4 (תש״פ א׳ מועד א) ועד 83.2 (תשפ״ג קיץ מועד א).  \n- **מגמות**:  \n  – בתקופה הישנה (תשע״ט‑תש״פ) הממוצע היה לרוב בטווח 40‑55, עם הרבה סטודנטים ברמת 0‑29.  \n  – בעונות האחרונות (תשפ״ב‑תשפ״ג) הממוצעים עלו משמעותית, במיוחד בעונת קיץ של תשפ״ב (81.2) ובקיץ של תשפ״ג (83.2).  \n  – מספר הסטודנטים שהשיגו ציון 80‑100 עולה משמעותית בעונות החדשות, מה שמצביע על תחושת קושי פחותה או הכנה טובה יותר.  \n\n- **חלוקת ציונים (דוגמה ממוצעת)**  \n  – רוב הסטודנטים מצטיינים בטווח 50‑69 (במיוחד בעונות האחרונות).  \n  – ישנה נוכחות מתמשכת של סטודנטים עם ציונים **מתחת ל‑30** (בעיקר בעונות הישנות).  \n\n> **סיכום:** בממוצע, קורס אלגברה ב​ מושפע משמעותית משנה לשנה – בשנים האחרונות נראים ציונים גבוהים יותר וקבוצת סטודנטים רחבה יותר במגוון הציונים הגבוה (70+).  \n\n```histogram\n{\"course\": \"אלגברה ב\", \"entries\": [{\"label\": \"תשע״ט א׳ מועד ב | אנה מלניקוב\", \"avg\": 44.8, \"num\": 46, \"buckets\": [4, 6, 3, 3, 6, 12, 7, 3, 2, 0]}, {\"label\": \"תשע״ט א׳ מועד קיץ | אנה מלניקוב\", \"avg\": 44.1, \"num\": 7, \"buckets\": [0, 0, 2, 2, 0, 2, 1, 0, 0, 0]}, {\"label\": \"תשע״ט ב׳ מועד א | אנה מלניקוב\", \"avg\": 42.2, \"num\": 52, \"buckets\": [1, 9, 8, 6, 7, 8, 8, 4, 0, 1]}, {\"label\": \"תשע״ט ב׳ מועד ב | אנה מלניקוב\", \"avg\": 56.5, \"num\": 62, \"buckets\": [3, 4, 1, 9, 3, 9, 16, 6, 9, 2]}, {\"label\": \"תשע״ט קיץ מועד א | עידן אייזנר\", \"avg\": 74.6, \"num\": 36, \"buckets\": [1, 0, 3, 0, 1, 4, 4, 4, 6, 13]}, {\"label\": \"תש״פ א׳ מועד א | אנה מלניקוב\", \"avg\": 25.4, \"num\": 90, \"buckets\": [20, 22, 20, 7, 13, 4, 3, 1, 0, 0]}, {\"label\": \"תש״פ ב׳ מועד א | אנה מלניקוב\", \"avg\": 49.1, \"num\": 34, \"buckets\": [2, 0, 2, 10, 4, 5, 6, 3, 0, 2]}, {\"label\": \"תש״פ ב׳ מועד ב | אנה מלניקוב\", \"avg\": 73.9, \"num\": 41, \"buckets\": [0, 2, 1, 0, 4, 5, 4, 8, 4, 13]}, {\"label\": \"תש״פ ב׳ מועד קיץ | אנה מלניקוב\", \"avg\": 48.8, \"num\": 21, \"buckets\": [4, 2, 0, 1, 4, 3, 2, 1, 1, 3]}, {\"label\": \"תש״פ קיץ מועד א | עידן אייזנר\", \"avg\": 63.8, \"num\": 36, \"buckets\": [0, 0, 0, 5, 6, 6, 4, 4, 7, 4]}, {\"label\": \"תש״פ קיץ מועד ב | עידן אייזנר\", \"avg\": 63.3, \"num\": 27, \"buckets\": [0, 0, 1, 2, 1, 11, 3, 4, 2, 3]}, {\"label\": \"תשפ״א ב׳ מועד א | אסלאם\", \"avg\": 43.0, \"num\": 78, \"buckets\": [6, 7, 9, 15, 13, 11, 8, 7, 2, 0]}, {\"label\": \"תשפ״א ב׳ מועד ב | אסלאם\", \"avg\": 39.8, \"num\": 62, \"buckets\": [13, 3, 6, 10, 2, 13, 9, 2, 4, 0]}, {\"label\": \"תשפ״א ב׳ מועד קיץ | אסלאם\", \"avg\": 41.7, \"num\": 10, \"buckets\": [0, 1, 3, 1, 2, 2, 0, 0, 1, 0]}, {\"label\": \"תשפ״א קיץ מועד א | עידן אייזנר\", \"avg\": 64.9, \"num\": 54, \"buckets\": [0, 3, 4, 5, 3, 6, 5, 10, 10, 8]}, {\"label\": \"תשפ״א קיץ מועד ב | עידן אייזנר\", \"avg\": 60.0, \"num\": 31, \"buckets\": [4, 2, 0, 1, 1, 5, 4, 3, 7, 4]}, {\"label\": \"תשפ״ב ב׳ מועד א | אסלאם\", \"avg\": 57.8, \"num\": 70, \"buckets\": [2, 4, 5, 6, 11, 6, 11, 11, 10, 4]}, {\"label\": \"תשפ״ב ב׳ מועד ב | אסלאם\", \"avg\": 46.5, \"num\": 68, \"buckets\": [8, 6, 3, 8, 10, 10, 12, 4, 5, 2]}, {\"label\": \"תשפ״ב ב׳ מועד קיץ | אסלאם\", \"avg\": 44.9, \"num\": 18, \"buckets\": [1, 2, 4, 1, 3, 0, 4, 2, 1, 0]}, {\"label\": \"תשפ״ב קיץ מועד א | עידן אייזנר\", \"avg\": 81.2, \"num\": 50, \"buckets\": [0, 0, 0, 2, 3, 4, 5, 7, 7, 22]}, {\"label\": \"תשפ״ב קיץ מועד ב | עידן אייזנר\", \"avg\": 40.6, \"num\": 25, \"buckets\": [3, 0, 7, 2, 2, 8, 1, 1, 0, 1]}, {\"label\": \"תשפ״ב קיץ מועד קיץ | עידן אייזנר\", \"avg\": 63.5, \"num\": 11, \"buckets\": [1, 1, 0, 0, 1, 1, 1, 2, 3, 1]}, {\"label\": \"תשפ״ג א׳ מועד ב | יורי\", \"avg\": 51.9, \"num\": 20, \"buckets\": [0, 3, 2, 2, 1, 3, 5, 3, 0, 1]}, {\"label\": \"תשפ״ג א׳ מועד קיץ | יורי\", \"avg\": 55.8, \"num\": 6, \"buckets\": [0, 0, 1, 2, 0, 1, 0, 0, 2, 0]}, {\"label\": \"תשפ״ג ב׳ מועד א | עידן אייזנר\", \"avg\": 64.5, \"num\": 72, \"buckets\": [0, 1, 5, 8, 5, 6, 13, 18, 11, 5]}, {\"label\": \"תשפ״ג ב׳ מועד ב | עידן אייזנר\", \"avg\": 58.6, \"num\": 77, \"buckets\": [7, 2, 10, 2, 4, 9, 11, 12, 9, 11]}, {\"label\": \"תשפ״ג קיץ מועד א | אסלאם\", \"avg\": 83.2, \"num\": 33, \"buckets\": [0, 0, 1, 0, 1, 1, 2, 7, 6, 15]}, {\"label\": \"תשפ״ד א׳ מועד א | אסלאם\", \"avg\": 49.0, \"num\": 40, \"buckets\": [1, 1, 8, 4, 9, 4, 5, 7, 0, 1]}, {\"label\": \"תשפ״ד א׳ מועד ב | אסלאם\", \"avg\": 36.8, \"num\": 35, \"buckets\": [10, 2, 5, 2, 3, 5, 1, 6, 1, 0]}, {\"label\": \"תשפ״ד ב׳ מועד א | אסלאם\", \"avg\": 48.6, \"num\": 56, \"buckets\": [3, 4, 8, 7, 6, 6, 12, 8, 2, 0]}]}\n```",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "אלגברה ב"
+          },
+          "tool_result": "ציונים עבור: אלגברה ב (30 מועדים)\n\nתשע״ט א׳ מועד ב | אנה מלניקוב:\n  ממוצע: 44.8, נבחנים: 46\n  התפלגות: 0-9: 4, 10-19: 6, 20-29: 3, 30-39: 3, 40-49: 6, 50-59: 12, 60-69: 7, 70-79: 3, 80-89: 2\n\nתשע״ט א׳ מועד קיץ | אנה מלניקוב:\n  ממוצע: 44.1, נבחנים: 7\n  התפלגות: 20-29: 2, 30-39: 2, 50-59: 2, 60-69: 1\n\nתשע״ט ב׳ מועד א | אנה מלניקוב:\n  ממוצע: 42.2, נבחנים: 52\n  התפלגות: 0-9: 1, 10-19: 9, 20-29: 8, 30-39: 6, 40-49: 7, 50-59: 8, 60-69: 8, 70-79: 4, 90-100: 1\n\nתשע״ט ב׳ מועד ב | אנה מלניקוב:\n  ממוצע: 56..."
+        }
+      ],
+      "latency_s": 27.92,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The grade data matches the SQL database accurately across all 30 moeds. Averages, student counts, and distributions all verify correctly. The answer correctly identifies the range of averages (25.4 to 83.2) and the multiple lecturers. The histogram includes all 30 entries. The trend analysis about improving grades in recent years and summer difficulty is supported by the data.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 9,
+      "judge_completeness": 9
+    },
+    {
+      "id": 31,
+      "question": "ספר לי על מבוא ללמידה ממוכנת - ביקורות וציונים",
+      "category": "multi-tool",
+      "answer": "**ביקורות סטודנטים – קורס מבוא ללמידה ממוכנת**\n\n| מרצה | מגמות חוזרות בביקורות |\n|------|--------------------------|\n| **דן רוזנבאום** | • רבות מציינות שהקורס **כבד** ועשיר במידע, לעיתים **מבלבל** או **מבולגן** – החומר נלמד בצורה שאינה תמיד מלוכדת.<br> • תרגילי הבית נחשבים **חשובים מאוד** ותורמים להבנת החומר.<br> • חלק מהתלמידים מודיעים שהמרצה **לא תמיד ברור**, ולכן תלוי במתאמת של המתרגלים. <br> • למרות האתגרים, כמה מציינים שהקורס **לא קשה במיוחד** וכי ניתן לעבור בו בעקביות. |\n| **ריטה** | • מתואר כקורס **קל יותר** עם **הצגת החומר** בצורה **נוחה ומובנת**.<br> • מבחן **תיאורטי מאוד** אך עם **ציונים גבוהים** – ממוצעים גבוהים מאוד (עד 93).<br> • החומר נחשב **מתמטי ותיאורטי**, אך עדיין **מעניין** ומומלץ כתשתית ללמידה עמוקה. |\n| **היבטים כלליים** | • הקורס נחשב **מעניין** וחשוב לתחום המנדל (Machine Learning).<br> • יש **תלות חזקה במתרגלים** – כאשר המתרגל טוב, הסטודנטים מדווחים על חוויה חיובית יותר.<br> • חלק מהסטודנטים ממליצים ללמוד קורס קדם (כמו למידה עמוקה) לפני קורס זה, אך הוא עדיין רלוונטי ללא זאת. |\n\n**הציונים – תצוגה של חמש המועדים האחרונים**\n\n| שנה/מועד | מרצה | ממוצע | נבחנים |\n|----------|------|-------|----------|\n| תשפ״ג (קיץ) – מועד ב׳ | דן רוזנבאום | **80.3** | 23 |\n| תשפ״ד (א׳) – מועד א׳ | דן רוזנבאום (סופי) | **83.4** | 52 |\n| תשפ״ד (ב׳) – מועד א׳ | ריטה (סופי) | **93.3** | 112 |\n| תשפ״ה (א׳) – מועד א׳ | דן רוזנבאום | **63.3** | 25 |\n| תשפ״ה (ב׳) – מועד א׳ | ריטה | **80.3** | 74 |\n\n**ניתוח קצר של הציונים**\n\n- **ריטה** משיגה ממוצעים גבוהים משמעותית (93 ו‑80), מה שמעיד על מבחנים קלים יחסית או על קבוצה גדולה של תלמידים עם רקע חזק.  \n- **דן רוזנבאום** מציג **שונות**: ממוצע של 83 במועד א׳ של תשפ״ד, אך יורד ל‑63 בתשפ״ה (א׳). ייתכן שהקושי של הקורס וגישות ההוראה שלו גורמים לתנודות אלו.  \n- באופן כללי, **הציון הגבוה יותר נצפה במועדים שבהם המרצה ריטה**, בעוד שמועדים של דן נעים בין ממוצע גבוה ל‑בינוני.  \n\n**סיכום**\n\nקורס **מבוא ללמידה ממוכנת** הוא קורס נחשב ובעל ערך משמעותי בתחום הלמידת מכונה. הוא דורש **מתמטיקה תיאורטית** וכולל **תרגילי בית משמעותיים**. חוויית הסטודנטים תלויה במידה רבה במרצה ובמתרגלים:  \n- עם **דן רוזנבאום** – הקורס עשוי להרגיש **מסודר פחות וקשה**, אך עדיין אפשר לקבל ציונים טובים אם משקיעים במתרגלים.  \n- עם **ריטה** – המרצה נחשבת **ברורה** ומסייעת להישגים גבוהים יותר.\n\nהציונים משקפים זאת: **ממוצע גבוה יותר עם ריטה** ו‑**תנודות ממוצעים עם דן**. אם אתה מחפש קורס שמעמיק בתיאוריה ומתמקד במתמטיקה, הקורס מתאים לך, ובמיוחד אם תמצא מתרגל טוב שיסביר את החומר.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "",
+            "course_name": "מבוא ללמידה ממוכנת"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מבוא ללמידה ממוכנת | מרצה: דן רוזנבאום | סוג: בחירה | נ\"ז: 4 | תאריך: 2023-08-29]\nדן לא מרתק במיוחד. תרגילי הבית הם מגן אך מומלצים כדי להבין את החומר. המבחן הסופי סביר בהחלט\n\n[ביקורת 2 | קורס: מבוא ללמידה ממוכנת | מרצה: דן רוזנבאום | סוג: בחירה | נ\"ז: 4 | תאריך: 2025-04-02]\nקורס מעניין, הרבה מושגים שלא לגמרי קשורים אחד לשני מלבד העובדה שכולם בתחום למידת מכונה. תרגילי הבית היו פשוטים יחסית ועזרו להבנה. המבחן תיאורטי מאוד, עמוס, כל החומר של הקורס מופיע בו בצורה כזו או אחרת. עם הש..."
+        },
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "מבוא ללמידה ממוכנת",
+            "last_n": 5
+          },
+          "tool_result": "ציונים עבור: מבוא ללמידה ממוכנת (5 מועדים)\n\nתשפ״ג ב׳ מועד קיץ | דן רוזנבאום:\n  ממוצע: 80.3, נבחנים: 23\n  התפלגות: 20-29: 1, 50-59: 1, 60-69: 2, 70-79: 5, 80-89: 8, 90-100: 6\n\nתשפ״ד א׳ מועד א | דן רוזנבאום (סופי):\n  ממוצע: 83.4, נבחנים: 52\n  התפלגות: 30-39: 3, 50-59: 1, 60-69: 2, 70-79: 9, 80-89: 19, 90-100: 18\n\nתשפ״ד ב׳ מועד א | ריטה (סופי):\n  ממוצע: 93.3, נבחנים: 112\n  התפלגות: 50-59: 1, 70-79: 6, 80-89: 20, 90-100: 85\n\nתשפ״ה א׳ מועד א | דן רוזנבאום:\n  ממוצע: 63.3, נבחנים: 25\n  התפלגות: 10-19: ..."
+        }
+      ],
+      "latency_s": 13.36,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The grade data for the 5 most recent moeds matches the SQL database exactly (80.3, 83.4, 93.3, 63.3, 80.3). The review summaries capture the general themes reasonably well. However, the answer attributes some characteristics to lecturers that are somewhat embellished beyond what reviews say. The answer mentions 'למידת מכונה' terminology correctly.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 32,
+      "question": "מה הקדמים של למידה עמוקה ומה אומרים סטודנטים על הקורס?",
+      "category": "multi-tool",
+      "answer": "**קידמי הקורס “למידה עמוקה”**  \nהקורס דורש את הקורסים הבאים כקדם (לפי נתוני עץ הקדמים):\n\n1. תכנות מונחה עצמים  \n2. תכנון וניתוח אלגוריתמים (שדורש מבני נתונים)  \n3. מבוא ללמידה ממוכנת (שדורש אלגברה לינארית, אלגברה ב’, חדוא 2 והסתברות למדעי המחשב)  \n\n---\n\n### מה הסטודנטים אומרים על הקורס\n\nקיימת ביקורת אחת ישירה על הקורס “למידה עמוקה” (מרצה: ריטה, סמסטר 2022‑23):\n\n- **מרצה:** רוב הסטודנטים מדווחים שריטה היא מרצה מצוינת, אם כי יש כמה חוות דעת שמבקרות אותה.  \n- **תוכן:** החומר נחשב **מאוד מעניין** וחשוב למי שרוצה להתעמק בתחום – “הבסיס לכל”.  \n- **היבט פרקטי:** ההבנה המעשית תלויה במתרגל טוב ובשותף קבוע בקורס; ללא זאת החומר עלול להיות קושי.  \n\nאין ביקורות נוספות ישירות על הקורס “למידה עמוקה”, ולכן אין מידע נוסף על תחושות רחבות יותר של הסטודנטים.  \n\n**סיכום:** הקורס נחשב למרתק ולעיתים דורש מאמץ נוסף מבחינת עבודה בקבוצות, והמרצה נחשבת בדרך כלל למומחית, אם כי ישנם כמה ביקורות שליליות קטנות.",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "למידה עמוקה"
+          },
+          "tool_result": "עץ קדמים עבור: למידה עמוקה\n[root] למידה עמוקה (4 נ\"ז)\n   קדמים: תכנות מונחה עצמים, תכנון וניתוח אלגוריתמים, מבוא ללמידה ממוכנת\n  ← תכנון וניתוח אלגוריתמים (5 נ\"ז)\n     קדמים: מבני נתונים\n  ← מבוא ללמידה ממוכנת (4 נ\"ז)\n     קדמים: אלגברה לינארית, אלגברה ב, חדוא 2, הסתברות למדעי המחשב\n    ← אלגברה ב (5 נ\"ז)\n       קדמים: אלגברה לינארית\n    ← הסתברות למדעי המחשב (5 נ\"ז)\n       קדמים: אלגברה לינארית, חדוא 2, מבני נתונים\n      ← מבני נתונים (5 נ\"ז)\n         קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n ..."
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "למידה עמוקה",
+            "course_name": "למידה עמוקה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: למידה עמוקה | מרצה: ריטה | סוג: בחירה | נ\"ז: 4 | תאריך: 2024-09-24]\nעשיתי את הקורס ב22-23. בעיניי לפחות ריטה היא מרצה מעולה למרות שהרבה מהחברים לא חושבים כך. החומר סופר מעניין וחשוב למי שמתעניין, זה הבסיס להכל בערך. עם זאת ההבנה הפרקטית תלוית מתרגל טוב וחובה שותף טוב בקורס"
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "למידה עמוקה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: סמינר יישומי בינה מלאכותית בפיתוח חומרה | מרצה: אלעד כהן | סוג: בחירה | נ\"ז: 2 | תאריך: 2024-09-24]\nהסמינר ממש חמוד - מדבר על יישומים של (בעיקר) רשתות נוירונים מכל מיני סוגים לבעיות בעולם הציפים והחמרה. מומלץ (אבל לא חובה) גם ידע בעמוקה\n\n[ביקורת 2 | קורס: קורס מתקדם על מודלים גנרטיביים עמוקים | מרצה: דן רוזנבאום | סוג: בחירה | נ\"ז: 4 | תאריך: 2024-08-13]\nאחלה של קורס, חומר מעניין. החצי הראשון תיאורטי, בחצי השני לומדים על מודלים גנרטיביים שונים (vaes, normalizing flows, diffusio..."
+        },
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "למידה עמוקה סטודנט",
+            "course_name": "למידה עמוקה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: למידה עמוקה | מרצה: ריטה | סוג: בחירה | נ\"ז: 4 | תאריך: 2024-09-24]\nעשיתי את הקורס ב22-23. בעיניי לפחות ריטה היא מרצה מעולה למרות שהרבה מהחברים לא חושבים כך. החומר סופר מעניין וחשוב למי שמתעניין, זה הבסיס להכל בערך. עם זאת ההבנה הפרקטית תלוית מתרגל טוב וחובה שותף טוב בקורס"
+        }
+      ],
+      "latency_s": 13.72,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Prerequisites are correctly listed from the database: תכנות מונחה עצמים, תכנון וניתוח אלגוריתמים, מבוא ללמידה ממוכנת. The recursive prerequisite tree is also correctly described. The single review for למידה עמוקה is accurately summarized. However, the answer says 'there are some negative reviews' about Rita, which is slightly inflated from the actual review. The answer correctly notes limited review data.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 7
+    },
+    {
+      "id": 33,
+      "question": "מה הממוצע במבני נתונים ומה צריך לפני הקורס?",
+      "category": "multi-tool",
+      "answer": "**ממוצע ציונים בקורס “מבני נתונים”**  \n\nהנתונים מה‑5 מועדים האחרונים (תשפ״ג‑תשפ״ה) הם:\n\n| סמסטר / מועד | ממוצע | מספר נבחנים |\n|---------------|-------|--------------|\n| תשפ״ג ב׳ מועד ב | 56.4 | 78 |\n| תשפ״ד א׳ מועד א | 53.5 | 61 |\n| תשפ״ד א׳ מועד ב | 61.5 | 48 |\n| תשפ״ד ב׳ מועד א | 38.3 | 60 |\n| תשפ״ה א׳ מועד א | 63.8 | 70 |\n\n**ממוצע כולל** של חמשת המועדים: **≈ 54.7**.\n\n**מגמות מרכזיות**  \n- הממוצע עולה בצורה משמעותית במועד החדש (תשפ״ה) – 63.8.  \n- מועד ב׳ של תשפ״ד (מורה גיא אבני) היה החריף ביותר עם ממוצע 38.3, מה שמצביע על שינוי במורכבות או ברמת ההכנה של הסטודנטים.  \n- ברוב המועדים, חלק משמעותי מהסטודנטים (כ‑30‑40 %) נמצא בטווח 50‑69, עם קבוצה קטנה יותר במרכז (70‑89).\n\n```histogram\n{\"course\": \"מבני נתונים\", \"entries\": [{\"label\": \"תשפ״ג ב׳ מועד ב | אורן וימן\", \"avg\": 56.4, \"num\": 78, \"buckets\": [1, 1, 2, 7, 12, 27, 12, 10, 5, 1]}, {\"label\": \"תשפ״ד א׳ מועד א | אורן וימן\", \"avg\": 53.5, \"num\": 61, \"buckets\": [0, 6, 8, 3, 7, 12, 11, 8, 5, 1]}, {\"label\": \"תשפ״ד א׳ מועד ב | אורן וימן\", \"avg\": 61.5, \"num\": 48, \"buckets\": [0, 0, 0, 8, 5, 11, 7, 11, 5, 1]}, {\"label\": \"תשפ״ד ב׳ מועד א | גיא אבני\", \"avg\": 38.3, \"num\": 60, \"buckets\": [8, 13, 9, 7, 2, 6, 5, 5, 2, 3]}, {\"label\": \"תשפ״ה א׳ מועד א | מורן פלדמן\", \"avg\": 63.8, \"num\": 70, \"buckets\": [1, 0, 0, 4, 8, 17, 18, 10, 9, 3]}]}\n```\n\n---\n\n### מה צריך לפני הקורס?\n\nקורס **מבני נתונים** דורש קידום משתי קורסים בסיסיים:\n\n- **מבוא למדעי המחשב** (קורס חובה, 5 נ\"ז)  \n- **מתמטיקה דיסקרטית** (קורס חובה, 5 נ\"ז)\n\nשני הקורסים מהווים את הידע ההשתקפותי והמתמטי הנדרש למבני נתונים (אלגוריתמים, רשימות, ערפים, עצים ועוד). מומלץ לסיים אותם עם ציונים משביעים לפני ההרשמה.\n\n---  \n\nאם יש צורך במידע נוסף (לדוגמה, פירוט של משימות בחלקים שונים של הקורס או על המורים), אשמח לעזור.",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "מבני נתונים",
+            "last_n": 5
+          },
+          "tool_result": "ציונים עבור: מבני נתונים (5 מועדים)\n\nתשפ״ג ב׳ מועד ב | אורן וימן:\n  ממוצע: 56.4, נבחנים: 78\n  התפלגות: 0-9: 1, 10-19: 1, 20-29: 2, 30-39: 7, 40-49: 12, 50-59: 27, 60-69: 12, 70-79: 10, 80-89: 5, 90-100: 1\n\nתשפ״ד א׳ מועד א | אורן וימן:\n  ממוצע: 53.5, נבחנים: 61\n  התפלגות: 10-19: 6, 20-29: 8, 30-39: 3, 40-49: 7, 50-59: 12, 60-69: 11, 70-79: 8, 80-89: 5, 90-100: 1\n\nתשפ״ד א׳ מועד ב | אורן וימן:\n  ממוצע: 61.5, נבחנים: 48\n  התפלגות: 30-39: 8, 40-49: 5, 50-59: 11, 60-69: 7, 70-79: 11, 80-89: 5, 90-100:..."
+        },
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "מבני נתונים"
+          },
+          "tool_result": "עץ קדמים עבור: מבני נתונים\n[root] מבני נתונים (5 נ\"ז)\n   קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n  ← מבוא למדעי המחשב (5 נ\"ז)\n  ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את מבני נתונים כקדם:\n  → מערכות הפעלה (5 נ\"ז)\n  → תכנון וניתוח אלגוריתמים (5 נ\"ז)\n  → הסתברות למדעי המחשב (5 נ\"ז)\n  → הנדסת תוכנה (5 נ\"ז)\n  → מבוא לבינה מלאכותית (4 נ\"ז)\n  → PROJECT IN COMPUTER VISION (3 נ\"ז)\n  → מבני נתונים מתקדמים (3 נ\"ז)"
+        }
+      ],
+      "latency_s": 13.35,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "All grade data matches the SQL database: semester 563 moed b (56.4, 78 students), semester 601 moed a (53.5, 61), semester 601 moed b (61.5, 48), semester 698 moed a (38.3, 60), semester 737 moed a (63.8, 70). Prerequisites correctly listed as מבוא למדעי המחשב and מתמטיקה דיסקרטית. The answer directly addresses both parts of the question (grades and prerequisites) comprehensively.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 34,
+      "question": "תן לי סקירה מלאה על תכנון וניתוח אלגוריתמים - ביקורות, ציונים וקדמים",
+      "category": "multi-tool",
+      "answer": "**סקירה מקיפה – תכנון וניתוח אלגוריתמים**\n\n---\n\n### 1. ביקורות סטודנטים  \n| מרצה | תכונות חוזרות (כמה ביקורות) |\n|------|------------------------------|\n| **נגה** | – מרצה מסודרת, מסבירה לאט ובקצב נגיש (ביקורות 1, 3, 6). <br>– מבחנים “הוגנים” אך לעיתים קשים מאוד, עם שאלות “שטויות” שמורידים נקודות (ביקורת 6). |\n| **יורי** | – מרצה ידע‑עמוק, מבין חומר ברמה גבוהה (ביקורת 9). <br>– הצגת חומר יכולה להיות קשה למעקב, במיוחד במצב הקורונה והקלטות (ביקורת 7). <br>– מתרגלת (בביקורת 8) נעלמה, מה שפוגע בחוויית הלימוד. |\n| **עמית לוי** | – מרצה מהנה, מצחיק, מקפיד על הוגנות במבחנים (ביקורות 4, 5). <br>– מאפשר להגיע לציון גבוה עם השקעה מסודרת. |\n\n**מגמות כלליות**  \n- מרבית הסטודנטים מדגישים את חשיבותה של ההכנה למבחן: נגה נחשבת “קטלנית במבחנים” (ביקורת 6), יורי מפזר שאלות קשות באחרונה (ביקורת 9).  \n- המרצים שמחוללים עניין והומור (עמית, נגה) מקבלים משוב חיובי במיוחד.  \n- בעייתיות בתקשורת עם מתרגלות (יורי) מצוינת ברצף ביקורות של 2021‑2022.\n\n---\n\n### 2. ציונים – ניתוח תקופות  \n\n#### ממוצעים כלליים (חמש המועדים האחרונים לכל מרצה)  \n- **נגה** – ממוצעים נעים בין **43.1** (תשע״ט מועד ב) עד **70.6** (תשפ״א מועד א). יש שיפור דרמטי בשנת תשפ״א א׳, כאשר חלק גדול מהסטודנטים משיגים 90‑100.  \n- **יורי** – ממוצעים נעים בין **42.4** (תשפ״א מועד ב) עד **58.8** (תשפ״ג מועד ב). רוב המועדים מתאפיינים בממוצע סביב 50‑55, עם פיזור רחב של צמצום בחלק מהקבוצות.  \n- **עמית לוי** – ממוצעים **64.5** (תשפ״ה מועד א) ו‑**54.9** (תשפ״ה מועד ב). ב‑תשפ״ה מועד א ישנה שכבה גדולה של סטודנטים מעל 80 (רמת הצלחה גבוהה).  \n\n#### מגמות עיקריות  \n- **שיפור משמעותי בתקופה של 2023‑2024** – בממוצעי נגה (תשפ״א א׳) ובעמית (תשפ״ה א׳) מגיעים לממוצעים שמעל 60, עם אחוז גבוה של סטודנטים ב‑70‑100.  \n- **החלשות של יורי לאחר תשפ״א** – ממוצע קבוע סביב 50, ורמת הפצלות גבוהות מאוד בתשפ״א ב׳ מועד ב (רוב הציונים בתחתית הטווח).  \n- **התפלגויות** – גרף ההיסטוגרמה מראה שהקבוצות עם ממוצעים גבוהים (נגה בתשפ״א א׳, עמית בתשפ״ה א׳) כוללות הרבה תלמידים בטווח 70‑100, בעוד שמועדים של יורי מציגים פיזור רחב יותר, כולל קבוצה משמעותית של 0‑19.  \n\n```histogram\n{\"course\": \"תכנון וניתוח אלגוריתמים\", \"entries\": [{\"label\": \"תשע״ג א׳ מועד ב | יורי\", \"avg\": 49.3, \"num\": 14, \"buckets\": [0, 0, 6, 2, 0, 2, 0, 0, 2, 2]}, {\"label\": \"תשע״ג א׳ מועד קיץ | יורי\", \"avg\": 37, \"num\": 5, \"buckets\": [2, 0, 0, 0, 0, 2, 1, 0, 0, 0]}, {\"label\": \"תשע״ג ב׳ מועד א | רונן\", \"avg\": 59.8, \"num\": 61, \"buckets\": [0, 0, 2, 7, 7, 20, 10, 5, 4, 6]}, {\"label\": \"תשע״ג ב׳ מועד קיץ | רונן\", \"avg\": 69.7, \"num\": 15, \"buckets\": [0, 0, 0, 1, 2, 2, 2, 2, 4, 2]}, {\"label\": \"תשע״ד א׳ מועד א | אלק ויינשטיין\", \"avg\": 46.1, \"num\": 36, \"buckets\": [0, 5, 5, 8, 5, 2, 4, 3, 2, 2]}, {\"label\": \"תשע״ד א׳ מועד ב | אלק ויינשטיין\", \"avg\": 42.0, \"num\": 23, \"buckets\": [0, 0, 4, 7, 5, 6, 1, 0, 0, 0]}, {\"label\": \"תשע״ה א׳ מועד א | יורי\", \"avg\": 47.7, \"num\": 49, \"buckets\": [0, 3, 5, 10, 5, 18, 3, 3, 1, 1]}, {\"label\": \"תשע״ו א׳ מועד א | רונן\", \"avg\": 69.3, \"num\": 86, \"buckets\": [0, 0, 3, 3, 8, 10, 13, 27, 9, 13]}, {\"label\": \"תשע״ז א׳ מועד א | אילן נוימן\", \"avg\": 59.0, \"num\": 63, \"buckets\": [1, 2, 4, 5, 8, 12, 9, 11, 7, 4]}, {\"label\": \"תשע״ט א׳ מועד א | נגה\", \"avg\": 63.8, \"num\": 57, \"buckets\": [1, 3, 5, 3, 8, 3, 7, 7, 10, 10]}, {\"label\": \"תשע״ט א׳ מועד ב | נגה\", \"avg\": 43.1, \"num\": 31, \"buckets\": [6, 1, 2, 5, 5, 3, 4, 4, 1, 0]}, {\"label\": \"תשע״ט ב׳ מועד א | אילן נוימן\", \"avg\": 61.4, \"num\": 81, \"buckets\": [2, 6, 4, 7, 6, 8, 15, 14, 14, 5]}, {\"label\": \"תשע״ט ב׳ מועד ב | אילן נוימן\", \"avg\": 57.3, \"num\": 64, \"buckets\": [7, 2, 3, 7, 3, 8, 6, 14, 11, 3]}, {\"label\": \"תש״פ א׳ מועד א | נגה\", \"avg\": 59.8, \"num\": 99, \"buckets\": [2, 4, 6, 11, 16, 17, 10, 11, 9, 15]}, {\"label\": \"תש״פ א׳ מועד ב | נגה\", \"avg\": 57.0, \"num\": 80, \"buckets\": [2, 5, 6, 8, 10, 7, 11, 16, 13, 2]}, {\"label\": \"תש״פ ב׳ מועד א | יורי\", \"avg\": 53.9, \"num\": 15, \"buckets\": [0, 0, 3, 1, 4, 2, 2, 2, 1, 0]}, {\"label\": \"תשפ״א א׳ מועד א | נגה\", \"avg\": 70.6, \"num\": 71, \"buckets\": [2, 1, 4, 2, 2, 7, 11, 12, 18, 12]}, {\"label\": \"תשפ״א א׳ מועד ב | נגה\", \"avg\": 62.4, \"num\": 47, \"buckets\": [2, 0, 2, 8, 2, 2, 9, 13, 7, 2]}, {\"label\": \"תשפ״א א׳ מועד קיץ | נגה\", \"avg\": 55.5, \"num\": 23, \"buckets\": [1, 2, 4, 1, 0, 3, 4, 3, 4, 1]}, {\"label\": \"תשפ״א ב׳ מועד א | יורי\", \"avg\": 52.1, \"num\": 33, \"buckets\": [1, 2, 4, 8, 1, 3, 4, 6, 3, 1]}, {\"label\": \"תשפ״א ב׳ מועד ב | יורי\", \"avg\": 42.4, \"num\": 31, \"buckets\": [4, 4, 4, 0, 10, 3, 1, 1, 3, 1]}, {\"label\": \"תשפ״א ב׳ מועד קיץ | יורי\", \"avg\": 46.2, \"num\": 8, \"buckets\": [1, 0, 1, 0, 2, 2, 2, 0, 0, 0]}, {\"label\": \"תשפ״ב א׳ מועד א | מורן פלדמן\", \"avg\": 68.1, \"num\": 68, \"buckets\": [2, 0, 4, 4, 3, 5, 10, 16, 19, 5]}, {\"label\": \"תשפ״ב א׳ מועד ב | מורן פלדמן\", \"avg\": 52.5, \"num\": 46, \"buckets\": [0, 4, 1, 3, 10, 15, 8, 2, 2, 1]}, {\"label\": \"תשפ״ב א׳ מועד קיץ | מורן פלדמן\", \"avg\": 59.2, \"num\": 26, \"buckets\": [2, 0, 0, 2, 0, 7, 8, 3, 2, 2]}, {\"label\": \"תשפ״ב ב׳ מועד א | אלק ויינשטיין\", \"avg\": 26.6, \"num\": 26, \"buckets\": [5, 3, 7, 7, 4, 0, 0, 0, 0, 0]}, {\"label\": \"תשפ״ב ב׳ מועד ב | אלק ויינשטיין\", \"avg\": 31.4, \"num\": 38, \"buckets\": [8, 2, 11, 3, 9, 3, 1, 1, 0, 0]}, {\"label\": \"תשפ״ב ב׳ מועד קיץ | אלק ויינשטיין\", \"avg\": 34.8, \"num\": 12, \"buckets\": [4, 1, 0, 3, 0, 1, 2, 1, 0, 0]}, {\"label\": \"תשפ״ג א׳ מועד א | מורן פלדמן\", \"avg\": 65.2, \"num\": 109, \"buckets\": [0, 0, 5, 4, 13, 23, 26, 11, 17, 10]}, {\"label\": \"תשפ״ג ב׳ מועד א | יורי\", \"avg\": 58.8, \"num\": 32, \"buckets\": [0, 2, 2, 7, 2, 5, 2, 6, 1, 5]}, {\"label\": \"תשפ״ג ב׳ מועד ב | יורי\", \"avg\": 65.2, \"num\": 18, \"buckets\": [0, 1, 1, 2, 0, 2, 4, 2, 4, 2]}, {\"label\": \"תשפ״ד א׳ מועד א | מורן פלדמן\", \"avg\": 66.8, \"num\": 86, \"buckets\": [0, 2, 2, 3, 6, 9, 27, 21, 10, 6]}, {\"label\": \"תשפ״ד א׳ מועד ב | מורן פלדמן\", \"avg\": 44.4, \"num\": 59, \"buckets\": [11, 3, 5, 3, 8, 5, 12, 7, 2, 3]}, {\"label\": \"תשפ״ד ב׳ מועד א | יורי\", \"avg\": 52.4, \"num\": 53, \"buckets\": [11, 2, 1, 8, 3, 6, 1, 6, 3, 12]}, {\"label\": \"תשפ״ד ב׳ מועד ב | יורי\", \"avg\": 57.1, \"num\": 36, \"buckets\": [5, 3, 1, 1, 1, 5, 6, 7, 2, 5]}, {\"label\": \"תשפ״ה א׳ מועד א | עמית לוי\", \"avg\": 64.5, \"num\": 66, \"buckets\": [0, 3, 1, 2, 12, 8, 12, 10, 13, 5]}, {\"label\": \"תשפ״ה א׳ מועד ב | עמית לוי\", \"avg\": 54.9, \"num\": 41, \"buckets\": [0, 3, 5, 8, 3, 6, 5, 2, 6, 3]}, {\"label\": \"תשפ״ה א׳ מועד ב | אילן נוימן\", \"avg\": 82.4, \"num\": 51, \"buckets\": [2, 2, 2, 3, 2, 6, 4, 6, 7, 17]}, {\"label\": \"תשפ״ה ב׳ מועד א | מורן פלדמן\", \"avg\": 65.5, \"num\": 43, \"buckets\": [2, 0, 3, 2, 1, 4, 9, 10, 8, 4]}]}\n```\n\n#### תובנות מהנתונים\n- **מקצועיות גבוהה של נגה** – ממוצעים גבוהים אחרי 2022, עם ריכוז משמעותי של ציונים גבוהים (70‑100).  \n- **יורי** – ממוצעים יותר יציבים, אך פוזה של “קושי” בתרגילים האחרונים מובילה למספר גבוה של ציונים נמוכים (0‑20).  \n- **עמית לוי** – ממוצעים בטווח 55‑65, עם תרחיש של 82.4 (תשפ״ה מועד ב) עבור אלק נוימן – מצביע על פוטנציאל גבוה עם מאמץ אישי.  \n\n---\n\n### 3. קדמים – גרף תלות (Prerequisite Tree)\n\n```mermaid\nflowchart TD\n  A[\"מבוא למדעי המחשב\"] --> B[\"מבני נתונים\"]\n  C[\"מתמטיקה דיסקרטית\"] --> B\n  B --> D[\"תכנון וניתוח אלגוריתמים\"]\n  D --> E[\"מודלים חישוביים\"]\n  D --> F[\"מבוא לבינה מלאכותית\"]\n  D --> G[\"מעבדה בבינה מלאכותית\"]\n  D --> H[\"עיבוד תמונה\"]\n  D --> I[\"תכנות מדעי\"]\n  D --> J[\"למידה עמוקה\"]\n  D --> K[\"נושאים נבחרים באלגוריתמים\"]\n  D --> L[\"אלגוריתמים תת לינאריים\"]\n  D --> M[\"PROJECT IN ADVANCED ROBOTICS\"]\n  D --> N[\"ALGORITHMS AND ANIMAL BEHAVIOR\"]\n  D --> O[\"PROJECT IN COMPUTER VISION\"]\n  D --> P[\"תורת האינפורמציה\"]\n  D --> Q[\"אלגוריתמים מבוזרים\"]\n  D --> R[\"PROJECT IN INTERDISCIPLINARY APPLIED PROGRAMMING\"]\n  D --> S[\"מבני נתונים מתקדמים\"]\n  D --> T[\"SEMINAR ON ALGORITHMS\"]\n```\n\n*הקשרים:* קורס **תכנון וניתוח אלגוריתמים** דורש **מבני נתונים**, שמקבלות את היסוד מ‑**מבוא למדעי המחשב** ו‑**מתמטיקה דיסקרטית**. הקורס משמש כקדם רחב למגוון קורסים מתקדמים במחלקה.\n\n---\n\n#### סיכום\n- **ביקורות**: מרצים נגה ו‑עמית לוי מקבלים הערכות גבוהות, עם דגש על הליך הלימוד וההוגנות במבחנים; יורי נחשב \"קהיל קשיח\" מבחינת חומר, אך יש תלונות על תיאום מתרגלות ומבחנים קשים.  \n- **ציונים**: המגמה המובהקת היא עלייה מתמדת בממוצעי נגה ועמית, בעוד יורי מציג ממוצעים יציבים סביב חצי הקבוצה, עם פיזור רחב של ציונים נמוכים.  \n- **קדמים**: הקורס הוא צומת מרכזי בתוכנית הלימודים, המשמש כקדם למספר רב של קורסי בחירה ונושאי מחקר מתקדמים.  \n\nבהצלחה בלימודים! אם יש צורך לפרט יותר באחד החלקים (למשל השוואת ממוצעים שנתיים ספציפיים) – אשמח לעזור.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "ביקורות",
+            "course_name": "תכנון וניתוח אלגוריתמים"
+          },
+          "tool_result": "[ביקורת 1 | קורס: תכנון וניתוח אלגוריתמים | מרצה: נגה | סוג: חובה | נ\"ז: 5 | תאריך: 2021-02-15]\nקורס מעניין, המרצה והמתרגל היו מצוינים.\n\n[ביקורת 2 | קורס: תכנון וניתוח אלגוריתמים | מרצה: יורי | סוג: חובה | נ\"ז: 5 | תאריך: 2023-02-17]\nאני נהנתי מאוד מהקורס, יורי מרצה לא קל אבל הסתדרתי איתו, סהכ צריך באמת לאהוב את הנושא בשביל להנות מיורי\n\n[ביקורת 3 | קורס: תכנון וניתוח אלגוריתמים | מרצה: נגה | סוג: חובה | נ\"ז: 5 | תאריך: 2021-10-03]\nנגה מרצה מעולה, מסבירה כל דבר בצורה טובה ואיטית. מועד  היה טוב וה..."
+        },
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "תכנון וניתוח אלגוריתמים"
+          },
+          "tool_result": "ציונים עבור: תכנון וניתוח אלגוריתמים (39 מועדים)\n\nתשע״ג א׳ מועד ב | יורי:\n  ממוצע: 49.3, נבחנים: 14\n  התפלגות: 20-29: 6, 30-39: 2, 50-59: 2, 80-89: 2, 90-100: 2\n\nתשע״ג א׳ מועד קיץ | יורי:\n  ממוצע: 37.0, נבחנים: 5\n  התפלגות: 0-9: 2, 50-59: 2, 60-69: 1\n\nתשע״ג ב׳ מועד א | רונן:\n  ממוצע: 59.8, נבחנים: 61\n  התפלגות: 20-29: 2, 30-39: 7, 40-49: 7, 50-59: 20, 60-69: 10, 70-79: 5, 80-89: 4, 90-100: 6\n\nתשע״ג ב׳ מועד קיץ | רונן:\n  ממוצע: 69.7, נבחנים: 15\n  התפלגות: 30-39: 1, 40-49: 2, 50-59: 2, 60-69: 2, 7..."
+        },
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "תכנון וניתוח אלגוריתמים"
+          },
+          "tool_result": "עץ קדמים עבור: תכנון וניתוח אלגוריתמים\n[root] תכנון וניתוח אלגוריתמים (5 נ\"ז)\n   קדמים: מבני נתונים\n  ← מבני נתונים (5 נ\"ז)\n     קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n    ← מבוא למדעי המחשב (5 נ\"ז)\n    ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את תכנון וניתוח אלגוריתמים כקדם:\n  → מודלים חישוביים (5 נ\"ז)\n  → מבוא לבינה מלאכותית (4 נ\"ז)\n  → מעבדה בבינה מלאכותית (4 נ\"ז)\n  → עיבוד תמונה (5 נ\"ז)\n  → תכנות מדעי (4 נ\"ז)\n  → למידה עמוקה (4 נ\"ז)\n  → נושאים נבחרים באלגוריתמים (3 נ\"ז)\n  → אלגוריתמים ת..."
+        }
+      ],
+      "latency_s": 40.67,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer covers reviews, grades, and prerequisites comprehensively. The prerequisite tree is correct. The list of courses that require תכנון וניתוח אלגוריתמים as a prerequisite matches the SQL data (16 courses). Grade data and lecturer names match. Minor issue: the answer attributes 82.4 average to 'אלק נוימן' which conflates אילן נוימן -- a small naming error. Also some narrative interpretations are embellished beyond what the actual reviews say.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 35,
+      "question": "האם עיבוד תמונה שווה? מה הציונים ומה צריך לפני?",
+      "category": "multi-tool",
+      "answer": "**האם קורס עיבוד תמונה שווה?**  \n- **ביקורות הסטודנטים** מצביעות על שביעות רצון גבוהה מאוד:  \n  - המרצה (חגית הל‑אור) מדורגת בממוצע “מדהימה” ו‑“מקסימה”.  \n  - ההרצאות נחשבות לבנויות, מובנות ו‑פרקטיות.  \n  - תרגילי הבית נכתבים ב‑Python, מה שמקנה לקורס פן מעשי משמעותי.  \n  - מספר ביקורות מזכירות כי החומר מאתגר, אך מרצה ומדריכים תומכים ועוזרים.  \n  - דרישה בולטת: הקורס “קודם להרבה קורסים אחרים”, ולכן הוא נחשב “שווה” מבחינת המשך הלימודים.  \n\n**מה דרוש לפני ההרשמה?**  \nקורס הבחירה דורש כשקדם (פרי‑קורסים) את כל הקורסים הבאים:\n\n- אלגברה לינארית  \n- אלגברה ב  \n- חדוא 1  \n- חדוא 2  \n- מתמטיקה דיסקרטית  \n- תכנון וניתוח אלגוריתמים (שדורש את מבני נתונים)  \n\nהקורס משמש כקדם ל‑ **ראייה ממוחשבת** ול‑ **PROJECT IN COMPATIONAL HUMAN BEHAVIOR**.\n\n**ציונים בממוצע (חמישה מועדים אחרונים)**  \n\n| שנת לימוד | מועד | ממוצע | נבחנים |\n|-----------|------|-------|--------|\n| תשפ״ג (2022‑2023) | א׳ | 83.1 | 101 |\n| תשפ״ג (2022‑2023) | ב׳ | 63.7 | 38 |\n| תשפ״ד (2023‑2024) | א׳ (סופי) | 98.5 | 135 |\n| תשפ״ד (2023‑2024) | f (סופי) | 98.3 | 139 |\n| תשפ״ה (2024‑2025) | א׳ | 70.2 | 144 |\n\nההיסטוגרמה מציגה את חלוקת הציונים:\n\n```histogram\n{\"course\": \"עיבוד תמונה\", \"entries\": [{\"label\": \"תשפ״ג א׳ מועד א | חגית הל-אור\", \"avg\": 83.1, \"num\": 101, \"buckets\": [0, 0, 2, 2, 6, 1, 4, 13, 31, 42]}, {\"label\": \"תשפ״ג א׳ מועד ב | חגית הל-אור\", \"avg\": 63.7, \"num\": 38, \"buckets\": [3, 4, 0, 3, 0, 5, 2, 6, 5, 10]}, {\"label\": \"תשפ״ד א׳ מועד א | חגית הל-אור (סופי)\", \"avg\": 98.5, \"num\": 135, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 0, 9, 126]}, {\"label\": \"תשפ״ד א׳ מועד f | חגית הל-אור (סופי)\", \"avg\": 98.3, \"num\": 139, \"buckets\": [0, 0, 0, 0, 0, 0, 0, 0, 10, 129]}, {\"label\": \"תשפ״ה א׳ מועד א | חגית הל-אור\", \"avg\": 70.2, \"num\": 144, \"buckets\": [0, 3, 8, 7, 10, 21, 18, 17, 30, 30]}]}\n```\n\n**מגמות:**  \n- במועדים “סופיים” של תשפ״ד (2023‑2024) הממוצעים גבוהים במיוחד (≈ 98) ומרבית הסטודנטים מקבלים 90‑100.  \n- במועד ב' של תשפ״ג (2022‑2023) הממוצע היה נמוך יותר (≈ 64) עם ריצת ציונים רחבה, מה שמצביע על קושי גבוה במועד הראשון של הקורס.  \n- במועד א' של תשפ״ה (2024‑2025) הממוצע מתאזן (≈ 70) עם יותר סטודנטים במקצה הביניים והעליון.\n\n**סיכום:** קורס עיבוד תממונה נחשב גבוהים בעיני הסטודנטים, מציע חומר מעשי ב‑Python, ומייצר ממוצעים מצוינים במועדים רבים. Voraussetzung הוא השלמת מספר קורסים מתמטיים והבסיס (מתמטיקה דיסקרטית, חדוא 1‑2, אלגברה). אם אתה עומד בתנאים, הקורס בהחלט שווה את ההשקעה.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "עיבוד תמונה",
+            "course_name": "עיבוד תמונה"
+          },
+          "tool_result": "[ביקורת 1 | קורס: עיבוד תמונה | מרצה: חגית הל-אור | סוג: בחירה | נ\"ז: 5 | תאריך: 2022-02-08]\nקורס מעניין מאוד,גם חגית וגם המתרגל עזמי העבירו את החומר בצורה מעולה. החל מהשנה תרגילי הבית נכתבים בpython כך שהקורס גם פרקטי. ממליצה מאוד. \n\n[ביקורת 2 | קורס: עיבוד תמונה | מרצה: חגית הל-אור | סוג: בחירה | נ\"ז: 5 | תאריך: 2021-02-26]\nקורס מעולה. מומלץ. תרגילי הבית דורשים השקעה. חגית מקסימה, ההרצאות בנויות היטב, מסבירה מעולה.\n\n[ביקורת 3 | קורס: עיבוד תמונה | מרצה: חגית הל-אור | סוג: בחירה | נ\"ז: 5 | תארי..."
+        },
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "עיבוד תמונה",
+            "last_n": 5
+          },
+          "tool_result": "ציונים עבור: עיבוד תמונה (5 מועדים)\n\nתשפ״ג א׳ מועד א | חגית הל-אור:\n  ממוצע: 83.1, נבחנים: 101\n  התפלגות: 20-29: 2, 30-39: 2, 40-49: 6, 50-59: 1, 60-69: 4, 70-79: 13, 80-89: 31, 90-100: 42\n\nתשפ״ג א׳ מועד ב | חגית הל-אור:\n  ממוצע: 63.7, נבחנים: 38\n  התפלגות: 0-9: 3, 10-19: 4, 30-39: 3, 50-59: 5, 60-69: 2, 70-79: 6, 80-89: 5, 90-100: 10\n\nתשפ״ד א׳ מועד א | חגית הל-אור (סופי):\n  ממוצע: 98.5, נבחנים: 135\n  התפלגות: 80-89: 9, 90-100: 126\n\nתשפ״ד א׳ מועד f | חגית הל-אור (סופי):\n  ממוצע: 98.3, נבחנים: 13..."
+        },
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "עיבוד תמונה"
+          },
+          "tool_result": "עץ קדמים עבור: עיבוד תמונה\n[root] עיבוד תמונה (5 נ\"ז)\n   קדמים: אלגברה לינארית, אלגברה ב, חדוא 1, חדוא 2, מתמטיקה דיסקרטית, תכנון וניתוח אלגוריתמים\n  ← אלגברה ב (5 נ\"ז)\n     קדמים: אלגברה לינארית\n  ← חדוא 2 (5 נ\"ז)\n     קדמים: חדוא 1\n  ← תכנון וניתוח אלגוריתמים (5 נ\"ז)\n     קדמים: מבני נתונים\n    ← אלגברה לינארית (5 נ\"ז)\n    ← חדוא 1 (5 נ\"ז)\n    ← מבני נתונים (5 נ\"ז)\n       קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n      ← מתמטיקה דיסקרטית (5 נ\"ז)\n      ← מבוא למדעי המחשב (5 נ\"ז)\n\nקורסים שדורשים..."
+        }
+      ],
+      "latency_s": 19.68,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer correctly identifies prerequisites from the SQL: אלגברה לינארית, אלגברה ב, חדוא 1, חדוא 2, מתמטיקה דיסקרטית, תכנון וניתוח אלגוריתמים. Grade data matches the context. Reviews correctly cite חגית הל-אור. Minor issues: confusing statement about מועד ב, a stray German word 'Voraussetzung' at the end, and the 98.5/98.3 averages likely represent final/composite grades not regular exams.",
+      "error": null,
+      "judge_faithfulness": 7,
+      "judge_relevance": 9,
+      "judge_completeness": 9
+    },
+    {
+      "id": 36,
+      "question": "מה אומרים על קורס שלא קיים במערכת?",
+      "category": "edge-case",
+      "answer": "מצטער, אך לפי המידע הזמין לי אין קורס בשם זה במאגר הקורסים של החוג. לכן אין לי ביקורות של סטודנטים לשתף. אם יש לך שם מדויק של קורס קיים, אשמח לחפש עבורו ביקורות.",
+      "tool_calls": [],
+      "latency_s": 3.38,
+      "tool_selection_correct": false,
+      "argument_correct": null,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Edge case: the question asks about a non-existent course. The system correctly states it has no such course in the database and politely asks for a valid course name. This is the ideal behavior for handling unknown courses. Slight deduction because it could have offered to search for similar-sounding courses.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 37,
+      "question": "מה הממוצע בפיזיקה קוונטית?",
+      "category": "edge-case",
+      "answer": "אין לי מידע על קורס בשם “פיזיקה קוונטית” בחוג למדעי המחשב באוניברסיטת חיפה, ולכן אינני יכול לספק את ממוצע הציונים שלו. אם יש לך שאלה על קורס מהקורסים של החוג, אשמח לעזור.",
+      "tool_calls": [],
+      "latency_s": 3.11,
+      "tool_selection_correct": false,
+      "argument_correct": false,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Edge case: 'פיזיקה קוונטית' does not exist in the CS database. The system correctly identifies it doesn't have this course and clarifies it covers CS courses at University of Haifa. Ideal edge-case handling.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 38,
+      "question": "מה הקדמים של בישול איטלקי?",
+      "category": "edge-case",
+      "answer": "מצטער, אבל אין לי מידע על קורסים בתחום הבישול האיטלקי. אני מתמחה במידע על קורסי מדעי המחשב באוניברסיטת חיפה. אם יש לך שאלות לגבי קורסים, מרצים, מבחנים או ציונים בתחום הזה – אשמח לעזור.",
+      "tool_calls": [],
+      "latency_s": 3.72,
+      "tool_selection_correct": false,
+      "argument_correct": false,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Edge case: 'בישול איטלקי' (Italian cooking) is completely outside the system's domain. The system correctly and politely declines, explains its scope (CS courses at University of Haifa), and offers to help with relevant topics. Perfect handling of an out-of-domain query.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 39,
+      "question": "What are the prerequisites for data structures?",
+      "category": "edge-case",
+      "answer": "הקורס **מבני נתונים** דורש שני קורסים קודמים:\n\n* **מבוא למדעי המחשב**\n* **מתמטיקה דיסקרטית**\n\n```mermaid\nflowchart TD\n  A[\"מבוא למדעי המחשב\"] --> C[\"מבני נתונים\"]\n  B[\"מתמטיקה דיסקרטית\"] --> C\n```",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "מבני נתונים"
+          },
+          "tool_result": "עץ קדמים עבור: מבני נתונים\n[root] מבני נתונים (5 נ\"ז)\n   קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n  ← מבוא למדעי המחשב (5 נ\"ז)\n  ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את מבני נתונים כקדם:\n  → מערכות הפעלה (5 נ\"ז)\n  → תכנון וניתוח אלגוריתמים (5 נ\"ז)\n  → הסתברות למדעי המחשב (5 נ\"ז)\n  → הנדסת תוכנה (5 נ\"ז)\n  → מבוא לבינה מלאכותית (4 נ\"ז)\n  → PROJECT IN COMPUTER VISION (3 נ\"ז)\n  → מבני נתונים מתקדמים (3 נ\"ז)"
+        }
+      ],
+      "latency_s": 5.39,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Edge case: English input. The system correctly understood the English question, identified 'data structures' as 'מבני נתונים', and retrieved the correct prerequisites: מבוא למדעי המחשב and מתמטיקה דיסקרטית. This matches the SQL exactly. The answer is in Hebrew which is fine for a Hebrew-focused system.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    },
+    {
+      "id": 40,
+      "question": "",
+      "category": "edge-case",
+      "answer": "",
+      "tool_calls": [],
+      "latency_s": 0.0,
+      "tool_selection_correct": null,
+      "argument_correct": null,
+      "response_in_hebrew": null,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "",
+      "error": "Empty question"
+    },
+    {
+      "id": 41,
+      "question": "היי, מה שלומך?",
+      "category": "edge-case",
+      "answer": "היי! הכל טוב, תודה. איך אפשר לעזור?",
+      "tool_calls": [],
+      "latency_s": 3.38,
+      "tool_selection_correct": true,
+      "argument_correct": null,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "Edge case: greeting/small talk. The system responds politely and offers to help, which is appropriate. It doesn't try to fabricate course information. Could have been slightly more informative about what it can help with (courses, grades, reviews, prerequisites), but the response is adequate.",
+      "error": null,
+      "judge_faithfulness": 10,
+      "judge_relevance": 8,
+      "judge_completeness": 7
+    },
+    {
+      "id": 42,
+      "question": "מה אומרים על גרפיקה ממוחשבת עם רועי פורן?",
+      "category": "reviews",
+      "answer": "**ביקורות סטודנטים על קורס “גרפיקה ממוחשבת” עם רועי פורן**\n\n| נושא | מה הסטודנטים מתארים |\n|------|----------------------|\n| **סגנון ההרצאות** | מרצה שלא תמיד ברור, מתמקצע במתמטיקה שמקשה על חלק מהסטודנטים. |\n| **יחסי אישי** | רועי נתפס כ‑**נדיב** ו‑**מאוד נחמד** – במיוחד בבדיקת תרגילים ובחינות בעל פה. |\n| **רמת הקושי** | הקורס דורש **עבודה אינטנסיבית וקצב גבוה**; המשימות “עמוסות” והתרגילים מתבססים זה על זה. |\n| **מבחנים** | יש בחינה בעל פה (מתחשבת יותר) ובחינה בכתב (קצת קשוחה). אין מבחן סופי, רק בוחן שמבוצע על‑ידי המרצה. |\n| **ציונים** | למרות הקושי, מרבית הסטודנטים מדווחים על **ציון גבוה** (במיוחד אם משקיעים זמן קבוע). |\n| **המלצות** | מומלץ שלקחיו קודמים יהיו **לא עמוסים** ויהיו בעלי שותף רציני/מתמיד כדי להתמודד עם עומס העבודה. |\n\n**מגמה מרכזית:** קורס מעניין ומאתגר מבחינת חומר, עם מרצה נוח ומבין, שמקנה ציונים גבוהים למי שמוכן לעבוד בעקביות ולבצע את המשימות בזמן. נדרש לתכנן זמן רציף ולשמור על ערנות במהלך ההרצאות.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "גרפיקה ממוחשבת רועי פורן",
+            "course_name": "גרפיקה ממוחשבת",
+            "lecturer": "רועי פורן"
+          },
+          "tool_result": "[ביקורת 1 | קורס: גרפיקה ממוחשבת | מרצה: רועי פורן | סוג: בחירה | נ\"ז: 4 | תאריך: 2023-09-02]\nרועי מרצה לא מובן כל כך, אבל נדיב מאוד בציונים. החומר עצמו מאוד עניין עד שיורדים למתמטיקה ושם הוא נוטה להיות לא ברור. התרגילים במהלך הסימסטר מסתמכים זה על זה אז כדאי מאוד שהכל יעבוד לקראת התרגיל הבא. בסך הכל קורס עם ציונים גבוהים מאוד שיידרוש הרבה מאוד זמן ועבודה מהסטודנט. מומלץ עם הקורס לא עמוס. אם מכירים מישהו שלקח את הקורס בעבר הדברים יהיו הרבה יותר ברורים. כשעשיתי את הקורס היתה אפשרות לבחינה בעל פה ..."
+        }
+      ],
+      "latency_s": 8.99,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer summarizes reviews for גרפיקה ממוחשבת with רועי פורן. Review content matches: Farouq's review mentions C++ programming, נדיב בציונים. Yoval's review mentions unclear lecturing, generous grades, and oral/written exams. However, the answer mentions some details not clearly in the provided context (e.g., 'mathematics that makes it difficult'). Could have been more complete by including grade data.",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 7
+    },
+    {
+      "id": 43,
+      "question": "מה הממוצע במודלים חישוביים במועד ב?",
+      "category": "grades",
+      "answer": "הממוצע הכולל של ציוני **מודלים חישוביים** במועד ב (ב‑7 מועדים) הוא **≈ 56.3**.  \n\nהציון נע בדרך‑כלל בטווח 52‑60, כשב‑תשפ״ג (הקבוצה הקטנה ביותר) הממוצע גבוה הרבה יותר (80.5) – ייתכן שמדובר בקבוצה מצומצמת של סטודנטים מצטיינים.\n\n```histogram\n{\"course\": \"מודלים חישוביים\", \"entries\": [{\"label\": \"תשע״ד א׳ מועד ב | אורן וימן\", \"avg\": 59.4, \"num\": 32, \"buckets\": [2, 2, 1, 1, 3, 3, 7, 8, 3, 2]}, {\"label\": \"תשע״ט ב׳ מועד ב | רונן\", \"avg\": 58.7, \"num\": 43, \"buckets\": [3, 3, 2, 7, 3, 2, 4, 6, 4, 9]}, {\"label\": \"תש״פ ב׳ מועד ב | נגה\", \"avg\": 55.7, \"num\": 65, \"buckets\": [5, 2, 6, 7, 6, 9, 9, 6, 7, 8]}, {\"label\": \"תשפ״א ב׳ מועד ב | אילן נוימן\", \"avg\": 53.5, \"num\": 56, \"buckets\": [1, 1, 7, 7, 6, 15, 9, 5, 1, 4]}, {\"label\": \"תשפ״ב א׳ מועד ב | נגה\", \"avg\": 52.2, \"num\": 22, \"buckets\": [1, 1, 2, 4, 2, 3, 3, 2, 3, 1]}, {\"label\": \"תשפ״ב ב׳ מועד ב | רונן\", \"avg\": 55.7, \"num\": 38, \"buckets\": [1, 4, 2, 4, 3, 5, 4, 9, 5, 1]}, {\"label\": \"תשפ״ג ב׳ מועד ב | מיכל דורי\", \"avg\": 80.5, \"num\": 4, \"buckets\": [0, 0, 0, 0, 0, 0, 1, 1, 1, 1]}]}\n```",
+      "tool_calls": [
+        {
+          "tool_name": "course_grades",
+          "tool_args": {
+            "course_name": "מודלים חישוביים",
+            "moed": "b"
+          },
+          "tool_result": "ציונים עבור: מודלים חישוביים (7 מועדים)\n\nתשע״ד א׳ מועד ב | אורן וימן:\n  ממוצע: 59.4, נבחנים: 32\n  התפלגות: 0-9: 2, 10-19: 2, 20-29: 1, 30-39: 1, 40-49: 3, 50-59: 3, 60-69: 7, 70-79: 8, 80-89: 3, 90-100: 2\n\nתשע״ט ב׳ מועד ב | רונן:\n  ממוצע: 58.7, נבחנים: 43\n  התפלגות: 0-9: 3, 10-19: 3, 20-29: 2, 30-39: 7, 40-49: 3, 50-59: 2, 60-69: 4, 70-79: 6, 80-89: 4, 90-100: 9\n\nתש״פ ב׳ מועד ב | נגה:\n  ממוצע: 55.7, נבחנים: 65\n  התפלגות: 0-9: 5, 10-19: 2, 20-29: 6, 30-39: 7, 40-49: 6, 50-59: 9, 60-69: 9, 70-79: ..."
+        }
+      ],
+      "latency_s": 16.64,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The question asks about מודלים חישוביים מועד ב averages. The answer correctly reports all 7 exam periods with matching data from the context. The overall average of ~56.3 is a reasonable calculation. The insight about the small group in תשפ\"ג is valid. Histogram data matches.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 44,
+      "question": "איזה קורסים הסתברות למדעי המחשב פותחת?",
+      "category": "prerequisites",
+      "answer": "**קורסים שבהם \"הסתברות למדעי המחשב\" הוא קדם**  \n\n- רשתות תקשורת  \n- מבוא ללמידה ממוכנת  \n- אופטימיזציה ללמידת מכונה  \n- נושאים נבחרים באלגוריתמים  \n- אלגוריתמים תת‑לינאריים  \n- שימוש בשיטות של דאטה‑סיינס בסייבר  \n- **ALGORITHMS AND ANIMAL BEHAVIOR**  \n- **PROJECT IN COMPUTER VISION**  \n- יסודות הקריפטוגרפיה  \n- תורת האינפורמציה  \n- אלגוריתמים מבוזרים  \n- **SEMINAR ON FINE‑GRAINED COMPLEXITY**  \n- **PROJECT IN MACHINE LEARNING**  \n- **PROJECT IN INTERDISCIPLINARY APPLIED PROGRAMMING**  \n- **SEMINAR ON ALGORITHMS**  \n\nהקשר הוויזואלי (קדם → קורס משופר):\n\n```mermaid\nflowchart TD\n  A[\"הסתברות למדעי המחשב\"] --> B[\"רשתות תקשורת\"]\n  A --> C[\"מבוא ללמידה ממוכנת\"]\n  A --> D[\"אופטימיזציה ללמידת מכונה\"]\n  A --> E[\"נושאים נבחרים באלגוריתמים\"]\n  A --> F[\"אלגוריתמים תת לינאריים\"]\n  A --> G[\"שימוש בשיטות של דאטה סיינס בסייבר\"]\n  A --> H[\"ALGORITHMS AND ANIMAL BEHAVIOR\"]\n  A --> I[\"PROJECT IN COMPUTER VISION\"]\n  A --> J[\"יסודות הקריפטוגרפיה\"]\n  A --> K[\"תורת האינפורמציה\"]\n  A --> L[\"אלגוריתמים מבוזרים\"]\n  A --> M[\"SEMINAR ON FINE-GRAINED COMPLEXITY\"]\n  A --> N[\"PROJECT IN MACHINE LEARNING\"]\n  A --> O[\"PROJECT IN INTERDISCIPLINARY APPLIED PROGRAMMING\"]\n  A --> P[\"SEMINAR ON ALGORITHMS\"]\n```\n\nכל הקורסים המופיעים לעיל דורשים את קורס **הסתברות למדעי המחשב** כתנאי קדם. אם תרצה מידע נוסף על אחד מהם (תכנים, מרצים, ציונים וכו'), אשמח לעזור!",
+      "tool_calls": [
+        {
+          "tool_name": "kdams_tree",
+          "tool_args": {
+            "course_name": "הסתברות למדעי המחשב"
+          },
+          "tool_result": "עץ קדמים עבור: הסתברות למדעי המחשב\n[root] הסתברות למדעי המחשב (5 נ\"ז)\n   קדמים: אלגברה לינארית, חדוא 2, מבני נתונים\n  ← אלגברה לינארית (5 נ\"ז)\n  ← חדוא 2 (5 נ\"ז)\n     קדמים: חדוא 1\n  ← מבני נתונים (5 נ\"ז)\n     קדמים: מבוא למדעי המחשב, מתמטיקה דיסקרטית\n    ← חדוא 1 (5 נ\"ז)\n    ← מבוא למדעי המחשב (5 נ\"ז)\n    ← מתמטיקה דיסקרטית (5 נ\"ז)\n\nקורסים שדורשים את הסתברות למדעי המחשב כקדם:\n  → רשתות תקשורת (5 נ\"ז)\n  → מבוא ללמידה ממוכנת (4 נ\"ז)\n  → אופטימיזציה ללמידת מכונה (4 נ\"ז)\n  → נושאים נבחרים באלגוריתמ..."
+        }
+      ],
+      "latency_s": 12.86,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer lists 15 courses that require הסתברות למדעי המחשב as a prerequisite. Cross-referencing with the SQL: all 15 match perfectly (רשתות תקשורת, מבוא ללמידה ממוכנת, אופטימיזציה ללמידת מכונה, נושאים נבחרים באלגוריתמים, אלגוריתמים תת לינאריים, שימוש בשיטות של דאטה סיינס בסייבר, ALGORITHMS AND ANIMAL BEHAVIOR, PROJECT IN COMPUTER VISION, יסודות הקריפטוגרפיה, תורת האינפורמציה, אלגוריתמים מבוזרים, SEMINAR ON FINE-GRAINED COMPLEXITY, PROJECT IN MACHINE LEARNING, PROJECT IN INTERDISCIPLINARY APPLIED PROGRAMMING, SEMINAR ON ALGORITHMS). The visual diagram is also correct.",
+      "error": null,
+      "judge_faithfulness": 9,
+      "judge_relevance": 10,
+      "judge_completeness": 9
+    },
+    {
+      "id": 45,
+      "question": "מה אומרים על הקורס מבוא לבינה מלאכותית?",
+      "category": "reviews",
+      "answer": "**ביקורות על קורס “מבוא לבינה מלאכותית” (שי בושינסקי)**  \n\n**מגמות חוזרות:**  \n\n1. **הפרויקט גרף‑45 % מהציון** – מרבית הסטודנטים מדגישים שהפרויקט הוא חלק מרכזי וקבוע של הקורס. הוא דורש הרבה עבודה, אך ביצועו נחשב לשיעור משמעותי (בכמה מקרים אף סייע בהשגת ראיון עבודה).  \n2. **הבחן קשה מאוד** – כמעט כל הביקורות מתארות את מבחן הקורס כקשה, עם שאלות “בלתי אפשריות” או “מביכות”, ולעיתים ללא תשובות פתוחות לשאלות בערעורים.  \n3. **התוכן וההרצאות נחשבות משעממות / לא מעניינות** – הסטודנטים מתלוננים על כמות החומר (אלפי שקופיות, מאות אלגוריתמים) והקושי לשמור על רמת עניין.  \n4. **חוויית המרצה** – יש דעה משולבת:  \n   - **שלילית:** מרצה מתואר כבעייתי, לעיתים לא מוכן לספק תשובות מדויקות בערעורים, ויוצר תחושה של חוסר שקיפות.  \n   - **חיובית:** עם זאת, כמה סטודנטים מציינים שהמרצה עונה באדיבות למיילים ומציע פגישות זום לעזרה.  \n\n**סיכום קצר:** הקורס דורש עבודה אינטנסיבית בפרויקט ונבחן קשה, ולכן השגת ניקוד גבוה תלויה במעקב קפדני אחרי המשימות. חוסר העניין בחומר והדינמיות של המרצה מהווים נקודת לחץ משמעותית, אך התמיכה האישית של המרצה יכולה להקל על הסטודנטים. אם אתה מוכן להקפיד על הפרויקט ולתת לעצמך זמן ללמידה מעמיקה, הקורס יכול להיות משמעותי מבחינת פיתוח מיומנויות ופתיחת אפשרויות תעסוקה.",
+      "tool_calls": [
+        {
+          "tool_name": "search_course_reviews",
+          "tool_args": {
+            "query": "מבוא לבינה מלאכותית",
+            "course_name": "מבוא לבינה מלאכותית"
+          },
+          "tool_result": "[ביקורת 1 | קורס: מבוא לבינה מלאכותית | מרצה: שי בושינסקי | סוג: בחירה | נ\"ז: 4 | תאריך: 2021-09-13]\nבקורס יש פרויקט 45% מגן, אם לא תעשה אותו אז לא שווה לקחת את הקורס. ממליץ מאוד לקחת ולעשות את הפרויקט כי כך תלמד דברים חדשים\n\n[ביקורת 2 | קורס: מבוא לבינה מלאכותית | מרצה: שי בושינסקי | סוג: בחירה | נ\"ז: 4 | תאריך: 2021-09-13]\n קשה מאוד שלא להירדם בשיעורים (ועברתי הרבה מרצים!)\n- אין מספיק סיכומים כי אף אחד לא הצליח להחזיק מעמד ער ככ הרבה זמן.\n- אין מבחני עבר.\n- המבחן קטנוני וקשה, מזכיר את מועד ב ב..."
+        }
+      ],
+      "latency_s": 7.22,
+      "tool_selection_correct": true,
+      "argument_correct": true,
+      "response_in_hebrew": true,
+      "faithfulness": null,
+      "relevance": null,
+      "completeness": null,
+      "judge_reasoning": "The answer summarizes reviews for מבוא לבינה מלאכותית with שי בושינסקי. Key claims verified: 'פרויקט 45% מגן' confirmed from review, 'מבחן קשה/קטנוני' confirmed, 'שי עונה למיילים ומוכן לפגישות זום' confirmed. Review mentions 'מעל 1000 שקופיות' which the answer inflates slightly to 'אלפי'. Minor embellishment on some details. Missing mention that course type is בחירה (4 credits).",
+      "error": null,
+      "judge_faithfulness": 8,
+      "judge_relevance": 9,
+      "judge_completeness": 8
+    }
+  ]
+}
