@@ -1,5 +1,5 @@
 """
-Core RAG engine — extracted from main.py so both the CLI and the
+Core RAG engine - extracted from main.py so both the CLI and the
 FastAPI server can share the same pipeline.
 """
 
@@ -127,7 +127,7 @@ class RAGResult:
 
 
 class RAGEngine:
-    """Stateless RAG engine. Thread-safe for concurrent read-only queries."""
+    """Stateless RAG engine."""
 
     def __init__(self):
         documents = parse_documents()
@@ -161,10 +161,6 @@ class RAGEngine:
             kdams_summary=_build_kdams_summary()
         )
 
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
     def _openai_to_langchain(self, messages: list[dict]) -> list[BaseMessage]:
         """Convert OpenAI-format messages to LangChain messages."""
         conversation: list[BaseMessage] = [SystemMessage(content=self.system_prompt)]
@@ -175,7 +171,6 @@ class RAGEngine:
                 conversation.append(HumanMessage(content=content))
             elif role == "assistant":
                 conversation.append(AIMessage(content=content))
-            # system messages from the client are ignored — we use our own
         return conversation
 
     def _run_tool_loop(self, conversation: list[BaseMessage], response):
@@ -234,10 +229,7 @@ class RAGEngine:
         except (ValueError, json.JSONDecodeError):
             return []
 
-    # ------------------------------------------------------------------
-    # Public API
-    # ------------------------------------------------------------------
-
+    # The query api
     def query(self, messages: list[dict]) -> RAGResult:
         """Run a full synchronous RAG query.
 
@@ -261,6 +253,7 @@ class RAGEngine:
             suggestions=suggestions,
         )
 
+    # The async way
     async def aquery(self, messages: list[dict]) -> RAGResult:
         """Run a full async RAG query (non-blocking for the event loop)."""
         conversation = self._openai_to_langchain(messages)

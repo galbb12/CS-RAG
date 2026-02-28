@@ -53,7 +53,7 @@ function layoutGraph(nodes, edges) {
   const roots = ids.filter((id) => !targets.has(id))
   if (roots.length === 0) roots.push(ids[0])
 
-  // BFS — assign max depth (longest path from any root)
+  // BFS - assign max depth (longest path from any root)
   const depth = {}
   for (const r of roots) depth[r] = 0
   let changed = true
@@ -246,8 +246,8 @@ function GraphDiagram({ code }) {
   const getNodeColor = (n) => {
     if (!hoverId) return n.color
     if (n.id === hoverId) return '#fff'
-    if (bwdSet.has(n.id)) return '#c62828'  // red — before (prerequisites)
-    if (fwdSet.has(n.id)) return '#1565c0'  // blue — after (dependents)
+    if (bwdSet.has(n.id)) return '#c62828'  // red - before (prerequisites)
+    if (fwdSet.has(n.id)) return '#1565c0'  // blue - after (dependents)
     return n.color
   }
 
@@ -491,7 +491,7 @@ function SourceCard({ output }) {
     return (
       <div className="source-section">
         <div className="source-section-header">
-          {filters || 'חיפוש כללי'} — שאילתה: &quot;{tool_args.query}&quot;
+          {filters || 'חיפוש כללי'} - שאילתה: &quot;{tool_args.query}&quot;
         </div>
         {reviews.map((r, i) => (
           <div key={i} className="source-card">

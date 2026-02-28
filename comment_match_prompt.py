@@ -74,12 +74,12 @@ class CommentMatchPrompt:
             if i + batch_size < len(documents):
                 time.sleep(61)
 
-        # Save only the FAISS vectors (no raw text)
+        # Save only the FAISS vectors
         os.makedirs(FAISS_INDEX_PATH, exist_ok=True)
         faiss_lib.write_index(vs.index, faiss_file)
         print(f"Saved FAISS vectors to {faiss_file}")
 
-        # Rebuild docstore so IDs are consistent with future loads
+        # Build docstore so IDs are consistent with future loads
         docstore, index_to_id = self._build_docstore(documents)
         vs.docstore = docstore
         vs.index_to_docstore_id = index_to_id
@@ -116,8 +116,9 @@ class CommentMatchPrompt:
 
         fetch_k = len(self.vectorstore.docstore._dict)
 
+        # The actual similarity search by the embedding - The meat of the RAG
         if clean_filter:
-            results = self.vectorstore.similarity_search(query, k=self.k, filter=clean_filter, fetch_k=fetch_k)
+            results = self.vectorstore.similarity_search(query, k=self.k, filter=clean_filter, fetch_k=fetch_k) # Here we apply the metadata filteration
         else:
             results = self.vectorstore.similarity_search(query, k=self.k)
         return results

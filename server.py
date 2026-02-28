@@ -20,9 +20,6 @@ from pydantic import BaseModel, ConfigDict
 
 from rag_engine import RAGEngine
 
-# ---------------------------------------------------------------------------
-# App setup
-# ---------------------------------------------------------------------------
 
 engine: RAGEngine | None = None
 
@@ -47,11 +44,7 @@ app.add_middleware(
 
 MODEL_NAME = "haifa-rag"
 
-# ---------------------------------------------------------------------------
-# Request schema
-# ---------------------------------------------------------------------------
-
-
+#Request struct
 class ChatMessage(BaseModel):
     role: str
     content: str
@@ -64,21 +57,12 @@ class ChatCompletionRequest(BaseModel):
     messages: list[ChatMessage]
     stream: bool = False
 
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-
+# Create 
 def _make_chat_id() -> str:
     return f"chatcmpl-{uuid.uuid4().hex[:12]}"
 
 
-# ---------------------------------------------------------------------------
-# Endpoints
-# ---------------------------------------------------------------------------
-
-
+# Fast api endpoints
 @app.get("/v1/models")
 async def list_models():
     return {
@@ -130,7 +114,7 @@ async def chat_completions(request: ChatCompletionRequest):
 
 
 async def _stream_response(messages: list[dict]):
-    """SSE generator — runs the full pipeline then streams the result in chunks."""
+    """SSE generator - runs the full pipeline then streams the result in chunks."""
     chat_id = _make_chat_id()
     created = int(time.time())
 
@@ -174,7 +158,7 @@ async def _stream_response(messages: list[dict]):
         }
         yield f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
 
-    # Send tool_outputs + suggestions as a metadata chunk before [DONE]
+    # tool_outputs + suggestions are sent as a metadata chunk
     if rag_result.tool_outputs or rag_result.suggestions:
         meta = {
             "id": chat_id,
@@ -203,11 +187,7 @@ async def _stream_response(messages: list[dict]):
 async def health():
     return {"status": "ok"}
 
-
-# ---------------------------------------------------------------------------
-# Serve frontend static files (production)
-# ---------------------------------------------------------------------------
-
+# Serve static files
 DIST_DIR = Path(__file__).parent / "frontend" / "dist"
 
 if DIST_DIR.is_dir():

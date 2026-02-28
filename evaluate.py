@@ -149,7 +149,7 @@ def check_hebrew(text: str) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Judge DB tools — lets the judge LLM search the SQL file interactively
+# Judge DB tools - lets the judge LLM search the SQL file interactively
 # ---------------------------------------------------------------------------
 
 
@@ -347,7 +347,7 @@ You have access to tools that let you search and read the raw SQL database that 
    - Search for the course name, lecturer, grade averages, etc.
    - Verify any numbers (averages, histograms, prerequisites) the answer mentions.
    - IMPORTANT: Call ALL the tools you need in a SINGLE round. For example, if you need to search for a course name AND a lecturer, call grep_db twice in the same response, not in separate rounds. Each round costs time.
-   - Prefer sql_query over grep_db when possible — it's faster and more precise.
+   - Prefer sql_query over grep_db when possible - it's faster and more precise.
 3. After investigating (ideally 1-2 rounds), provide your final scores.
 
 Score each dimension on a 1-10 scale:
