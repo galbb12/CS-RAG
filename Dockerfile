@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY *.py .
 COPY *.json .
+COPY faiss_index/ faiss_index/
 
 # Copy built frontend
 COPY --from=frontend /app/frontend/dist frontend/dist/
