@@ -194,6 +194,10 @@ class RAGEngine:
                     conversation.append(
                         ToolMessage(content=result, tool_call_id=tool_call["id"])
                     )
+                else:
+                    conversation.append(
+                        ToolMessage(content=f"Unknown tool: {tool_call['name']}", tool_call_id=tool_call["id"])
+                    )
             response = self.llm_with_tools.invoke(conversation)
             conversation.append(response)
         return response, tool_outputs
@@ -215,6 +219,10 @@ class RAGEngine:
                     )
                     conversation.append(
                         ToolMessage(content=result, tool_call_id=tool_call["id"])
+                    )
+                else:
+                    conversation.append(
+                        ToolMessage(content=f"Unknown tool: {tool_call['name']}", tool_call_id=tool_call["id"])
                     )
             response = await self.llm_with_tools.ainvoke(conversation)
             conversation.append(response)
