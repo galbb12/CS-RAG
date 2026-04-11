@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS Department - University of Haifa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f5f5f5; color: #333; }
+    header { background: #1e3a5f; color: #fff; padding: 20px 40px; }
+    header h1 { font-size: 24px; }
+    header p { font-size: 14px; opacity: 0.8; margin-top: 4px; }
+    nav { background: #15304f; padding: 10px 40px; display: flex; gap: 24px; }
+    nav a { color: #ccc; text-decoration: none; font-size: 14px; }
+    nav a:hover { color: #fff; }
+    main { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .card { background: #fff; border-radius: 8px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .card h2 { font-size: 20px; margin-bottom: 12px; color: #1e3a5f; }
+    .card p { line-height: 1.7; font-size: 15px; }
+    .courses { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .course { background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .course h3 { font-size: 16px; color: #1e3a5f; margin-bottom: 6px; }
+    .course p { font-size: 13px; color: #666; }
+    footer { text-align: center; padding: 30px; color: #999; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>החוג למדעי המחשב | אוניברסיטת חיפה</h1>
+    <p>Department of Computer Science</p>
+  </header>
+  <nav>
+    <a href="#">דף הבית</a>
+    <a href="#">קורסים</a>
+    <a href="#">סגל</a>
+    <a href="#">מידע לסטודנטים</a>
+    <a href="#">צור קשר</a>
+  </nav>
+  <main>
+    <div class="card">
+      <h2>ברוכים הבאים</h2>
+      <p>
+        החוג למדעי המחשב באוניברסיטת חיפה מציע תכניות לימודים לתואר ראשון, שני ושלישי.
+        התכנית משלבת לימודים תיאורטיים ומעשיים במגוון תחומים כולל אלגוריתמים, בינה מלאכותית,
+        אבטחת מידע, מערכות הפעלה ועוד.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>קורסים נבחרים</h2>
+      <div class="courses">
+        <div class="course">
+          <h3>מבוא למדעי המחשב</h3>
+          <p>5 נ"ז | סמסטר א'+ב' | חובה</p>
+        </div>
+        <div class="course">
+          <h3>מבני נתונים</h3>
+          <p>5 נ"ז | סמסטר א'+ב' | חובה</p>
+        </div>
+        <div class="course">
+          <h3>אלגוריתמים</h3>
+          <p>5 נ"ז | סמסטר א' | חובה</p>
+        </div>
+        <div class="course">
+          <h3>מתמטיקה דיסקרטית</h3>
+          <p>5 נ"ז | סמסטר א' | חובה</p>
+        </div>
+        <div class="course">
+          <h3>מערכות הפעלה</h3>
+          <p>4 נ"ז | סמסטר ב' | חובה</p>
+        </div>
+        <div class="course">
+          <h3>מבוא לחמרה</h3>
+          <p>5 נ"ז | סמסטר א' | חובה</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>חדשות והודעות</h2>
+      <p>הרשמה לסמסטר ב' תשפ"ו נפתחת ב-15 באפריל. אנא עיינו בדרישות הקדם לפני ההרשמה.</p>
+    </div>
+  </main>
+  <footer>
+    &copy; 2026 החוג למדעי המחשב, אוניברסיטת חיפה
+  </footer>
+
+  <!-- HAIFA-RAG Chat Widget -->
+  <script src="http://localhost:8000/widget.js" data-host="http://localhost:8000"></script>
+</body>
+</html>

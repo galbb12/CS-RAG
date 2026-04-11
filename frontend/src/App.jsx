@@ -629,13 +629,17 @@ export default function App() {
     }
   }
 
+  const isEmbed = new URLSearchParams(window.location.search).get('embed') === '1'
+
   return (
     <>
       <style>{styles}</style>
-      <header className="app-header">
-        <h1>HAIFA-RAG</h1>
-        <span>עוזר לסטודנטים במדעי המחשב | אוניברסיטת חיפה</span>
-      </header>
+      {!isEmbed && (
+        <header className="app-header">
+          <h1>HAIFA-RAG</h1>
+          <span>עוזר לסטודנטים במדעי המחשב | אוניברסיטת חיפה</span>
+        </header>
+      )}
 
       <div className="app-main">
         <div className="chat-panel">
