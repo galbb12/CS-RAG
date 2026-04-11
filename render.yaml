@@ -10,5 +10,11 @@ services:
         sync: false
       - key: LLM_MODEL
         sync: false
-      - key: EMBEDDING_API_KEY
+      - key: EMBEDDING_MODEL
+        sync: false
+      - key: GEMINI_EMBEDDING_API_KEY
+        sync: false
+      - key: DB_URL
+        sync: false
+      - key: DB_SQL_PATH
         sync: false

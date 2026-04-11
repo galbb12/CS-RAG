@@ -1,4 +1,6 @@
 openai
+pymysql
+cryptography
 langchain
 langchain-openai
 langchain-google-genai

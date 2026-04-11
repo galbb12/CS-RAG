@@ -5,6 +5,7 @@ FastAPI server can share the same pipeline.
 
 import json
 import os
+import threading
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -15,8 +16,7 @@ from langchain_core.messages import (
     SystemMessage,
     ToolMessage,
 )
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from comment_match_prompt import CommentMatchPrompt
 from format_data import parse_documents, parse_grades, parse_kdams
@@ -28,11 +28,8 @@ load_dotenv()
 SEMESTER_MAP = {"a": "א׳", "b": "ב׳", "c": "קיץ"}
 
 
-def _build_kdams_summary() -> str:
+def _build_kdams_summary(kdams: dict, docs: list) -> str:
     """Build a compact prerequisite summary for injection into the system prompt."""
-    kdams = parse_kdams()
-    docs = parse_documents()
-
     course_types: dict[str, str] = {}
     for d in docs:
         name = d.metadata.get("course_name", "")
@@ -59,8 +56,10 @@ SYSTEM_PROMPT_TEMPLATE = """אתה עוזר לסטודנטים בחוג למדע
 אתה עונה על שאלות לגבי קורסים, מרצים, מבחנים ועוד על סמך ביקורות אמיתיות של סטודנטים.
 
 כללים:
-- ענה רק על סמך מידע שקיבלת מהכלים או מעץ הקדמים למטה. אל תמציא מידע.
-- אם אין מספיק מידע, אמור זאת בכנות.
+- תמיד קרא לכלי לפני שאתה עונה. אם שואלים על קורסי בחירה - חפש ביקורות עם course_type=בחירה. אם שואלים על מרצה - חפש עם שם המרצה. תמיד נסה למצוא מידע רלוונטי.
+- ענה רק על סמך תוצאות הכלים או טבלת הקדמים למטה. אל תמציא כתובות מייל, קודי קורס, קישורים, או מידע על מערכות אוניברסיטה (מודל, מזכירות וכו').
+- אם חיפשת ולא מצאת מידע רלוונטי, אמור זאת בכנות.
+- שאלות שלא קשורות לקורסים, מרצים, ציונים או קדמים - הפנה לאתר האוניברסיטה.
 - ציין מגמות חוזרות בביקורות (למשל אם כמה סטודנטים מסכימים על נקודה מסוימת).
 - השתמש בעברית בתשובות שלך.
 - היה תמציתי ועניני.
@@ -139,31 +138,68 @@ class RAGEngine:
             base_url=os.environ["LLM_BASE_URL"],
             model=os.environ["LLM_MODEL"],
         )
-        embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001",
-            google_api_key=os.environ["EMBEDDING_API_KEY"],
-        )
+        # If GEMINI_EMBEDDING_API_KEY is set, use Google Gemini embeddings (better Hebrew support).
+        # Otherwise fall back to the base provider via the same LLM_API_KEY.
+        if os.environ.get("GEMINI_EMBEDDING_API_KEY"):
+            from langchain_google_genai import GoogleGenerativeAIEmbeddings
+            embeddings = GoogleGenerativeAIEmbeddings(
+                model=os.environ["EMBEDDING_MODEL"],
+                google_api_key=os.environ["GEMINI_EMBEDDING_API_KEY"],
+            )
+        else:
+            embeddings = OpenAIEmbeddings(
+                model=os.environ["EMBEDDING_MODEL"],
+                api_key=os.environ["LLM_API_KEY"],
+                base_url=os.environ["LLM_BASE_URL"],
+                check_embedding_ctx_length=False,
+            )
+        print(f"Embeddings: {embeddings.model}")
 
-        comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
-        self.search_tool = comment_matcher.to_langchain_tool()
+        self.comment_matcher = CommentMatchPrompt(embeddings, documents, k=10)
+        self.search_tool = self.comment_matcher.to_langchain_tool()
 
-        kdams = KdamsTool(kdams_data)
-        self.kdams_tool = kdams.to_langchain_tool()
+        self._kdams = KdamsTool(kdams_data)
+        self.kdams_tool = self._kdams.to_langchain_tool()
 
-        grades = GradesTool(grades_data)
-        self.grades_tool = grades.to_langchain_tool()
+        self._grades = GradesTool(grades_data)
+        self.grades_tool = self._grades.to_langchain_tool()
 
         self.tools = [self.search_tool, self.kdams_tool, self.grades_tool]
         self.tools_by_name = {t.name: t for t in self.tools}
         self.llm_with_tools = self.llm.bind_tools(self.tools)
+        self._lock = threading.RLock()
 
         self.system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
-            kdams_summary=_build_kdams_summary()
+            kdams_summary=_build_kdams_summary(kdams_data, documents)
         )
+
+    def refresh_data(self):
+        """Re-fetch all data from DB and update tools in place. Thread-safe."""
+        documents = parse_documents()
+        kdams_data = parse_kdams()
+        grades_data = parse_grades()
+
+        with self._lock:
+            self._kdams.update(kdams_data)
+            self._grades.update(grades_data)
+            self.system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
+                kdams_summary=_build_kdams_summary(kdams_data, documents)
+            )
+
+        all_docs = documents
+        new_docs = self.comment_matcher.find_new_documents(all_docs)
+        if new_docs:
+            print(f"Found {len(new_docs)} new comments, updating index...")
+            self.comment_matcher.add_new_documents(new_docs)
+            print("Data refreshed from DB (new data found)")
+        else:
+            print("Data refreshed from DB (no changes)")
 
     def _openai_to_langchain(self, messages: list[dict]) -> list[BaseMessage]:
         """Convert OpenAI-format messages to LangChain messages."""
-        conversation: list[BaseMessage] = [SystemMessage(content=self.system_prompt)]
+        with self._lock:
+            system_prompt = self.system_prompt
+        conversation: list[BaseMessage] = [SystemMessage(content=system_prompt)]
         for msg in messages:
             role = msg.get("role", "")
             content = msg.get("content", "")
@@ -173,13 +209,17 @@ class RAGEngine:
                 conversation.append(AIMessage(content=content))
         return conversation
 
+    MAX_TOOL_CALLS = int(os.environ.get("MAX_TOOL_CALLS", 10))
+
     def _run_tool_loop(self, conversation: list[BaseMessage], response):
         """Execute tool calls until the LLM produces a final text answer.
 
         Returns (final_response, tool_outputs).
         """
         tool_outputs: list[dict] = []
-        while response.tool_calls:
+        iterations = 0
+        while response.tool_calls and iterations < self.MAX_TOOL_CALLS:
+            iterations += 1
             for tool_call in response.tool_calls:
                 tool_fn = self.tools_by_name.get(tool_call["name"])
                 if tool_fn:
@@ -204,12 +244,17 @@ class RAGEngine:
 
     async def _arun_tool_loop(self, conversation: list[BaseMessage], response):
         """Async version of _run_tool_loop."""
+        import asyncio
         tool_outputs: list[dict] = []
-        while response.tool_calls:
+        iterations = 0
+        while response.tool_calls and iterations < self.MAX_TOOL_CALLS:
+            iterations += 1
             for tool_call in response.tool_calls:
                 tool_fn = self.tools_by_name.get(tool_call["name"])
                 if tool_fn:
-                    result = tool_fn.invoke(tool_call["args"])
+                    result = await asyncio.get_running_loop().run_in_executor(
+                        None, tool_fn.invoke, tool_call["args"]
+                    )
                     tool_outputs.append(
                         {
                             "tool_name": tool_call["name"],
@@ -237,7 +282,6 @@ class RAGEngine:
         except (ValueError, json.JSONDecodeError):
             return []
 
-    # The query api
     def query(self, messages: list[dict]) -> RAGResult:
         """Run a full synchronous RAG query.
 
@@ -261,7 +305,6 @@ class RAGEngine:
             suggestions=suggestions,
         )
 
-    # The async way
     async def aquery(self, messages: list[dict]) -> RAGResult:
         """Run a full async RAG query (non-blocking for the event loop)."""
         conversation = self._openai_to_langchain(messages)
