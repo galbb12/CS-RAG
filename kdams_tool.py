@@ -7,13 +7,15 @@ class KdamsTool:
     """Tool for querying the prerequisite DAG (גרף קדמים)."""
 
     def __init__(self, kdams: dict):
+        self.update(kdams)
+
+    def update(self, kdams: dict):
         self.kdams = kdams
-        # Build reverse map: course -> list of courses it unlocks
         self.unlocks = {}
         for name, info in self.kdams.items():
             prereqs = info.get("prerequisites")
             if prereqs:
-                for prereq in prereqs.split(","):
+                for prereq in (p.strip() for p in prereqs.split(",")):
                     self.unlocks.setdefault(prereq, []).append(name)
 
     def get_prerequisites(self, course_name: str) -> Optional[dict]:
@@ -92,22 +94,20 @@ class KdamsTool:
 
     def to_langchain_tool(self):
         """Return a LangChain tool that the LLM can call."""
-        course_names = sorted(self.kdams.keys())
 
         @tool
-        def kdams_tree(course_name: str) -> str: # The actual tool: Returns prequisites and courses unlocked for a course
+        def kdams_tree(course_name: str) -> str:
             """חפש עץ קדמים של קורס - מציג את כל קורסי הקדם הנדרשים ואת הקורסים שהקורס פותח.
             Use this tool when the user asks about prerequisites, required courses,
             course order, or what courses a specific course unlocks."""
-            # Fuzzy match: find the best matching course name
             if course_name in self.kdams:
                 return self.format_prerequisite_dag(course_name)
-            # Try partial match
-            matches = [c for c in course_names if course_name in c or c in course_name]
+            names = sorted(self.kdams.keys())
+            matches = [c for c in names if course_name in c or c in course_name]
             if len(matches) == 1:
                 return self.format_prerequisite_dag(matches[0])
             if matches:
                 return f"נמצאו כמה קורסים תואמים: {', '.join(matches)}\nנא לציין את שם הקורס המדויק."
-            return f"לא נמצא קורס בשם: {course_name}\nקורסים זמינים: {', '.join(course_names)}"
+            return f"לא נמצא קורס בשם: {course_name}\nקורסים זמינים: {', '.join(names)}"
 
         return kdams_tree

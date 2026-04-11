@@ -1,17 +1,56 @@
 """
-Parse the SQL dump into LangChain Documents and kdams data.
+Parse data into LangChain Documents and kdams data.
+
+Supports two sources (checked in order):
+  1. _db_url() env var  - live MySQL connection  (mysql://user:pass@host/db)
+  2. DB_SQL_PATH     - SQL dump file
 
 Can be imported (parse_documents, parse_kdams) or run as a standalone script.
 """
 
+import hashlib
 import os
 import re
+from urllib.parse import urlparse
 
 from langchain_core.documents import Document
 
 
 _LOCAL_SQL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "u797529344_db_rag_proj(1).sql")
 SQL_PATH = os.environ.get("DB_SQL_PATH", "/etc/secrets/db.sql" if os.path.exists("/etc/secrets/db.sql") else _LOCAL_SQL)
+def _db_url() -> str | None:
+    return os.environ.get("DB_URL")
+
+
+def _db_connection():
+    """Return a pymysql connection parsed from DB_URL."""
+    import pymysql
+    url = _db_url()
+    assert url, "DB_URL is not set"
+    u = urlparse(url)
+    return pymysql.connect(
+        host=str(u.hostname),
+        port=u.port or 3306,
+        user=u.username,
+        password=u.password or "",
+        database=u.path.lstrip("/"),
+        charset="utf8mb4",
+        cursorclass=pymysql.cursors.Cursor,
+    )
+
+
+_ALLOWED_TABLES = {"Tcomments", "Tquestions", "Tkdams", "Tgrades", "TgradesSemesters"}
+
+def _fetch_table(table: str) -> list[tuple]:
+    """Fetch all rows from a table via live DB connection."""
+    assert table in _ALLOWED_TABLES, f"Unknown table: {table}"
+    conn = _db_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute(f"SELECT * FROM `{table}`")
+            return cur.fetchall()
+    finally:
+        conn.close()
 
 
 # ---------------------------------------------------------------------------
@@ -144,9 +183,12 @@ def _read_sql(sql_path: str) -> str:
 
 
 def parse_kdams(sql_path: str = SQL_PATH) -> dict:
-    """Parse the Tkdams table from the SQL dump. Returns {course_name: {info...}}."""
-    sql = _read_sql(sql_path)
-    kdams_raw = parse_inserts(sql, "Tkdams")
+    """Parse the Tkdams table. Returns {course_name: {info...}}."""
+    if _db_url():
+        kdams_raw = _fetch_table("Tkdams")
+    else:
+        sql = _read_sql(sql_path)
+        kdams_raw = parse_inserts(sql, "Tkdams")
 
     kdams = {}
     for row in kdams_raw:
@@ -163,12 +205,16 @@ def parse_kdams(sql_path: str = SQL_PATH) -> dict:
 
 
 def parse_documents(sql_path: str = SQL_PATH) -> list[Document]:
-    """Parse the SQL dump into LangChain Documents (one per student comment)."""
-    sql = _read_sql(sql_path)
-
-    comments_raw = parse_inserts(sql, "Tcomments")
-    questions_raw = parse_inserts(sql, "Tquestions")
-    kdams_raw = parse_inserts(sql, "Tkdams")
+    """Parse into LangChain Documents (one per student comment)."""
+    if _db_url():
+        comments_raw = _fetch_table("Tcomments")
+        questions_raw = _fetch_table("Tquestions")
+        kdams_raw = _fetch_table("Tkdams")
+    else:
+        sql = _read_sql(sql_path)
+        comments_raw = parse_inserts(sql, "Tcomments")
+        questions_raw = parse_inserts(sql, "Tquestions")
+        kdams_raw = parse_inserts(sql, "Tkdams")
 
     # Tquestions: id -> {course, lecturer, tag}
     questions = {}
@@ -208,6 +254,7 @@ def parse_documents(sql_path: str = SQL_PATH) -> list[Document]:
         course_type = TAG_MAP.get(tag, tag)
 
         metadata = {
+            "id": hashlib.md5(content.encode()).hexdigest(),
             "course_name": course_name,
             "lecturer": lecturer,
             "course_type": course_type,
@@ -246,10 +293,13 @@ def parse_grades(sql_path: str = SQL_PATH) -> dict:
 
     Returns: {course_name: [{"lecturer", "year", "semester", "moed", "avg", "num", "buckets": [10 ints], "proj"}]}
     """
-    sql = _read_sql(sql_path)
-
-    semesters_raw = parse_inserts(sql, "TgradesSemesters")
-    grades_raw = parse_inserts(sql, "Tgrades")
+    if _db_url():
+        semesters_raw = _fetch_table("TgradesSemesters")
+        grades_raw = _fetch_table("Tgrades")
+    else:
+        sql = _read_sql(sql_path)
+        semesters_raw = parse_inserts(sql, "TgradesSemesters")
+        grades_raw = parse_inserts(sql, "Tgrades")
 
     # Build semester lookup: id -> info
     semesters = {}
@@ -284,6 +334,7 @@ def parse_grades(sql_path: str = SQL_PATH) -> dict:
         result.setdefault(sem["course"], []).append(entry)
 
     return result
+
 
 
 if __name__ == "__main__":

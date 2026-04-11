@@ -6,11 +6,15 @@ Run with:  uvicorn server:app --port 8000
 
 import json
 import os
+import threading
 import time
 import traceback
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
+
+from dotenv import load_dotenv
+load_dotenv()
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,10 +22,25 @@ from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict
 
+from format_data import _db_url
 from rag_engine import RAGEngine
 
 
 engine: RAGEngine | None = None
+POLL_INTERVAL = int(os.environ.get("DB_POLL_INTERVAL", 300))  # seconds
+
+
+def _poll_for_updates():
+    """Background thread: check for new comments and incrementally update the index."""
+    while True:
+        time.sleep(POLL_INTERVAL)
+        if engine is None:
+            continue
+        try:
+            print("Polling DB for updates...")
+            engine.refresh_data()
+        except Exception:
+            traceback.print_exc()
 
 
 @asynccontextmanager
@@ -30,6 +49,12 @@ async def lifespan(_app: FastAPI):
     print("Loading RAG engine …")
     engine = RAGEngine()
     print("RAG engine ready.")
+
+    if _db_url():
+        t = threading.Thread(target=_poll_for_updates, daemon=True)
+        t.start()
+        print(f"DB polling started (every {POLL_INTERVAL}s)")
+
     yield
 
 
@@ -44,7 +69,6 @@ app.add_middleware(
 
 MODEL_NAME = "haifa-rag"
 
-#Request struct
 class ChatMessage(BaseModel):
     role: str
     content: str
@@ -57,12 +81,10 @@ class ChatCompletionRequest(BaseModel):
     messages: list[ChatMessage]
     stream: bool = False
 
-# Create 
 def _make_chat_id() -> str:
     return f"chatcmpl-{uuid.uuid4().hex[:12]}"
 
 
-# Fast api endpoints
 @app.get("/v1/models")
 async def list_models():
     return {
@@ -80,6 +102,8 @@ async def list_models():
 
 @app.post("/v1/chat/completions")
 async def chat_completions(request: ChatCompletionRequest):
+    if engine is None:
+        raise HTTPException(status_code=503, detail="Engine not ready")
     messages = [{"role": m.role, "content": m.content} for m in request.messages]
 
     if request.stream:

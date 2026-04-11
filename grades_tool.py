@@ -10,12 +10,13 @@ class GradesTool:
     """Tool for querying course grade distributions."""
 
     def __init__(self, grades_data: dict):
+        self.update(grades_data)
+
+    def update(self, grades_data: dict):
         self.grades = grades_data  # {course_name: [entries]}
 
     def to_langchain_tool(self):
         """Return a LangChain tool the LLM can call."""
-        course_names = sorted(self.grades.keys())
-
         @tool
         def course_grades(
             course_name: str,
@@ -40,13 +41,14 @@ class GradesTool:
             if course_name in self.grades:
                 matched = course_name
             else:
-                matches = [c for c in course_names if course_name in c or c in course_name]
+                names = sorted(self.grades.keys())
+                matches = [c for c in names if course_name in c or c in course_name]
                 if len(matches) == 1:
                     matched = matches[0]
                 elif matches:
                     return f"נמצאו כמה קורסים תואמים: {', '.join(matches)}\nנא לציין את שם הקורס המדויק."
                 else:
-                    return f"לא נמצאו ציונים עבור: {course_name}\nקורסים זמינים: {', '.join(course_names)}"
+                    return f"לא נמצאו ציונים עבור: {course_name}\nקורסים זמינים: {', '.join(names)}"
 
             entries = self.grades[matched]
 
@@ -118,7 +120,8 @@ class GradesTool:
 
         # Patch schema to add enum for course names
         props = course_grades.args_schema.model_json_schema()["properties"]
-        if course_names:
-            props["course_name"]["enum"] = course_names
+        names = sorted(self.grades.keys())
+        if names:
+            props["course_name"]["enum"] = names
 
         return course_grades
